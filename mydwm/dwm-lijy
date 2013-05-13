@@ -1,0 +1,16 @@
+#!/bin/bash
+
+feh --bg-fill /home/lijy/Documents/88a2e9465338d55184a001ec95ed4170.jpg &
+nm-applet &
+gnome-sound-applet &
+bluetooth-applet &
+while true
+do
+    pre_state=`cat /sys/class/power_supply/BAT0/status`
+    full=`cat /sys/class/power_supply/BAT0/energy_full`
+    remain=`cat /sys/class/power_supply/BAT0/energy_now`
+    info="Battery: `echo $remain*100/$full|bc`%  `date "+%F %A %R"`"
+    xsetroot -name "$info"
+    sleep 1m
+done &
+exec dwm

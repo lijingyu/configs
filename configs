@@ -1,0 +1,276 @@
+all configs
+
+
+------------------setup.sh-------------------
+#!/bin/bash
+
+function creat_cscope()
+{
+    if [ -e "cscope.files" ]; then
+        rm -rf cscope.files
+    fi
+
+    echo "create cscope.files in $@"
+    for arg in $@
+    do
+        find  ${arg}  -type f |sed  -e '/ /d' -n -e '/\.\(\([chmSs]\)\|\(java\)\|\(cpp\)\|\(hp\)\|\(cc\)\|\(def\)\)$/p' >> cscope.files
+    done
+
+    echo "create cscope"
+    cscope -bki cscope.files
+}
+
+function csset()
+{
+    if [ $# -eq 0 ];then
+        echo "need dirname"
+        return
+    fi
+
+    csclean 
+    creat_cscope $@
+
+    echo "create tags"
+    ctags --c++-kinds=+px --fields=+iaS --extra=+q  -L cscope.files
+
+    echo "create  success"
+}
+
+function csseta()
+{
+    if [ $# -eq 0 ];then
+        echo "need dirname"
+        return 
+    fi
+
+    csclean
+    creat_cscope $@
+
+    rm  -rf cscope.files tags TAGS
+
+    for arg in $@
+    do
+        find ${arg}  -type f | sed '/\/\.\| \|\.o\|\.taghl\|tags\|cscope\|\.a/d'  >> cscope.files
+    done
+
+    echo "create tags"
+    ctags --c++-kinds=+px --fields=+iaS --extra=+q  -L cscope.files
+
+    echo "create  success"
+}
+
+
+function csclean()
+{
+    if [ $# -eq 0 ];then
+        rm  -rf cscope* tags TAGS ncscope* 
+    else
+        for arg in $@
+        do
+            find $arg  -type f -name "cscope.*" -o -name tags |xargs rm -rf
+        done
+    fi
+}
+function cscleana()
+{
+    if [ $# -eq 0 ];then
+        rm  -rf cscope* tags TAGS *.taghl 
+    else
+        for arg in $@
+        do
+            find $arg  -type f -name "cscope.*" -o -name tags -o  -name "*.taghl" -o -name TAGS |xargs rm -rf
+        done
+    fi
+}
+
+function ll()
+{
+    ls -l $*
+}
+----------------------end-------------------------------
+
+------------------10_ljyat_usb.rules-------------------
+KERNEL!="sd[b-z][0-9]", GOTO="media_by_label_auto_mount_end"  
+# Import FS infos  
+IMPORT{program}="/sbin/blkid -o udev -p %N"  
+# Get a label if present, otherwise specify one  
+ENV{ID_FS_LABEL}!="", ENV{dir_name}="%E{ID_FS_LABEL}"  
+ENV{ID_FS_LABEL}=="", ENV{dir_name}="usb-%k"  
+# Global mount options  
+ACTION=="add", ENV{mount_options}="relatime"  
+# Filesystem-specific mount options  
+# 如果是vfat 或者ntfs 系统，则设置mount_options 的选项如下  
+ACTION=="add", ENV{ID_FS_TYPE}=="vfat|ntfs", ENV{mount_options}="$env{mount_options},utf8,gid=100,umask=000"  
+# Mount the device  
+#  如果文件系统不是ntfs ,意味着是vfat  
+# 同时挂载到/media/sd[b-z][0-9] 的形式  
+ACTION=="add",ENV{ID_FS_TYPE}!="ntfs", RUN+="/bin/mkdir -p /mnt/usb-%k", RUN+="/bin/mount -o $env{mount_options},rw /dev/%k /mnt/usb-%k"  
+#ntfs  
+#  如果文件系统是ntfs ,以ntfs-3g 的形式挂载，实现可读写  
+# 同时挂载到/media/sd[b-z][0-9] 的形式  
+ACTION=="add",ENV{ID_FS_TYPE}=="ntfs", RUN+="/bin/mkdir -p /mnt/usb-%k", RUN+="/bin/mount -t ntfs-3g -o $env{mount_options},rw /dev/%k /mnt/usb-%k"  
+# Clean up after removal  
+#  
+ACTION=="remove", ENV{dir_name}!="",  RUN+="/bin/umount -l /mnt/usb-%k",  RUN+="/bin/rmdir /mnt/usb-%k" ,  RUN+="/bin/rm /mnt/usb-%k"   
+ 
+# Exit  
+LABEL="media_by_label_auto_mount_end"  
+
+----------------------end-------------------------------
+
+------------------sources.list -------------------
+#deb http://free.nchc.org.tw/linuxmint/packages/ maya main upstream import
+#deb http://archive.ubuntu.com/ubuntu/ precise main restricted universe multiverse
+#deb http://archive.ubuntu.com/ubuntu/ precise-updates main restricted universe multiverse
+#deb http://security.ubuntu.com/ubuntu/ precise-security main restricted universe multiverse
+#deb http://archive.canonical.com/ubuntu/ precise partner
+#deb http://packages.medibuntu.org/ precise free non-free
+
+# deb http://archive.getdeb.net/ubuntu precise-getdeb apps
+# deb http://archive.getdeb.net/ubuntu precise-getdeb games
+
+
+#add
+#deb ftp://mirrors.ustc.edu.cn/linuxmint/ maya main upstream import
+deb http://ftp.de.debian.org/debian squeeze main 
+deb http://mirrors.163.com/ubuntu/ precise main restricted universe multiverse
+deb http://mirrors.163.com/ubuntu/ precise-updates main restricted universe multiverse
+deb http://mirrors.163.com/ubuntu/ precise-security main restricted universe multiverse
+deb http://archive.canonical.com/ubuntu/ precise partner
+deb http://packages.medibuntu.org/ precise free non-free
+
+
+deb-src http://mirrors.163.com/ubuntu/ precise main restricted universe multiverse
+deb-src http://mirrors.163.com/ubuntu/ precise-security main restricted universe multiverse
+deb-src http://mirrors.163.com/ubuntu/ precise-updates main restricted universe multiverse
+deb-src http://mirrors.163.com/ubuntu/ precise-proposed main restricted universe multiverse
+deb-src http://mirrors.163.com/ubuntu/ precise-backports main restricted universe multiverse
+--------------------end---------------------------
+
+
+--------------------bashrc---------------------------
+# ~/.bashrc: executed by bash(1) for non-login shells.
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+# for examples
+
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
+# don't put duplicate lines in the history. See bash(1) for more options
+# ... or force ignoredups and ignorespace
+HISTCONTROL=ignoredups:ignorespace
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=20000
+HISTFILESIZE=20000
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color) color_prompt=yes;;
+esac
+
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+#force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+    else
+	color_prompt=
+    fi
+fi
+
+if [ "$color_prompt" = yes ]; then
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+    . /etc/bash_completion
+fi
+
+stty stop ""
+
+export JAVA_HOME=$HOME/jdk1.6.0_26
+#java 1.5
+#export JAVA_HOME=$HOME/jdk1.5.0_22
+#
+export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+
+export PATH=$JAVA_HOME/bin:$PATH
+export ANT_HOME=/usr/local/ant/apache-ant-1.8.1
+export PATH=$PATH:$HOME/bin:$ANT_HOME/bin
+export CLASSPATH=.:$CLASSPATH:$JAVA_HOME/lib:$JAVA_HOME/lib
+
+source ~/bin/setup.sh
+PATH=$PATH:~/bin
+#PATH=$PATH:/home/lijy/android-sdk_eng.lijy_linux-x86/tools/:/home/lijy/android-sdk_eng.lijy_linux-x86/platform-tools
+PATH=$PATH:/home/lijy/workspace/rda/compile/bin
+alias work='source ~/bin/cygenv.sh'
+alias cdt='cd $ANDROID_BUILD_TOP'
+export LD_LIBRARY_PATH=/home/lijy/workspace/rda/compile/lib:$QTDIR/lib:/home/lijy/workspace/rda/compile:$LD_LIBRARY_PATH
+--------------------end---------------------------
