@@ -52,10 +52,6 @@ if filereadable("/etc/vim/vimrc.local")
     source /etc/vim/vimrc.local
 endif
 
-"set runtimepath
-set rtp+=/home/lijy/.vim
-set rtp+=/home/lijy/.vim/after
-
 set nocp
 set updatetime=100
 set nu
@@ -83,8 +79,12 @@ set diffopt=filler,vertical
 "set foldlevel=3
 
 if has("win32")
-    set guifont=Inconsolata:h12:b:cANSI
+    set guifont=Courier_New:h10:cANSI
 else
+    "set runtimepath
+    set rtp+=/home/lijy/.vim
+    set rtp+=/home/lijy/.vim/after
+
     set guifont=Inconsolata\ Medium\ 12
     if has("gui_running")
         colorscheme ljyat
