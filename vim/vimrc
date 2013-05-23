@@ -52,6 +52,11 @@ if filereadable("/etc/vim/vimrc.local")
     source /etc/vim/vimrc.local
 endif
 
+set history=700
+set scrolloff=6
+set autoread
+set ffs=unix,dos,mac
+set noswapfile
 set nocp
 set updatetime=100
 set nu
