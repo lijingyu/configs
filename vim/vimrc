@@ -321,6 +321,8 @@ vnoremap <M-r> <ESC>:call VCscopeSearchStringPattern() <CR>
 map g<C-]> :cs find c <C-R>=expand("<cword>")<CR><CR>
 map g<C-\> :cs find s <C-R>=expand("<cword>")<CR><CR>
 
+nmap j gj
+namp k gk
 
 nmap <C-_>s :cs find s <C-R>=expand("<cword>")<CR><CR>
 nmap <C-_>g :cs find g <C-R>=expand("<cword>")<CR><CR>
