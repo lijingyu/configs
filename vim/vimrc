@@ -57,7 +57,6 @@ set scrolloff=6
 set autoread
 set ffs=unix,dos,mac
 set noswapfile
-set nocp
 set updatetime=100
 set nu
 "set hlsearch
