@@ -79,7 +79,7 @@ if !exists('g:tagbar_show_visibility')
 endif
 
 if !exists('g:tagbar_expand')
-    let g:tagbar_expand = 1
+    let g:tagbar_expand = 0
 endif
 
 if !exists('g:tagbar_singleclick')
