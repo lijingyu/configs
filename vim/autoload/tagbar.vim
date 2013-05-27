@@ -1725,7 +1725,7 @@ function! s:OpenWindow(flags) abort
     call s:AutoUpdate(curfile, 0)
     call s:HighlightTag(1, 1, curline)
 
-    if !(g:tagbar_autoclose || autofocus || g:tagbar_autofocus)
+    if !(g:tagbar_autoclose || autofocus)
         call s:winexec('wincmd p')
     endif
 

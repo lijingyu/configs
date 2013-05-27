@@ -100,7 +100,7 @@ if !exists('g:tagbar_iconchars')
 endif
 
 if !exists('g:tagbar_autoshowtag')
-    let g:tagbar_autoshowtag = 1
+    let g:tagbar_autoshowtag = 0
 endif
 
 if !exists('g:tagbar_systemenc')
