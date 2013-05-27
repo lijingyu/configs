@@ -14,27 +14,25 @@ if version > 580
 endif
 let g:colors_name="ljyat"
 
-if exists("g:molokai_original")
-    let s:molokai_original = g:molokai_original
-else
-    let s:molokai_original = 0
-endif
-
-
 hi Pmenu     guibg=DarkGreen	 guifg=white
 hi PmenuSel  guibg=DarkBlue 	 guifg=white
 
 hi Boolean         guifg=gold4
 hi String          term=underline cterm=underline ctermfg=9 guifg=#80a0ff 
 hi Comment    	   term=bold ctermfg=5 gui=italic guifg=#70665E
-hi Constant        guifg=#F94C87           "   gui=bold
+hi Constant        guifg=#F94C87
 hi Folded          guifg=white guibg=#403D3D 
 hi FoldColumn      guifg=white guibg=#403D3D 
-hi Statement       term=bold ctermfg=14 gui=bold guifg=#86C711
+hi Statement       term=bold ctermfg=14  guifg=#86C711
 "hi DefinedName 	   term=underline ctermfg=9 guifg=#ff80ff 
 "hi EnumerationValue     guifg=#21BC71
 "hi EnumerationValue term=underline ctermfg=9 guifg=#ff80ff 
-hi Function        	guifg=#21BC71 gui=bold
+hi Function        	guifg=#21BC71 gui=bold 
+hi Title        	guifg=#21BC71 gui=NONE
+hi Identifier guifg=#ff80ff
+
+
+
 hi Keyword        guifg=#E6C84F   gui=NONE
 hi DefinedName 	  guifg=#E6C84F   gui=NONE 
 hi EnumerationValue guifg=#E6C84F   gui=NONE
