@@ -106,7 +106,7 @@ if !exists('loaded_taglist')
 
     " Automatically open the taglist window on Vim startup
     if !exists('Tlist_Auto_Open')
-        let Tlist_Auto_Open = 1
+        let Tlist_Auto_Open = 0
     endif
 
     " When the taglist window is toggle opened, move the cursor to the

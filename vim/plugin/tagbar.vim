@@ -43,7 +43,11 @@ if v:version == 700 && !has('patch167')
 endif
 
 if !exists('g:tagbar_left')
-    let g:tagbar_left = 0
+    let g:tagbar_left = 1
+endif
+
+if !exists('Tagbar_Auto_Open')
+    let Tagbar_Auto_Open = 1
 endif
 
 if !exists('g:tagbar_width')
@@ -55,11 +59,11 @@ if !exists('g:tagbar_autoclose')
 endif
 
 if !exists('g:tagbar_autofocus')
-    let g:tagbar_autofocus = 0
+    let g:tagbar_autofocus = 1
 endif
 
 if !exists('g:tagbar_sort')
-    let g:tagbar_sort = 1
+    let g:tagbar_sort = 0
 endif
 
 if !exists('g:tagbar_compact')
@@ -67,7 +71,7 @@ if !exists('g:tagbar_compact')
 endif
 
 if !exists('g:tagbar_indent')
-    let g:tagbar_indent = 2
+    let g:tagbar_indent = 4
 endif
 
 if !exists('g:tagbar_show_visibility')
@@ -75,7 +79,7 @@ if !exists('g:tagbar_show_visibility')
 endif
 
 if !exists('g:tagbar_expand')
-    let g:tagbar_expand = 0
+    let g:tagbar_expand = 1
 endif
 
 if !exists('g:tagbar_singleclick')
@@ -96,7 +100,7 @@ if !exists('g:tagbar_iconchars')
 endif
 
 if !exists('g:tagbar_autoshowtag')
-    let g:tagbar_autoshowtag = 0
+    let g:tagbar_autoshowtag = 1
 endif
 
 if !exists('g:tagbar_systemenc')
@@ -106,6 +110,9 @@ endif
 augroup TagbarSession
     autocmd!
     autocmd SessionLoadPost * nested call tagbar#RestoreSession()
+    if g:Tagbar_Auto_Open
+        autocmd VimEnter * nested call tagbar#OpenWindow()
+    endif
 augroup END
 
 " Commands {{{1
