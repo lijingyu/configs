@@ -53,7 +53,7 @@ if filereadable("/etc/vim/vimrc.local")
 endif
 
 set history=700
-set scrolloff=6
+set scrolloff=1
 set autoread
 set ffs=unix,dos,mac
 set noswapfile
