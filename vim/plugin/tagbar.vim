@@ -46,8 +46,8 @@ if !exists('g:tagbar_left')
     let g:tagbar_left = 1
 endif
 
-if !exists('Tagbar_Auto_Open')
-    let Tagbar_Auto_Open = 1
+if !exists('g:tagbar_Auto_Open')
+    let g:tagbar_Auto_Open = 1
 endif
 
 if !exists('g:tagbar_width')
@@ -67,7 +67,7 @@ if !exists('g:tagbar_sort')
 endif
 
 if !exists('g:tagbar_compact')
-    let g:tagbar_compact = 0
+    let g:tagbar_compact = 1
 endif
 
 if !exists('g:tagbar_indent')
@@ -110,7 +110,7 @@ endif
 augroup TagbarSession
     autocmd!
     autocmd SessionLoadPost * nested call tagbar#RestoreSession()
-    if g:Tagbar_Auto_Open
+    if g:tagbar_Auto_Open
         autocmd VimEnter * nested call tagbar#OpenWindow()
     endif
 augroup END

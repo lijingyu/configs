@@ -174,11 +174,11 @@ function! s:InitTypes() abort
     let type_c.kinds     = [
         \ {'short' : 'd', 'long' : 'macros',      'fold' : 0, 'stl' : 0},
         \ {'short' : 'p', 'long' : 'prototypes',  'fold' : 1, 'stl' : 0},
-        \ {'short' : 'g', 'long' : 'enums',       'fold' : 0, 'stl' : 1},
+        \ {'short' : 'g', 'long' : 'enums',       'fold' : 1, 'stl' : 1},
         \ {'short' : 'e', 'long' : 'enumerators', 'fold' : 0, 'stl' : 0},
         \ {'short' : 't', 'long' : 'typedefs',    'fold' : 0, 'stl' : 0},
-        \ {'short' : 's', 'long' : 'structs',     'fold' : 0, 'stl' : 1},
-        \ {'short' : 'u', 'long' : 'unions',      'fold' : 0, 'stl' : 1},
+        \ {'short' : 's', 'long' : 'structs',     'fold' : 1, 'stl' : 1},
+        \ {'short' : 'u', 'long' : 'unions',      'fold' : 1, 'stl' : 1},
         \ {'short' : 'm', 'long' : 'members',     'fold' : 0, 'stl' : 0},
         \ {'short' : 'v', 'long' : 'variables',   'fold' : 0, 'stl' : 0},
         \ {'short' : 'f', 'long' : 'functions',   'fold' : 0, 'stl' : 1}
@@ -201,13 +201,13 @@ function! s:InitTypes() abort
     let type_cpp.kinds     = [
         \ {'short' : 'd', 'long' : 'macros',      'fold' : 0, 'stl' : 0},
         \ {'short' : 'p', 'long' : 'prototypes',  'fold' : 1, 'stl' : 0},
-        \ {'short' : 'g', 'long' : 'enums',       'fold' : 0, 'stl' : 1},
+        \ {'short' : 'g', 'long' : 'enums',       'fold' : 1, 'stl' : 1},
         \ {'short' : 'e', 'long' : 'enumerators', 'fold' : 0, 'stl' : 0},
         \ {'short' : 't', 'long' : 'typedefs',    'fold' : 0, 'stl' : 0},
         \ {'short' : 'n', 'long' : 'namespaces',  'fold' : 0, 'stl' : 1},
         \ {'short' : 'c', 'long' : 'classes',     'fold' : 0, 'stl' : 1},
-        \ {'short' : 's', 'long' : 'structs',     'fold' : 0, 'stl' : 1},
-        \ {'short' : 'u', 'long' : 'unions',      'fold' : 0, 'stl' : 1},
+        \ {'short' : 's', 'long' : 'structs',     'fold' : 1, 'stl' : 1},
+        \ {'short' : 'u', 'long' : 'unions',      'fold' : 1, 'stl' : 1},
         \ {'short' : 'f', 'long' : 'functions',   'fold' : 0, 'stl' : 1},
         \ {'short' : 'm', 'long' : 'members',     'fold' : 0, 'stl' : 0},
         \ {'short' : 'v', 'long' : 'variables',   'fold' : 0, 'stl' : 0}
@@ -778,7 +778,7 @@ function! s:InitTypes() abort
     let type_vim.ctagstype = 'vim'
     let type_vim.kinds     = [
         \ {'short' : 'n', 'long' : 'vimball filenames',  'fold' : 0, 'stl' : 1},
-        \ {'short' : 'v', 'long' : 'variables',          'fold' : 1, 'stl' : 0},
+        \ {'short' : 'v', 'long' : 'variables',          'fold' : 0, 'stl' : 0},
         \ {'short' : 'f', 'long' : 'functions',          'fold' : 0, 'stl' : 1},
         \ {'short' : 'a', 'long' : 'autocommand groups', 'fold' : 1, 'stl' : 1},
         \ {'short' : 'c', 'long' : 'commands',           'fold' : 0, 'stl' : 0},
