@@ -2113,7 +2113,7 @@ endfunction
 function! s:ParseTagline(part1, part2, typeinfo, fileinfo) abort
     let basic_info  = split(a:part1, '\t')
 
-    let taginfo      = s:NormalTag.New(basic_info[0])
+    let taginfo      = s:NormalTag.New(basic_info[0] . ' ')
     let taginfo.file = basic_info[1]
 
     " the pattern can contain tabs and thus may have been split up, so join
