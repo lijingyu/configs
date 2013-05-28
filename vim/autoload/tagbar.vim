@@ -1693,6 +1693,15 @@ function! s:OpenWindow(flags) abort
         return 0
     endif
 
+    " check Valid filetype 
+    let bufnr = bufnr(curfile)
+    let ftype = getbufvar(bufnr, '&filetype')
+    if !s:IsValidFile(curfile, ftype)
+        call s:LogDebugMessage('Not a valid file, returning')
+        return
+    endif
+
+
     " Expand the Vim window to accomodate for the Tagbar window if requested
     " and save the window positions to be able to restore them later.
     if g:tagbar_expand && !s:window_expanded && has('gui_running')
