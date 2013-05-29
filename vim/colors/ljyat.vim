@@ -27,7 +27,8 @@ hi Statement       term=bold ctermfg=14  guifg=#86C711
 "hi DefinedName 	   term=underline ctermfg=9 guifg=#ff80ff 
 "hi EnumerationValue     guifg=#21BC71
 "hi EnumerationValue term=underline ctermfg=9 guifg=#ff80ff 
-hi Function        	guifg=#21BC71 gui=bold 
+"hi Function        	guifg=#21BC71 gui=bold 
+hi Function        	guifg=green gui=NONE
 hi Title        	guifg=#21BC71 gui=NONE
 hi Identifier guifg=#ff80ff
 
