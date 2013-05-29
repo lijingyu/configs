@@ -172,7 +172,7 @@ function! s:InitTypes() abort
     let type_c = s:TypeInfo.New()
     let type_c.ctagstype = 'c'
     let type_c.kinds     = [
-        \ {'short' : 'd', 'long' : 'macros',      'fold' : 0, 'stl' : 0},
+        \ {'short' : 'd', 'long' : 'macros',      'fold' : 1, 'stl' : 0},
         \ {'short' : 'p', 'long' : 'prototypes',  'fold' : 1, 'stl' : 0},
         \ {'short' : 'g', 'long' : 'enums',       'fold' : 1, 'stl' : 1},
         \ {'short' : 'e', 'long' : 'enumerators', 'fold' : 0, 'stl' : 0},
@@ -199,7 +199,7 @@ function! s:InitTypes() abort
     let type_cpp = s:TypeInfo.New()
     let type_cpp.ctagstype = 'c++'
     let type_cpp.kinds     = [
-        \ {'short' : 'd', 'long' : 'macros',      'fold' : 0, 'stl' : 0},
+        \ {'short' : 'd', 'long' : 'macros',      'fold' : 1, 'stl' : 0},
         \ {'short' : 'p', 'long' : 'prototypes',  'fold' : 1, 'stl' : 0},
         \ {'short' : 'g', 'long' : 'enums',       'fold' : 1, 'stl' : 1},
         \ {'short' : 'e', 'long' : 'enumerators', 'fold' : 0, 'stl' : 0},
@@ -3405,10 +3405,10 @@ function! s:IsValidFile(fname, ftype) abort
         return 0
     endif
 
-    if &previewwindow
-        call s:LogDebugMessage('In preview window')
-        return 0
-    endif
+   " if &previewwindow
+   "     call s:LogDebugMessage('In preview window')
+   "     return 0
+   " endif
 
     if !has_key(s:known_types, a:ftype)
         if exists('g:tagbar_type_' . a:ftype)
