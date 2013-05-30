@@ -28,7 +28,7 @@ hi Statement       term=bold ctermfg=14  guifg=#86C711
 "hi EnumerationValue     guifg=#21BC71
 "hi EnumerationValue term=underline ctermfg=9 guifg=#ff80ff 
 "hi Function        	guifg=#21BC71 gui=bold 
-hi Function        	guifg=green gui=NONE
+hi Function        	term=underline cterm=bold ctermfg=6 guifg=palegreen
 hi Title        	guifg=#21BC71 gui=NONE
 hi Identifier guifg=#ff80ff
 
@@ -44,7 +44,8 @@ hi VisualNOS                     guibg=#403D3D
 hi Visual                        guibg=#403D3D
 hi Member          gui=NONE
 hi GlobalVariable   guifg=orange 
-hi Normal ctermfg=252 ctermbg=234 guifg=#e3e0d7 guibg=#242424 
+"hi Normal ctermfg=252 ctermbg=234 guifg=#e3e0d7 guibg=#242424 
+hi Normal guifg=White guibg=grey20
 hi CursorLine                    guibg=#293739
 hi CursorColumn                  guibg=#293739
 hi LineNr          guifg=#BCBCBC guibg=#232526
