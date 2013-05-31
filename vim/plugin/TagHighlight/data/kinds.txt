@@ -30,7 +30,6 @@ c:
 	g:CTagsEnumeratorName
 	k:CTagsConstant
 	l:CTagsLocalVariable
-	m:CTagsMember
 	n:CTagsNamespace
 	p:CTagsFunction
 	s:CTagsStructure
