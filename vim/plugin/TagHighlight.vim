@@ -139,7 +139,11 @@ for tagname in g:TagHighlightPrivate['AllTypes']
 	let simplename = substitute(tagname, '^CTags', '', '')
 	exe 'hi default link' tagname simplename
 	" Highlight everything as a keyword by default
-	exe 'hi default link' simplename 'Keyword'
+    if simplename == 'GlobalVariable'
+        "nothing
+    else
+        exe 'hi default link' simplename 'Keyword'
+    endif
 endfor
 
 if ! has_key(g:TagHighlightPrivate, 'AutoCommandsLoaded')

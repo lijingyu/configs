@@ -37,7 +37,7 @@ hi StatusLine      guifg=black   guibg=#C2BFA5 gui=bold
 hi Search          guifg=green guibg=black
 hi Identifier      guifg=#F94C87
 hi String     guifg=#FF80FF         
-hi GlobalVariable  guifg=darkorange gui=NONE
+hi! GlobalVariable  guifg=darkorange gui=NONE
 
 hi DefinedName    guifg=#FFCC00
 
