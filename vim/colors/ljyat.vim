@@ -35,7 +35,7 @@ hi LineNr          guifg=#BCBCBC guibg=#232526
 hi NonText         guifg=#BCBCBC guibg=#232526
 hi StatusLine      guifg=black   guibg=#C2BFA5 gui=bold
 hi Search          guifg=green guibg=black
-hi Identifier      guifg=#F94C87
+hi Identifier      guifg=cyan
 hi String     guifg=#FF80FF         
 hi! GlobalVariable  guifg=darkorange gui=NONE
 
