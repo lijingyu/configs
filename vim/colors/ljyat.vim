@@ -46,5 +46,8 @@ hi! def link cConditional   Statement
 hi! def link cRepeat		Statement
 hi! def link cStatement     Statement
 hi! def link TagListFileName StatusLine 
-
 hi! def link EnumerationValue  DefinedName 
+
+"for java
+hi! def link Method     Function
+hi  Class           guifg=#00E000 gui=NONE
