@@ -35,7 +35,7 @@ c:
 	s:CTagsStructure
 	t:CTagsType
 #	u:CTagsUnion
-#	v:CTagsGlobalVariable
+	v:CTagsGlobalVariable
 #	x:CTagsExtern
 #	F:CTagsFile
 c++:
@@ -52,7 +52,7 @@ c++:
 	s:CTagsStructure
 	t:CTagsType
 #	u:CTagsUnion
-#	v:CTagsGlobalVariable
+	v:CTagsGlobalVariable
 #	x:CTagsExtern
 #	F:CTagsFile
 c#:
