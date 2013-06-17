@@ -28,33 +28,33 @@ c:
 	e:CTagsEnumerationValue
 	f:CTagsFunction
 	g:CTagsEnumeratorName
-	k:CTagsConstant
-	l:CTagsLocalVariable
-	n:CTagsNamespace
+#	k:CTagsConstant
+#	l:CTagsLocalVariable
+#	n:CTagsNamespace
 	p:CTagsFunction
 	s:CTagsStructure
 	t:CTagsType
-	u:CTagsUnion
-	v:CTagsGlobalVariable
-	x:CTagsExtern
-	F:CTagsFile
+#	u:CTagsUnion
+#	v:CTagsGlobalVariable
+#	x:CTagsExtern
+#	F:CTagsFile
 c++:
 	c:CTagsClass
 	d:CTagsDefinedName
 	e:CTagsEnumerationValue
 	f:CTagsFunction
-	g:CTagsEnumerationName
-	k:CTagsConstant
-	l:CTagsLocalVariable
-	m:CTagsMember
+#	g:CTagsEnumerationName
+#	k:CTagsConstant
+#	l:CTagsLocalVariable
+#	m:CTagsMember
 	n:CTagsNamespace
 	p:CTagsFunction
 	s:CTagsStructure
 	t:CTagsType
-	u:CTagsUnion
-	v:CTagsGlobalVariable
-	x:CTagsExtern
-	F:CTagsFile
+#	u:CTagsUnion
+#	v:CTagsGlobalVariable
+#	x:CTagsExtern
+#	F:CTagsFile
 c#:
 	c:CTagsClass
 	d:CTagsDefinedName
