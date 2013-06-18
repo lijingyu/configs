@@ -27,7 +27,7 @@ function csset()
     creat_cscope $@
 
     echo "create tags"
-    ctags --c-kinds=-m --c++-kinds=-m --c++-kinds=+px --fields=+iaS --extra=+q  -L cscope.files
+    ctags --c-kinds=-m --c++-kinds=-m --fields=+iaS --extra=+q  -L cscope.files
 
     echo "create  success"
 }
@@ -50,7 +50,7 @@ function csseta()
     done
 
     echo "create tags"
-    ctags --c-kinds=-m --c++-kinds=-m --c++-kinds=+px --fields=+iaS --extra=+q  -L cscope.files
+    ctags --c-kinds=-m --c++-kinds=-m --fields=+iaS --extra=+q  -L cscope.files
 
     echo "create  success"
 }
