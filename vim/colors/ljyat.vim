@@ -15,7 +15,7 @@ hi Pmenu     guibg=DarkGreen	 guifg=white
 hi PmenuSel  guibg=DarkBlue 	 guifg=white
 hi Boolean         guifg=gold4
 hi Comment    	   term=bold ctermfg=5 gui=italic guifg=#70665E
-hi Constant        guifg=#F94C87
+"hi Constant        guifg=#F94C87
 hi Folded          guifg=white guibg=#403D3D 
 hi FoldColumn      guifg=white guibg=#403D3D 
 hi Statement       term=bold ctermfg=14  guifg=#86C711
