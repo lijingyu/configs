@@ -19,7 +19,7 @@ hi Number          guifg=#F94C87
 hi Folded          guifg=white guibg=#403D3D 
 hi FoldColumn      guifg=white guibg=#403D3D 
 hi Statement       term=bold ctermfg=14  guifg=#86C711
-hi Function        term=underline cterm=bold ctermfg=6 guifg=palegreen
+hi Function        guifg=#21BC71 gui=bold 
 hi Title           guifg=#21BC71 gui=NONE
 hi Keyword         guifg=#E6C84F   gui=NONE
 
