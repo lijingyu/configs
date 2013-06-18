@@ -24,10 +24,10 @@ beta:
 	v:CTagsVirtualPattern
 c:
 	c:CTagsClass
-	d:CTagsDefinedName
-	e:CTagsEnumerationValue
+#	d:CTagsDefinedName
+#	e:CTagsEnumerationValue
 	f:CTagsFunction
-	g:CTagsEnumeratorName
+#	g:CTagsEnumeratorName
 #	k:CTagsConstant
 #	l:CTagsLocalVariable
 #	n:CTagsNamespace
@@ -40,8 +40,8 @@ c:
 #	F:CTagsFile
 c++:
 	c:CTagsClass
-	d:CTagsDefinedName
-	e:CTagsEnumerationValue
+#	d:CTagsDefinedName
+#	e:CTagsEnumerationValue
 	f:CTagsFunction
 #	g:CTagsEnumerationName
 #	k:CTagsConstant
