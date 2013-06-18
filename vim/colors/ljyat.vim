@@ -37,10 +37,10 @@ hi StatusLine      guifg=black   guibg=#C2BFA5 gui=bold
 hi Search          guifg=green guibg=black
 hi Identifier      guifg=cyan
 hi String     guifg=#FF80FF         
-hi! GlobalVariable  guifg=darkorange gui=NONE
-
+hi GlobalVariable  guifg=darkorange gui=NONE
 hi DefinedName    guifg=#FFCC00
 
+hi! def link StatusLineNC   StatusLine
 hi! def link cLabel	    	Statement
 hi! def link cConditional   Statement
 hi! def link cRepeat		Statement
