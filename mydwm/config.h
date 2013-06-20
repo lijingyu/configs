@@ -26,15 +26,15 @@ static const Rule rules[] = {
     { "Firefox",        NULL,       NULL,       1 << 8,       False,       -1 },
     { "Stardict",       NULL,       NULL,       0,            True,        -1 },
     { "Iptux",          NULL,       NULL,       0,            True,        -1 },
-    { "Sylpheed",    NULL,       NULL,       1<<4,         True,        -1 },
-    { "VirtualBox",     NULL,	    NULL,		1<<3,		  True,		   -1 },
+    { "Claws-mail",     NULL,       NULL,       1<<7,         True,        -1 },
+    { "VirtualBox",     NULL,	    NULL,		1<<6,		  True,		   -1 },
     { "Smplayer",       NULL,       NULL,       0,            True,        -1 },
 };
 
 /* layout(s) */
 static const float mfact      = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster      = 1;    /* number of clients in master area */
-static const Bool resizehints = True; /* True means respect size hints in tiled resizals */
+static const Bool resizehints = False; /* True means respect size hints in tiled resizals */
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
@@ -60,7 +60,7 @@ static const char *dmenucmd[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor, 
 static const char *termcmd[]  = { "terminal", NULL };
 
 static const char *browsercmd[]  = { "google-chrome", NULL };
-static const char *mailcmd[]     = { "sylpheed", NULL };
+static const char *mailcmd[]     = { "claws-mail", NULL };
 static const char *stardict[]    = { "stardict", NULL };
 static const char *filemgrcmd[]  = { "gnome-commander", NULL };
 
