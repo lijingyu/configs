@@ -15,7 +15,7 @@ else
     set rtp+=/home/lijy/.vim
     set rtp+=/home/lijy/.vim/after
 
-    set guifont=Inconsolata\ Medium\ 12
+    set guifont=Inconsolata\ Medium\ 13
     if has("gui_running")
         colorscheme ljyat
         set guioptions-=m
