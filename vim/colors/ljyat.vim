@@ -23,7 +23,7 @@ hi Function        guifg=#21BC71 gui=bold
 hi Title           guifg=#21BC71 gui=NONE
 hi Keyword         guifg=#E6C84F   gui=NONE
 
-hi Type            guifg=#6AA86A 
+hi Type            guifg=green gui=NONE
 hi VertSplit       guifg=#808080 guibg=#080808 gui=bold
 hi VisualNOS                     guibg=#403D3D
 hi Visual                        guibg=#403D3D
@@ -39,7 +39,10 @@ hi Identifier      guifg=cyan
 hi String     guifg=#FF80FF         
 hi GlobalVariable  guifg=darkorange gui=NONE
 hi DefinedName    guifg=#FFCC00
+hi Structure      gui=underline guifg=cyan
 
+hi! def link Typedef        Structure
+hi! def link CTagsType        Structure
 hi! def link StatusLineNC   StatusLine
 hi! def link cLabel	    	Statement
 hi! def link cConditional   Statement
