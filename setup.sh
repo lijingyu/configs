@@ -55,6 +55,17 @@ function csseta()
     echo "create  success"
 }
 
+function cstag()
+{
+    if [ -e "cscope.files" ]; then
+        echo "create cscope"
+        cscope -bki cscope.files
+        echo "create tags"
+        ctags --c-kinds=-m --c++-kinds=-m --fields=+iaS --extra=+q  -L cscope.files
+    else
+        echo "no cscope.files"
+    fi
+}
 
 function csclean()
 {
