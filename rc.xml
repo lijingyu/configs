@@ -371,7 +371,7 @@
 
   <keybind key="W-S-Return">
     <action name="Execute">
-      <command>gnome-terminal</command>
+      <command>terminal</command>
     </action>
   </keybind>
 
