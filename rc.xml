@@ -357,11 +357,21 @@
       <action name="ToggleMaximize"/>
   </keybind>
 
-
-
   <keybind key="W-w">
     <action name="Execute">
       <command>google-chrome</command>
+    </action>
+  </keybind>
+
+  <keybind key="W-c">
+    <action name="Execute">
+      <command>calc</command>
+    </action>
+  </keybind>
+
+  <keybind key="W-S-Return">
+    <action name="Execute">
+      <command>gnome-terminal</command>
     </action>
   </keybind>
 
