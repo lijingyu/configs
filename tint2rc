@@ -25,7 +25,7 @@ border_color = #ffffff 70
 #---------------------------------------------
 panel_monitor = all
 panel_position = bottom left
-panel_size = 100% 32
+panel_size = 100% 26
 panel_margin = 0 0
 panel_padding = 7 0
 font_shadow = 0
@@ -71,10 +71,10 @@ systray_icon_size = 0
 #---------------------------------------------
 # CLOCK
 #---------------------------------------------
-time1_format = %H:%M @ %A %d %B
+time1_format = %H:%M
 time1_font = Visitor TT1 BRK 8
-#time2_format = %A %d %B
-time2_font = (null)
+time2_format = %F
+time2_font = Visitor TT1 BRK 8
 clock_font_color = #ffffff 76
 clock_padding = 2 2
 clock_background_id = 0
