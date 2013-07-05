@@ -27,7 +27,7 @@ panel_monitor = all
 panel_position = bottom left
 panel_size = 100% 32
 panel_margin = 0 0
-panel_padding = 7 3 7
+panel_padding = 7 0
 font_shadow = 0
 panel_background_id = 0
 wm_menu = 0
@@ -71,20 +71,13 @@ systray_icon_size = 0
 #---------------------------------------------
 # CLOCK
 #---------------------------------------------
-#time1_format = %H:%M
-#time1_font = sans 8
+time1_format = %H:%M @ %A %d %B
+time1_font = Visitor TT1 BRK 8
 #time2_format = %A %d %B
-#time2_font = sans 6
-#clock_font_color = #ffffff 76
-#clock_padding = 1 0
-#clock_background_id = 0
-#clock_lclick_command = xclock
-#clock_rclick_command = orage
-#clock_tooltip = %A %d %B
-#time1_timezone = :US/Hawaii
-#time2_timezone = :Europe/Berlin
-#clock_tooltip_timezone = :/usr/share/zoneinfo/Europe/Paris
-
+time2_font = (null)
+clock_font_color = #ffffff 76
+clock_padding = 2 2
+clock_background_id = 0
 #---------------------------------------------
 # BATTERY
 #---------------------------------------------
