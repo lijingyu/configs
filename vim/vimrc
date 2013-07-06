@@ -28,7 +28,7 @@ endif
 """"""""Special in Gvim"""""""""""""""""""""""
 "t_vb when use gvim , you have to set in /etc/vim/gvimrc,
 "vimrc is not usefull for gvim
-set vb t_vb=     
+"set vb t_vb=
 """"""""""""""""""""""""""""""""""""""""""""""
 set showmatch		" Show matching brackets.
 set incsearch		" Incremental search
