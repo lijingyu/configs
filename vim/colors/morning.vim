@@ -25,8 +25,8 @@ hi VertSplit term=reverse cterm=reverse gui=reverse
 hi Visual term=reverse cterm=reverse gui=reverse guifg=Grey guibg=fg
 hi VisualNOS term=underline,bold cterm=underline,bold gui=underline,bold
 hi DiffText term=reverse cterm=bold ctermbg=Red gui=bold guibg=Red
-hi Cursor guibg=Green guifg=NONE
-hi lCursor guibg=Cyan guifg=NONE
+hi Cursor guibg=black guifg=white
+"hi lCursor guibg=Cyan guifg=NONE
 hi Directory term=bold ctermfg=DarkBlue guifg=Blue
 hi LineNr term=underline ctermfg=Brown guifg=Brown
 hi MoreMsg term=bold ctermfg=DarkGreen gui=bold guifg=SeaGreen
