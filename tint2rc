@@ -65,7 +65,7 @@ task_active_background_id = 2
 systray = 1
 systray_padding = 0 4 5
 systray_background_id = 0
-systray_sort = right2left2left
+systray_sort = right2left
 systray_icon_size = 0
 
 #---------------------------------------------
