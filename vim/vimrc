@@ -17,7 +17,7 @@ else
 
     set guifont=Inconsolata\ Medium\ 13
     if has("gui_running")
-        colorscheme ljyat
+        colorscheme morning
         set guioptions-=m
         set guioptions-=T
     else
@@ -105,8 +105,8 @@ nmap / <leader>r
 nmap <M-m> <leader>m
 nmap <M-]> <C-]>
 
-nmap <F2> :TagbarToggle<CR>
-nmap <F4> :Tlist<CR>
+nmap <F4> :TagbarToggle<CR>
+nmap <F2> :Tlist<CR>
 nmap <M-LeftMouse> <LeftMouse><leader>m
 nmap <RightMouse> <C-o>
 nmap <S-LeftMouse> <LeftMouse>:nohlsearch<CR>:MarkClear<CR><leader>m
