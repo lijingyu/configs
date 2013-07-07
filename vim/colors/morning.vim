@@ -46,7 +46,7 @@ hi DiffDelete term=bold ctermfg=Blue ctermbg=LightCyan gui=bold guifg=Blue guibg
 " Colors for syntax highlighting
 "hi Constant term=underline ctermfg=DarkRed guifg=Magenta guibg=grey95
 hi Constant term=underline ctermfg=DarkRed guifg=Magenta 
-hi Special term=bold ctermfg=DarkMagenta guifg=SlateBlue guibg=grey95
+hi Special term=bold ctermfg=DarkMagenta guifg=SlateBlue guibg=NONE
 if &t_Co > 8
   hi Statement term=bold cterm=bold ctermfg=Brown gui=bold guifg=Brown
 endif
