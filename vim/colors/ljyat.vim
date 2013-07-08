@@ -39,7 +39,6 @@ hi Identifier      guifg=cyan
 hi String     guifg=#FF80FF         
 "hi GlobalVariable  guifg=darkorange gui=NONE
 hi DefinedName    guifg=#FFCC00
-hi Structure      gui=underline guifg=cyan
 hi clear Constant
 
 hi! def link Typedef        Structure
