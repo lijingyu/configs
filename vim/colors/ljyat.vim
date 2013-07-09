@@ -51,6 +51,7 @@ hi! def link cStatement     Statement
 hi! def link TagListFileName StatusLine 
 hi! def link EnumerationValue  DefinedName 
 
+hi! def link Question  Type
 "for java
 hi! def link Method     Function
 hi  Class           guifg=#00E000 gui=NONE
