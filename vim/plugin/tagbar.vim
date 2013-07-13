@@ -47,7 +47,7 @@ if !exists('g:tagbar_left')
 endif
 
 if !exists('g:tagbar_Auto_Open')
-    let g:tagbar_Auto_Open = 1
+    let g:tagbar_Auto_Open = 0
 endif
 
 if !exists('g:tagbar_width')
