@@ -1,34 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<openbox_menu xmlns="http://openbox.org/3.4/menu">
+<openbox_menu xmlns="http://openbox.org/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://openbox.org/
+    file:///usr/share/openbox/menu.xsd">
 
-<menu id="applications-menu" label="Applications" execute="/usr/libexec/openbox-xdg-menu applications"/>
-<menu id="preferences-menu" label="Preferences" execute="/usr/libexec/openbox-xdg-menu preferences"/>
-<menu id="administration-menu" label="Administration" execute="/usr/libexec/openbox-xdg-menu system-settings"/>
-<menu id="terminals-menu" label="Terminals" execute="/usr/libexec/openbox-xdg-menu /etc/xdg/openbox/terminals"/>
+    <menu id="root-menu" label="Openbox 3">
+        <item label="Terminal">
+            <action name="Execute"><execute>gnome-terminal</execute></action>
+        </item>
+        <item label="Chrome">
+            <action name="Execute"><execute>google-chrome</execute></action>
+        </item>
+        <item label="Gvim">
+            <action name="Execute"><execute>gvim</execute></action>
+        </item>
+        <item label="File-Manager">
+            <action name="Execute"><execute>gnome-commander</execute></action>
+        </item>
+        <item label="RunCmd ...">
+            <action name="Execute"><execute>dmenu_run -fn  "WenQuanYi Micro Hei:size=11"</execute></action>
+        </item>
+        <separator />
+        <menu id="normal" label="Normal">
+            <item label="Stardict">
+                <action name="Execute"><execute>stardict</execute></action>
+            </item>
+            <item label="Claw-mail">
+                <action name="Execute"><execute>claws-mail</execute></action>
+            </item>
+            <item label="Virtualbox">
+                <action name="Execute"><execute>virtualbox</execute></action>
+            </item>
+            <item label="Iptux">
+                <action name="Execute"><execute>iptux</execute></action>
+            </item>
+            <item label="Eclipse">
+                <action name="Execute"><execute>eclipse</execute></action>
+            </item>
+        </menu>
 
-<menu id="root-menu" label="Openbox 3">
-  <separator label="Openbox"/>
-  <menu id="applications-menu"/>
-  <menu id="preferences-menu"/>
-  <menu id="administration-menu"/>
-  <separator/>
-  <menu id="terminals-menu"/>
-  <separator/>
-  <item label="Reconfigure">
-    <action name="Reconfigure" />
-  </item>
-  <item label="Exit">
-    <action name="Exit">
-      <prompt>yes</prompt>
-    </action>
-  </item>
-  <separator/>
-  <item label="Log Out">
-    <action name="SessionLogout">
-      <prompt>yes</prompt>
-    </action>
-  </item>
-</menu>
+        <!-- This requires the presence of the 'menu' package to work -->
+        <menu id="/Debian" />
+        <separator />
+        <menu id="client-list-menu" />
+        <separator />
+        <item label="ObConf">
+            <action name="Execute"><execute>obconf</execute></action>
+        </item>
+        <item label="Restart">
+            <action name="Restart" />
+        </item>
+        <separator />
+        <item label="Exit">
+            <action name="Exit" />
+        </item>
+    </menu>
 
 </openbox_menu>
