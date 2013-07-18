@@ -9,14 +9,14 @@
         <item label="Terminal">
             <action name="Execute"><execute>gnome-terminal</execute></action>
         </item>
-        <item label="Chrome">
-            <action name="Execute"><execute>google-chrome</execute></action>
+        <item label="Firefox">
+            <action name="Execute"><execute>firefox</execute></action>
         </item>
         <item label="Gvim">
             <action name="Execute"><execute>gvim</execute></action>
         </item>
         <item label="File-Manager">
-            <action name="Execute"><execute>gnome-commander</execute></action>
+            <action name="Execute"><execute>nautilus</execute></action>
         </item>
         <item label="RunCmd ...">
             <action name="Execute"><execute>dmenu_run -fn  "WenQuanYi Micro Hei:size=11"</execute></action>
@@ -40,6 +40,9 @@
             </item>
         </menu>
 
+        <item label="Control-Center">
+            <action name="Execute"><execute>gnome-control-center</execute></action>
+        </item>
         <!-- This requires the presence of the 'menu' package to work -->
         <menu id="/Debian" />
         <separator />
