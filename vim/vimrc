@@ -15,7 +15,7 @@ else
     set rtp+=/home/lijy/.vim
     set rtp+=/home/lijy/.vim/after
 
-    set guifont=Inconsolata\ Medium\ 13
+    set guifont=Inconsolata\ Medium\ 12
     if has("gui_running")
         colorscheme ljyat
         set guioptions-=m
@@ -329,6 +329,28 @@ function! VCscopeSearchStringPattern()
     let @" = old
 endfunction
 
+function ToggleTlistTagbar()
+    let tagbarwinnr = bufwinnr("__Tagbar__")
+    let tlistwinnr = bufwinnr(g:TagList_title)
+
+    if &ft == 'c'
+        if tagbarwinnr != -1
+            TagbarToggle
+        endif
+        if tlistwinnr == -1
+            Tlist
+        endif
+    endif
+
+    if &ft == 'cpp' || &ft == 'java'
+        if tlistwinnr != -1
+            Tlist
+        endif
+        if tagbarwinnr == -1
+            TagbarToggle
+        endif
+    endif
+endfunction
 
 " => Set OminComplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -340,6 +362,8 @@ autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags 
 autocmd FileType php set omnifunc=phpcomplete#CompletePHP 
 autocmd FileType c,cpp,java,cs set omnifunc=ccomplete#Complete
+
+autocmd BufEnter * call ToggleTlistTagbar()
 
 " => Set OminComplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

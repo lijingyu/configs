@@ -51,7 +51,7 @@ if !exists('g:tagbar_Auto_Open')
 endif
 
 if !exists('g:tagbar_width')
-    let g:tagbar_width = 40
+    let g:tagbar_width = 35
 endif
 
 if !exists('g:tagbar_autoclose')
