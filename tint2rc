@@ -15,6 +15,11 @@ border_width = 1
 background_color = #ffffff 30
 border_color = #ffffff 60
 
+rounded = 1
+border_width = 1
+background_color = #333333 100
+border_color = #000000 100
+
 rounded = 5
 border_width = 0
 background_color = #ffffff 18
@@ -72,23 +77,23 @@ systray_icon_size = 0
 # CLOCK
 #---------------------------------------------
 time1_format = %H:%M
-time1_font = Visitor TT1 BRK 8
+time1_font = sans bold 9
 time2_format = %F
 time2_font = Visitor TT1 BRK 8
-clock_font_color = #ffffff 76
+clock_font_color = #ffff00 76
 clock_padding = 2 2
-clock_background_id = 0
+clock_background_id = 3
 #---------------------------------------------
 # BATTERY
 #---------------------------------------------
-battery = 0
+battery = 1
 battery_low_status = 10
 battery_low_cmd = notify-send "battery low"
-bat1_font = sans 8
-bat2_font = sans 6
-battery_font_color = #ffffff 76
+bat1_font = sans bold 9
+bat2_font = sans bold 6
+battery_font_color = #ffff00 76
 battery_padding = 1 0
-battery_background_id = 0
+battery_background_id = 3
 
 #---------------------------------------------
 # TOOLTIP
