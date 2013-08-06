@@ -1,0 +1,33 @@
+set sendmail = "/usr/bin/msmtp"
+set beep = yes
+set copy = yes
+set index_format = "%4C %Z %{%y-%m-%d %H:%M} %-15.15L (%?l?%4l&%4c?) %s"
+set fast_reply = yes            #在回复邮件的时候，不用自己输入地址和标题
+set folder = "~/mail"                #邮件存放目录
+set include = yes                #回信时是否包含原文
+set spoolfile = "~/mail"
+set mbox_type = Maildir
+set mbox = "~/mail"                
+set pager_context = 1
+set pager_index_lines = 16
+set pgp_verify_sig = no
+#set postponed = "~/mail/inbox"
+set record = "=sent"
+set locale = "zh_CN"
+set sendmail_wait = 0
+set status_on_top = no
+set to_chars = "+TCEL"
+set askcc = yes
+set pager_stop
+set assumed_charset="gb2312:utf-8"
+mailboxes 'echo ~/mail/*'
+my_hdr From: 李敬雨<jingyuli@rdamicro.com>             #这俩行一定要写，否则你的信件会以
+my_hdr Reply-To: 李敬雨<jingyuli@rdamicro.com>        #root@localhost这样的地址发送出去，
+set sort = reverse-date
+set sort_aux = date-sent
+bind pager J  next-line
+bind pager K  previous-line
+macro index G "!fetchmail "        #这俩行定义了热键G激活fetchmail来收邮件
+macro pager G "!fetchmail "        #实际上我喜欢将fetchmail加入开机启动脚本
+
+set editor = vim

@@ -1,0 +1,7 @@
+SHELL=/bin/bash
+PATH=/usr/sbin:/usr/bin
+MAILDIR=$HOME/mail/
+DEFAULT=$MAILDIR
+LOGFILE=$HOME/.procmail.log
+LOG=""
+VERBOSE=yes

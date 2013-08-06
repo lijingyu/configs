@@ -1,0 +1,9 @@
+logfile msmtp.log
+host mail.rdamicro.com
+port 25
+from jingyuli@rdamicro.com
+auth login
+tls on
+tls_certcheck off
+user jingyuli
+password ljyat150469
