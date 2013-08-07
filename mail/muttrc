@@ -1,7 +1,7 @@
 set sendmail = "/usr/bin/msmtp"
 set beep = yes
 set copy = yes
-set index_format = "%4C %Z %{%y-%m-%d %H:%M} %-15.15L (%?l?%4l&%4c?) %s"
+set index_format = "%4C %Z %X %{%y-%m-%d %H:%M} %-15.15L (%?l?%4l&%4c?) %s"
 set fast_reply = yes            #在回复邮件的时候，不用自己输入地址和标题
 set folder = "~/mail"                #邮件存放目录
 set include = yes                #回信时是否包含原文
@@ -31,3 +31,4 @@ macro index G "!fetchmail "        #这俩行定义了热键G激活fetchmail来�
 macro pager G "!fetchmail "        #实际上我喜欢将fetchmail加入开机启动脚本
 
 set editor = vim
+set rfc2047_parameters=yes
