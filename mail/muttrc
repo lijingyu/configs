@@ -11,7 +11,6 @@ set mbox = "~/mail"
 set pager_context = 1
 set pager_index_lines = 16
 set pgp_verify_sig = no
-#set postponed = "~/mail/inbox"
 set record = "=sent"
 set locale = "zh_CN"
 set sendmail_wait = 0
@@ -19,7 +18,7 @@ set status_on_top = no
 set to_chars = "+TCEL"
 set askcc = yes
 set pager_stop
-set assumed_charset="gb2312:utf-8"
+set assumed_charset="utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom"
 mailboxes 'echo ~/mail/*'
 my_hdr From: 李敬雨<jingyuli@rdamicro.com>             #这俩行一定要写，否则你的信件会以
 my_hdr Reply-To: 李敬雨<jingyuli@rdamicro.com>        #root@localhost这样的地址发送出去，
@@ -29,6 +28,23 @@ bind pager J  next-line
 bind pager K  previous-line
 macro index G "!fetchmail "        #这俩行定义了热键G激活fetchmail来收邮件
 macro pager G "!fetchmail "        #实际上我喜欢将fetchmail加入开机启动脚本
+source ~/.mutt.alias
 
-set editor = vim
+set editor = "gvim -f "
 set rfc2047_parameters=yes
+
+ignore x-mailer
+
+color normal black white
+color message black white
+color markers black white
+color quoted black white
+
+color hdrdefault black cyan
+color header black cyan ^(From|Subject):
+color signature black white 
+color underline black white 
+color attachment black cyan
+color search black cyan
+color body black white "[-a-z_0-9.]+@[-a-z_0-9.]+"	# e-mail addresses
+color body black white "(ftp|http|https)://[^ ]+"	# point out URLs
