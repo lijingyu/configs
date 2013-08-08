@@ -26,7 +26,7 @@ hi Keyword         guifg=#E6C84F   gui=NONE
 hi Type            guifg=#95e454 gui=NONE
 hi VertSplit       guifg=#808080 guibg=#080808 gui=bold
 hi VisualNOS                     guibg=#403D3D
-hi Visual                        guibg=#403D3D
+hi Visual          guifg=black   guibg=white
 "hi Member          gui=NONE
 hi Normal guifg=White guibg=grey20
 hi CursorLine                    guibg=#293739
