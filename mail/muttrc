@@ -18,6 +18,7 @@ set status_on_top = no
 set to_chars = "+TCEL"
 set askcc = yes
 set pager_stop
+auto_view text/html
 set assumed_charset="utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom"
 mailboxes 'echo ~/mail/*'
 my_hdr From: 李敬雨<jingyuli@rdamicro.com>             #这俩行一定要写，否则你的信件会以
@@ -26,6 +27,8 @@ set sort = reverse-date
 set sort_aux = date-sent
 bind pager J  next-line
 bind pager K  previous-line
+bind pager -  next-page
+bind pager =  previous-page
 macro index G "!fetchmail "        #这俩行定义了热键G激活fetchmail来收邮件
 macro pager G "!fetchmail "        #实际上我喜欢将fetchmail加入开机启动脚本
 source ~/.mutt.alias
