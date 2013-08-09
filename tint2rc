@@ -40,7 +40,7 @@ panel_size = 100% 30
 panel_margin = 0 0
 panel_padding = 7 0
 panel_dock = 0
-wm_menu = 0
+wm_menu = 1
 panel_layer = top
 panel_background_id = 1
 
