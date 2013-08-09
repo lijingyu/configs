@@ -6,32 +6,32 @@
 # ID 1
 rounded = 7
 border_width = 2
-background_color = #000000 60
+background_color = #000000 100
 border_color = #FFFFFF 16
 
 # ID 2
 rounded = 5
 border_width = 0
-background_color = #FFFFFF 40
+background_color = #202020 100
 border_color = #FFFFFF 48
 
 # ID 3
 rounded = 5
 border_width = 0
-background_color = #FFFFFF 16
+background_color = #474747 100
 border_color = #FFFFFF 68
 
 # ID 4
 rounded = 5
 border_width = 0
-background_color = #272727 80
+background_color = #272727 50
 border_color = #00FF00 100
 
 # ID 5
 rounded = 5
 border_width = 0
-background_color = #0000FF 50
-border_color = #00FF00 100
+background_color = #B22222 50
+border_color = #B22222 100
 
 # Panel
 panel_monitor = all
@@ -54,9 +54,9 @@ strut_policy = follow_size
 # Taskbar
 #taskbar_mode = single_desktop
 taskbar_mode = multi_desktop
-taskbar_padding = 0 0 0
+taskbar_padding = 0 0 2
 taskbar_background_id = 3
-taskbar_active_background_id = 4
+taskbar_active_background_id = 1
 
 # Tasks
 urgent_nb_of_blink = 8
@@ -65,7 +65,7 @@ task_text = 1
 task_centered = 1
 task_maximum_size = 140 35
 task_padding = 6 2
-task_background_id = 3
+task_background_id = 2
 task_active_background_id = 5
 task_urgent_background_id = 2
 task_iconified_background_id = 3
@@ -77,7 +77,7 @@ task_urgent_icon_asb = 100 0 0
 task_iconified_icon_asb = 70 0 0
 
 # Fonts
-task_font = sans 8
+task_font = sans 10
 task_font_color = #FFFFFF 68
 task_active_font_color = #FFFFFF 83
 task_urgent_font_color = #FFFFFF 83
@@ -88,15 +88,15 @@ font_shadow = 0
 systray = 1
 systray_padding = 0 4 5
 systray_sort = right2left
-systray_background_id = 0
+systray_background_id = 3
 systray_icon_size = 0
 #systray_icon_asb = 70 0 0
 
 # Clock
 time1_format = %H:%M
-time1_font = sans 8
+time1_font = sans 9
 time2_format = %F
-time2_font = sans 8
+time2_font = sans 9
 clock_font_color = #ffff00 76
 clock_padding = 1 0
 clock_background_id = 0
@@ -121,7 +121,7 @@ mouse_scroll_down = iconify
 battery = 1
 battery_low_status = 10
 battery_low_cmd = notify-send "battery low"
-bat1_font = sans 8
+bat1_font = sans 9
 bat2_font = sans 6
 battery_font_color = #ffff00 76
 battery_padding = 1 0
