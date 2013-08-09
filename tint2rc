@@ -54,7 +54,7 @@ strut_policy = follow_size
 # Taskbar
 taskbar_mode = single_desktop
 taskbar_padding = 0 0 2
-taskbar_background_id = 3
+taskbar_background_id = 1
 taskbar_active_background_id = 1
 
 # Tasks
