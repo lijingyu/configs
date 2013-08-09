@@ -25,8 +25,8 @@ my_hdr From: 李敬雨<jingyuli@rdamicro.com>             #这俩行一定要写
 my_hdr Reply-To: 李敬雨<jingyuli@rdamicro.com>        #root@localhost这样的地址发送出去，
 set sort = reverse-date
 set sort_aux = date-sent
-bind pager J  next-line
-bind pager K  previous-line
+bind pager j  next-line
+bind pager k  previous-line
 bind pager -  next-page
 bind pager =  previous-page
 macro index G "!fetchmail "        #这俩行定义了热键G激活fetchmail来收邮件
