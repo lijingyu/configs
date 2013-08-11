@@ -9,8 +9,8 @@
         <item label="Terminal">
             <action name="Execute"><execute>gnome-terminal</execute></action>
         </item>
-        <item label="Firefox">
-            <action name="Execute"><execute>firefox</execute></action>
+        <item label="WWW">
+            <action name="Execute"><execute>browser</execute></action>
         </item>
         <item label="Gvim">
             <action name="Execute"><execute>gvim</execute></action>
@@ -21,24 +21,25 @@
         <item label="RunCmd ...">
             <action name="Execute"><execute>dmenu_run -fn  "WenQuanYi Micro Hei:size=11"</execute></action>
         </item>
+
         <separator />
-        <menu id="normal" label="Normal">
-            <item label="Stardict">
-                <action name="Execute"><execute>stardict</execute></action>
-            </item>
-            <item label="Claw-mail">
-                <action name="Execute"><execute>claws-mail</execute></action>
-            </item>
-            <item label="Virtualbox">
-                <action name="Execute"><execute>virtualbox</execute></action>
-            </item>
-            <item label="Iptux">
-                <action name="Execute"><execute>iptux</execute></action>
-            </item>
-            <item label="Eclipse">
-                <action name="Execute"><execute>eclipse</execute></action>
-            </item>
-        </menu>
+
+        <item label="Stardict">
+            <action name="Execute"><execute>stardict</execute></action>
+        </item>
+        <item label="Claw-mail">
+            <action name="Execute"><execute>claws-mail</execute></action>
+        </item>
+        <item label="Virtualbox">
+            <action name="Execute"><execute>virtualbox</execute></action>
+        </item>
+        <item label="Iptux">
+            <action name="Execute"><execute>iptux</execute></action>
+        </item>
+        <item label="Eclipse">
+            <action name="Execute"><execute>eclipse</execute></action>
+        </item>
+
 
         <item label="Control-Center">
             <action name="Execute"><execute>gnome-control-center</execute></action>
