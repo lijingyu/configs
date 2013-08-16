@@ -393,15 +393,8 @@
 
   <!-- Keybindings for running applications -->
   <keybind key="W-e">
-    <action name="Execute">
-      <startupnotify>
-        <enabled>true</enabled>
-        <name>Konqueror</name>
-      </startupnotify>
-      <command>kfmclient openProfile filemanagement</command>
-    </action>
+    <action name="Execute"><command>nautilus</command></action>
   </keybind>
-
 
   <keybind key="W-m">
       <action name="ToggleMaximize"/>
@@ -428,17 +421,23 @@
   <keybind key="W-p">
     <action name="Execute">
       <command>dmenu_run -fn  "WenQuanYi Micro Hei:size=11"</command>
-    </action>
+  </action>
+  </keybind>
+
+  <keybind key="W-S-q">
+      <action name="Exit">
+          <prompt>no</prompt>
+      </action>
   </keybind>
 
   <!-- Launch gnome-screenshot when Print is pressed -->
   <keybind key="Print">
-    <action name="Execute"><command>gnome-screenshot</command></action>
+      <action name="Execute"><command>gnome-screenshot</command></action>
   </keybind>
 </keyboard>
 
 <mouse>
-  <dragThreshold>1</dragThreshold>
+    <dragThreshold>1</dragThreshold>
   <!-- number of pixels the mouse must move before a drag begins -->
   <doubleClickTime>200</doubleClickTime>
   <!-- in milliseconds (1000 = 1 second) -->

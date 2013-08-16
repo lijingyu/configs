@@ -41,6 +41,7 @@
         </item>
 
 
+        <separator />
         <item label="Control-Center">
             <action name="Execute"><execute>gnome-control-center</execute></action>
         </item>
@@ -58,6 +59,9 @@
         <separator />
         <item label="Exit">
             <action name="Exit" />
+        </item>
+        <item label="ShowDesktop">
+            <action name="ToggleShowDesktop" />
         </item>
     </menu>
 
