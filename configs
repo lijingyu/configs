@@ -185,3 +185,4 @@ alias work='source ~/bin/cygenv.sh'
 alias cdt='cd $ANDROID_BUILD_TOP'
 export LD_LIBRARY_PATH=/home/lijy/workspace/rda/compile/lib:$QTDIR/lib:/home/lijy/workspace/rda/compile:$LD_LIBRARY_PATH
 --------------------end---------------------------
+./configure --with-features=huge --enable-fontset  --enable-gui=gtk2 --enable-multibyte --enable-pythoninterp --enable-rubyinterp --enable-sniff --enable-cscope --prefix=/usr
