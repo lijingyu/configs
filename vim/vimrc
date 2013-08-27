@@ -329,7 +329,7 @@ function! VCscopeSearchStringPattern()
     let @" = old
 endfunction
 
-function ToggleTlistTagbar()
+function! ToggleTlistTagbar()
     let tagbarwinnr = bufwinnr("__Tagbar__")
     let tlistwinnr = bufwinnr(g:TagList_title)
 
