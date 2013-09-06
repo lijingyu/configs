@@ -30,14 +30,14 @@ border_color = #00FF00 100
 # ID 5
 rounded = 5
 border_width = 0
-#background_color = #B22222 50
-background_color = #0000ff 50
+background_color = #B22222 50
+#background_color = #0000ff 50
 border_color = #B22222 100
 
 # Panel
 panel_monitor = all
 panel_position = bottom center horizontal
-panel_size = 100% 30
+panel_size = 80% 35
 panel_margin = 0 0
 panel_padding = 7 0
 panel_dock = 0
@@ -61,10 +61,10 @@ taskbar_active_background_id = 1
 # Tasks
 urgent_nb_of_blink = 8
 task_icon = 1
-task_text = 1
+task_text = 0
 task_centered = 1
-task_maximum_size = 140 35
-task_padding = 6 2
+task_maximum_size = 35 35
+task_padding = 0 0
 task_background_id = 2
 task_active_background_id = 5
 task_urgent_background_id = 2
