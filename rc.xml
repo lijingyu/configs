@@ -550,7 +550,7 @@
       <action name="Unfocus"/>
     </mousebind>
 
-    <!-- move focus to a window when you move the mouse into it 
+    <!-- 
     <mousebind button="Right" action="Press">
       <action name="Focus"/>
       <action name="Raise"/>
@@ -722,9 +722,11 @@
       <action name="Raise"/>
     </mousebind>
 
+    <!-- 
     <mousebind button="Left" action="Press">
       <action name="ShowMenu"><menu>client-list-combined-menu</menu></action>
     </mousebind> 
+-->
   </context>
 
   <context name="Root">
