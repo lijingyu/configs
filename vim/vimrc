@@ -15,7 +15,6 @@ else
     set rtp+=/home/lijy/.vim
     set rtp+=/home/lijy/.vim/after
 
-    "set guifont=Inconsolata\ Medium\ 12
     set guifont=Consolas\ 14
     if has("gui_running")
         colorscheme ljyat
@@ -62,9 +61,10 @@ set diffopt=filler,vertical
 set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
 
 "=> key maps
-nmap <C-s> :SearchStringCurrentBuffer <CR>
-nmap <M-f> :CSF <CR>
-vnoremap <M-r> <ESC>:call VCscopeSearchStringPattern() <CR>
+nmap <C-s> :LjyatSearchStringCurrentBuffer <CR>
+nmap <M-f> :LjyatSearchFileInFileList <CR>
+vnoremap <M-r> <ESC>:call LjyatVSearchStringInFiles() <CR>
+vnoremap <M-R> <ESC>:call LjyatVSearchStringCurrentBuffer() <CR>
 
 nmap j gj
 nmap k gk
@@ -116,7 +116,7 @@ nmap <F5> :MarkClear<CR> :nohlsearch <CR>
 nmap <F6> :TlistClose<CR> :JavaBrowser <CR>
 
 "grep -E 
-nmap <M-s> :CSS<CR>
+nmap <M-s> :LjyatSearchStringInFiles<CR>
 nmap <F8> :edit ++ff=dos <CR>
 
 "color set
@@ -125,14 +125,14 @@ nmap n <leader>/
 nmap N <leader>?
 nmap <leader>] <C-w>}
 
-nmap <F3> :NERDTreeOpenBufDir<CR>
+nmap <F3> :LjyatNERDTreeOpenBufDir<CR>
 
 let NERDTreeWinPos = "right"
-function! NERDTreeOpenBufDir()
+function! LjyatNERDTreeOpenBufDir()
     let l:bufname = bufname("%")
     execute "silent! NERDTree " . l:bufname
 endfunction
-command! NERDTreeOpenBufDir call NERDTreeOpenBufDir ()
+command! LjyatNERDTreeOpenBufDir call LjyatNERDTreeOpenBufDir ()
 
 "=> cscope set
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -172,7 +172,7 @@ endfunction
 command! R call CscopeReload_cs()
 
 "CscopeSearchStringPattern
-function! CSS(pattern_arg)
+function! LjyatSearchStringInFiles(pattern_arg)
     if !filereadable("cscope.files")
         echohl Special
         echo "   cscope.files not exist"
@@ -239,10 +239,10 @@ EOF
 
     execute "silent! !rm -rf " . tmpfile
 endfunction
-command! CSS call CSS('')
+command! LjyatSearchStringInFiles call LjyatSearchStringInFiles('')
 
 "CscopeFindFilePattern
-function! CSF()
+function! LjyatSearchFileInFileList()
     if !filereadable("cscope.files")
         echohl Special
         echo "   cscope.files not exist"
@@ -287,9 +287,9 @@ function! CSF()
     execute "silent! !rm -rf " . tmpfile
 endfunction
 "CscopeFindFilePattern
-command! CSF call CSF()
+command! LjyatSearchFileInFileList call LjyatSearchFileInFileList()
 
-function! SearchStringCurrentBuffer()
+function! LjyatSearchStringCurrentBuffer()
     let curfilename = expand("%")
     if curfilename == ""
         echohl Special
@@ -320,13 +320,40 @@ function! SearchStringCurrentBuffer()
     lopen
 
 endfunction
-command! SearchStringCurrentBuffer call SearchStringCurrentBuffer()
+command! LjyatSearchStringCurrentBuffer call LjyatSearchStringCurrentBuffer()
 
-function! VCscopeSearchStringPattern()
+function! LjyatVSearchStringCurrentBuffer()
+    let curfilename = expand("%")
+    if curfilename == ""
+        echohl Special
+        echo "   buffer name is NULL"
+        echohl None
+        return
+    endif
+
     let old = @"
     exe "normal! gvy"
     let pattern = @"
-    call CSS(pattern)
+    let @" = old
+
+    let pattern = input("  Search cur-str: ", pattern)
+
+    let pattern = "/" . pattern . "/" 
+    let real_cmd = "lvimgrep " . pattern . " %"
+    execute "silent! " . real_cmd
+
+    redraw
+    echomsg ""
+    " Open the quickfix window below the current window
+    lopen
+
+endfunction
+command! LjyatVSearchStringCurrentBuffer call LjyatVSearchStringCurrentBuffer()
+function! LjyatVSearchStringInFiles()
+    let old = @"
+    exe "normal! gvy"
+    let pattern = @"
+    call LjyatSearchStringInFiles(pattern)
     let @" = old
 endfunction
 
@@ -337,18 +364,18 @@ function! ToggleTlistTagbar()
     if &ft == 'c'
         if tagbarwinnr != -1
             TagbarToggle
-        endif
-        if tlistwinnr == -1
-            Tlist
+            if tlistwinnr == -1
+                Tlist
+            endif
         endif
     endif
 
     if &ft == 'cpp' || &ft == 'java'
         if tlistwinnr != -1
             Tlist
-        endif
-        if tagbarwinnr == -1
-            TagbarToggle
+            if tagbarwinnr == -1
+                TagbarToggle
+            endif
         endif
     endif
 endfunction
