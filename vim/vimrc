@@ -107,7 +107,7 @@ nmap <M-m> <leader>m
 nmap <M-]> <C-]>
 
 nmap <F4> :TagbarToggle<CR>
-nmap <F2> :Tlist<CR>
+nmap <F2> :call ToggleTlistTagbar()<CR>
 nmap <M-LeftMouse> <LeftMouse><leader>m
 nmap <RightMouse> <C-o>
 nmap <S-LeftMouse> <LeftMouse>:nohlsearch<CR>:MarkClear<CR><leader>m
@@ -358,6 +358,14 @@ function! LjyatVSearchStringInFiles()
 endfunction
 
 function! ToggleTlistTagbar()
+    if &ft == 'cpp' || &ft == 'java'
+        TagbarToggle
+    else
+        Tlist
+    endif
+endfunction
+
+function! AutoToggleTlistTagbar()
     let tagbarwinnr = bufwinnr("__Tagbar__")
     let tlistwinnr = bufwinnr(g:TagList_title)
 
@@ -391,7 +399,7 @@ autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
 autocmd FileType php set omnifunc=phpcomplete#CompletePHP 
 autocmd FileType c,cpp,java,cs set omnifunc=ccomplete#Complete
 
-autocmd BufEnter *.c,*.cpp,*.java call ToggleTlistTagbar()
+autocmd BufEnter *.c,*.cpp,*.java call AutoToggleTlistTagbar()
 
 " => Set OminComplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
