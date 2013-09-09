@@ -59,7 +59,7 @@ set winaltkeys=no
 set nocompatible
 set diffopt=filler,vertical
 set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
-
+let c_syntax_for_h = 1
 "=> key maps
 nmap <C-s> :LjyatSearchStringCurrentBuffer <CR>
 nmap <M-f> :LjyatSearchFileInFileList <CR>
@@ -399,7 +399,7 @@ autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
 autocmd FileType php set omnifunc=phpcomplete#CompletePHP 
 autocmd FileType c,cpp,java,cs set omnifunc=ccomplete#Complete
 
-autocmd BufEnter *.c,*.cpp,*.java call AutoToggleTlistTagbar()
+autocmd BufEnter *.h,*.c,*.cpp,*.java call AutoToggleTlistTagbar()
 
 " => Set OminComplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
