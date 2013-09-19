@@ -88,6 +88,8 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-h> <C-w>h
 map <C-l> <C-w>l
+nmap <M-2> <C-w>c
+nmap <M-3> <C-w>v
 "=> switch windows end
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "=> normal set

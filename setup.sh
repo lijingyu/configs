@@ -9,7 +9,7 @@ function creat_cscope()
     echo "create cscope.files in $@"
     for arg in $@
     do
-        find  ${arg}  -type f |sed  -e '/ /d' -n -e '/\.\(\([chmSs]\)\|\(java\)\|\(cpp\)\|\(hp\)\|\(cc\)\|\(def\)\)$/p' >> cscope.files
+        find  ${arg}  -type f |sed  -e '/ /d' -n -e '/\.\(\([chmSs]\)\|\(java\)\|\(cpp\)\|\(hp\)\|\(cc\)\|\(def\)\)\|\([Mm]akefile\)\|\(Kconfig\)\|\(Android.mk\)$/p' >> cscope.files
     done
 
     echo "create cscope"
