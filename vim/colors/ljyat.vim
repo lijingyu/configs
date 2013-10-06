@@ -27,7 +27,6 @@ hi Type            guifg=#95e454 gui=NONE
 hi VertSplit       guifg=#808080 guibg=#080808 gui=bold
 hi VisualNOS                     guibg=#403D3D
 hi Visual          guifg=black   guibg=white
-"hi Member          gui=NONE
 hi Normal guifg=White guibg=grey20
 hi CursorLine                    guibg=#293739
 hi CursorColumn                  guibg=#293739
@@ -37,7 +36,6 @@ hi StatusLine      guifg=black   guibg=#C2BFA5 gui=bold
 hi Search          guifg=green guibg=black
 hi Identifier      guifg=cyan
 hi String     guifg=#FF80FF         
-"hi GlobalVariable  guifg=darkorange gui=NONE
 hi DefinedName    guifg=#FFCC00
 hi clear Constant
 
