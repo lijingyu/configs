@@ -22,9 +22,6 @@ function csset()
         echo "need dirname"
         return
     fi
-    if [];then
-
-
 
     csclean 
     creat_cscope $@
