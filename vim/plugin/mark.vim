@@ -2,7 +2,7 @@
 " Description: Highlight several words in different colors simultaneously.
 "
 " Copyright:   (C) 2005-2008 Yuheng Xie
-"              (C) 2008-2012 Ingo Karkat
+"              (C) 2008-2013 Ingo Karkat
 "   The VIM LICENSE applies to this script; see ':help copyright'.
 "
 " Maintainer:  Ingo Karkat <ingo@karkat.de>
@@ -11,10 +11,50 @@
 "
 " Dependencies:
 "  - Requires Vim 7.1 with "matchadd()", or Vim 7.2 or higher.
-"  - mark.vim autoload script.
+"  - mark.vim autoload script
+"  - mark/palettes.vim autoload script for additional palettes
 "
-" Version:     2.6.3
+" Version:     2.8.0
 " Changes:
+" 31-May-2013, Ingo Karkat
+" - Define default mappings for keys 1-9 on the numerical keypad to jump to a
+"   particular group (backwards with <C-kN>). Their definition is controlled by
+"   the new g:mwDirectGroupJumpMappingNum variable.
+" - ENH: Allow to store an arbitrary number of marks via named slots that can
+"   optionally be passed to :MarkLoad / :MarkSave. If the slot is all-uppercase,
+"   the marks will also be persisted across Vim invocations.
+"
+" 31-Jan-2013, Ingo Karkat
+" - Also allow a [count] for <Leader>r to select (or query for) a mark group, as
+"   with <Leader>m.
+" - CHG: Also set the current mark to the used mark group when a mark was set
+"   via <Leader>r and :Mark so that it is easier to determine whether the
+"   entered pattern actually matches anywhere. Thanks to Xiaopan Zhang for
+"   notifying me about this problem.
+" - Add <Plug>MarkSearchGroupNext / <Plug>MarkSearchGroupPrev to enable
+"   searching for particular mark groups. Thanks to Xiaopan Zhang for the
+"   suggestion.
+"
+" 13-Sep-2012, Ingo Karkat
+" - Enable alternative * / # mappings that do not remember the last search type
+"   through new <Plug>MarkSearchOrCurNext, <Plug>MarkSearchOrCurPrev,
+"   <Plug>MarkSearchOrAnyNext, <Plug>MarkSearchOrAnyPrev mappings.
+"
+" 04-Jul-2012, Ingo Karkat
+" - Introduce g:mwPalettes instead of hard-coding them in
+"   s:DefaultHighlightings(), which got s:DefineHighlightings() extracted and
+"   the rest renamed to s:GetPalette().
+" - Allow overriding of existing mark highlighting via a:isOverride argument to
+"   s:DefineHighlightings().
+" - Add "maximum" palette contributed by rockybalboa4 and move it and the
+"   "extended" palette to a separate mark/palettes.vim autoload script.
+" - ENH: Implement :MarkPalette command to switch mark highlighting on-the-fly
+"   during runtime.
+"
+" 24-Jun-2012, Ingo Karkat
+" - Don't define the default <Leader>m and <Leader>r mappings in select mode,
+"   just visual mode. Thanks to rockybalboa4 for pointing this out.
+"
 " 27-Mar-2012, Ingo Karkat
 " - ENH: Allow choosing of palette and limiting of default mark highlight groups
 "   via g:mwDefaultHighlightingPalette and g:mwDefaultHighlightingNum.
@@ -183,6 +223,7 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 "- configuration --------------------------------------------------------------
+
 if ! exists('g:mwHistAdd')
 	let g:mwHistAdd = '/@'
 endif
@@ -201,61 +242,67 @@ endif
 if ! exists('g:mwDefaultHighlightingPalette')
 	let g:mwDefaultHighlightingPalette = 'original'
 endif
-
-
-"- default highlightings ------------------------------------------------------
-function! s:DefaultHighlightings()
-	let l:palette = []
-	if type(g:mwDefaultHighlightingPalette) == type([])
-		" There are custom color definitions, not a named built-in palette.
-		let l:palette = g:mwDefaultHighlightingPalette
-	elseif g:mwDefaultHighlightingPalette ==# 'original'
-		let l:palette = [
-		\   { 'ctermbg':'DarkGreen',  'ctermfg':'Black', 'guibg':'DarkGreen', 'guifg':'white' },
+if ! exists('g:mwPalettes')
+	let g:mwPalettes = {
+	\	'original': [
 		\   { 'ctermbg':'Cyan',       'ctermfg':'Black', 'guibg':'#8CCBEA', 'guifg':'Black' },
 		\   { 'ctermbg':'Green',      'ctermfg':'Black', 'guibg':'#A4E57E', 'guifg':'Black' },
-		\   { 'ctermbg':'DarkMagenta','ctermfg':'Black', 'guibg':'#A29CCF', 'guifg':'#120080' },
+		\   { 'ctermbg':'Yellow',     'ctermfg':'Black', 'guibg':'#FFDB72', 'guifg':'Black' },
 		\   { 'ctermbg':'Red',        'ctermfg':'Black', 'guibg':'#FF7272', 'guifg':'Black' },
 		\   { 'ctermbg':'Magenta',    'ctermfg':'Black', 'guibg':'#FFB3FF', 'guifg':'Black' },
 		\   { 'ctermbg':'Blue',       'ctermfg':'Black', 'guibg':'#9999FF', 'guifg':'Black' },
-		\]
-	elseif g:mwDefaultHighlightingPalette ==# 'extended'
-		let l:palette = [
-		\   { 'ctermbg':'Gray',       'ctermfg':'Black', 'guibg':'#A3A396', 'guifg':'#222222' },
-		\   { 'ctermbg':'Blue',       'ctermfg':'White', 'guibg':'#0000FF', 'guifg':'#F0F0FF' },
-		\   { 'ctermbg':'Green',      'ctermfg':'Black', 'guibg':'#ACFFA1', 'guifg':'#0F8000' },
-		\   { 'ctermbg':'Brown',      'ctermfg':'Black', 'guibg':'#FFC4A1', 'guifg':'#803000' },
-		\   { 'ctermbg':'Blue',       'ctermfg':'Black', 'guibg':'#A1B7FF', 'guifg':'#001E80' },
-		\   { 'ctermbg':'Magenta',    'ctermfg':'Black', 'guibg':'#FFA1C6', 'guifg':'#80005D' },
-		\   { 'ctermbg':'Yellow',     'ctermfg':'Black', 'guibg':'#FFE8A1', 'guifg':'#806000' },
-		\   { 'ctermbg':'DarkCyan',   'ctermfg':'Black', 'guibg':'#D2A1FF', 'guifg':'#420080' },
-		\   { 'ctermbg':'Cyan',       'ctermfg':'Black', 'guibg':'#A1FEFF', 'guifg':'#007F80' },
-		\   { 'ctermbg':'DarkBlue',   'ctermfg':'Black', 'guibg':'#A1DBFF', 'guifg':'#004E80' },
-		\   { 'ctermbg':'DarkMagenta','ctermfg':'Black', 'guibg':'#A29CCF', 'guifg':'#120080' },
-		\   { 'ctermbg':'DarkRed',    'ctermfg':'Black', 'guibg':'#F5A1FF', 'guifg':'#720080' },
-		\   { 'ctermbg':'DarkGreen',  'ctermfg':'Black', 'guibg':'#D0FFA1', 'guifg':'#3F8000' },
-		\   { 'ctermbg':'Red',        'ctermfg':'Black', 'guibg':'#F3FFA1', 'guifg':'#6F8000' },
-		\   { 'ctermbg':'White',      'ctermfg':'Gray',  'guibg':'#E3E3D2', 'guifg':'#999999' },
-		\   { 'ctermbg':'LightGray',  'ctermfg':'White', 'guibg':'#D3D3C3', 'guifg':'#666666' },
-		\   { 'ctermbg':'Black',      'ctermfg':'White', 'guibg':'#53534C', 'guifg':'#DDDDDD' },
-		\   { 'ctermbg':'Black',      'ctermfg':'Gray',  'guibg':'#131311', 'guifg':'#AAAAAA' },
-		\   { 'ctermbg':'DarkRed',    'ctermfg':'White', 'guibg':'#FF0000', 'guifg':'#FFFFFF' },
-		\]
-	elseif ! empty(g:mwDefaultHighlightingPalette)
-		let v:warningmsg = 'Mark: Unknown value for g:mwDefaultHighlightingPalette: ' . g:mwDefaultHighlightingPalette
-		echohl WarningMsg
-		echomsg v:warningmsg
-		echohl None
+		\],
+	\	'extended': function('mark#palettes#Extended'),
+	\	'maximum': function('mark#palettes#Maximum')
+	\}
+endif
 
-		return
+if ! exists('g:mwDirectGroupJumpMappingNum')
+	let g:mwDirectGroupJumpMappingNum = 9
+endif
+
+
+"- default highlightings ------------------------------------------------------
+
+function! s:GetPalette()
+	let l:palette = []
+	if type(g:mwDefaultHighlightingPalette) == type([])
+		" There are custom color definitions, not a named built-in palette.
+		return g:mwDefaultHighlightingPalette
+	endif
+	if ! has_key(g:mwPalettes, g:mwDefaultHighlightingPalette)
+		if ! empty(g:mwDefaultHighlightingPalette)
+			let v:warningmsg = 'Mark: Unknown value for g:mwDefaultHighlightingPalette: ' . g:mwDefaultHighlightingPalette
+			echohl WarningMsg
+			echomsg v:warningmsg
+			echohl None
+		endif
+
+		return []
 	endif
 
-	for i in range(1, (g:mwDefaultHighlightingNum == -1 ? len(l:palette) : g:mwDefaultHighlightingNum))
-		execute 'highlight def MarkWord' . i join(map(items(l:palette[i - 1]), 'join(v:val, "=")'))
-	endfor
+	if type(g:mwPalettes[g:mwDefaultHighlightingPalette]) == type([])
+		return g:mwPalettes[g:mwDefaultHighlightingPalette]
+	elseif type(g:mwPalettes[g:mwDefaultHighlightingPalette]) == type(function('tr'))
+		return call(g:mwPalettes[g:mwDefaultHighlightingPalette], [])
+	else
+		let v:errmsg = printf('Mark: Invalid value type for g:mwPalettes[%s]', g:mwDefaultHighlightingPalette)
+		echohl ErrorMsg
+		echomsg v:errmsg
+		echohl None
+		return []
+	endif
 endfunction
-call s:DefaultHighlightings()
-autocmd ColorScheme * call <SID>DefaultHighlightings()
+function! s:DefineHighlightings( palette, isOverride )
+	let l:command = (a:isOverride ? 'highlight' : 'highlight def')
+	let l:highlightingNum = (g:mwDefaultHighlightingNum == -1 ? len(a:palette) : g:mwDefaultHighlightingNum)
+	for i in range(1, l:highlightingNum)
+		execute l:command 'MarkWord' . i join(map(items(a:palette[i - 1]), 'join(v:val, "=")'))
+	endfor
+	return l:highlightingNum
+endfunction
+call s:DefineHighlightings(s:GetPalette(), 0)
+autocmd ColorScheme * call <SID>DefineHighlightings(<SID>GetPalette(), 0)
 
 " Default highlighting for the special search type.
 " You can override this by defining / linking the 'SearchSpecialSearchType'
@@ -263,12 +310,14 @@ autocmd ColorScheme * call <SID>DefaultHighlightings()
 highlight def link SearchSpecialSearchType MoreMsg
 
 
+
 "- mappings -------------------------------------------------------------------
+
 nnoremap <silent> <Plug>MarkSet      :<C-u>if !mark#MarkCurrentWord(v:count)<Bar>execute "normal! \<lt>C-\>\<lt>C-n>\<lt>Esc>"<Bar>endif<CR>
-vnoremap <silent> <Plug>MarkSet      :<C-u>if !mark#DoMark(v:count, mark#GetVisualSelectionAsLiteralPattern())<Bar>execute "normal! \<lt>C-\>\<lt>C-n>\<lt>Esc>"<Bar>endif<CR>
-nnoremap <silent> <Plug>MarkRegex    :<C-u>call mark#MarkRegex('')<CR>
-vnoremap <silent> <Plug>MarkRegex    :<C-u>call mark#MarkRegex(mark#GetVisualSelectionAsRegexp())<CR>
-nnoremap <silent> <Plug>MarkClear    :<C-u>if !mark#DoMark(v:count, (v:count ? '' : mark#CurrentMark()[0]))<Bar>execute "normal! \<lt>C-\>\<lt>C-n>\<lt>Esc>"<Bar>endif<CR>
+vnoremap <silent> <Plug>MarkSet      :<C-u>if !mark#DoMark(v:count, mark#GetVisualSelectionAsLiteralPattern())[0]<Bar>execute "normal! \<lt>C-\>\<lt>C-n>\<lt>Esc>"<Bar>endif<CR>
+nnoremap <silent> <Plug>MarkRegex    :<C-u>if !mark#MarkRegex(v:count, '')<Bar>execute "normal! \<lt>C-\>\<lt>C-n>\<lt>Esc>"<Bar>endif<CR>
+vnoremap <silent> <Plug>MarkRegex    :<C-u>if !mark#MarkRegex(v:count, mark#GetVisualSelectionAsRegexp())<Bar>execute "normal! \<lt>C-\>\<lt>C-n>\<lt>Esc>"<Bar>endif<CR>
+nnoremap <silent> <Plug>MarkClear    :<C-u>if !mark#DoMark(v:count, (v:count ? '' : mark#CurrentMark()[0]))[0]<Bar>execute "normal! \<lt>C-\>\<lt>C-n>\<lt>Esc>"<Bar>endif<CR>
 nnoremap <silent> <Plug>MarkAllClear :<C-u>call mark#ClearAll()<CR>
 nnoremap <silent> <Plug>MarkToggle   :<C-u>call mark#Toggle()<CR>
 
@@ -276,59 +325,110 @@ nnoremap <silent> <Plug>MarkSearchCurrentNext :<C-u>call mark#SearchCurrentMark(
 nnoremap <silent> <Plug>MarkSearchCurrentPrev :<C-u>call mark#SearchCurrentMark(1)<CR>
 nnoremap <silent> <Plug>MarkSearchAnyNext     :<C-u>call mark#SearchAnyMark(0)<CR>
 nnoremap <silent> <Plug>MarkSearchAnyPrev     :<C-u>call mark#SearchAnyMark(1)<CR>
-nnoremap <silent> <Plug>MarkSearchNext        :<C-u>if !mark#SearchNext(0)<Bar>execute 'normal! *zv'<Bar>endif<CR>
-nnoremap <silent> <Plug>MarkSearchPrev        :<C-u>if !mark#SearchNext(1)<Bar>execute 'normal! #zv'<Bar>endif<CR>
 " When typed, [*#nN] open the fold at the search result, but inside a mapping or
 " :normal this must be done explicitly via 'zv'.
+nnoremap <silent> <Plug>MarkSearchNext        :<C-u>if !mark#SearchNext(0)<Bar>execute 'normal! *zv'<Bar>endif<CR>
+nnoremap <silent> <Plug>MarkSearchPrev        :<C-u>if !mark#SearchNext(1)<Bar>execute 'normal! #zv'<Bar>endif<CR>
+nnoremap <silent> <Plug>MarkSearchOrCurNext   :<C-u>if !mark#SearchNext(0,'mark#SearchCurrentMark')<Bar>execute 'normal! *zv'<Bar>endif<CR>
+nnoremap <silent> <Plug>MarkSearchOrCurPrev   :<C-u>if !mark#SearchNext(1,'mark#SearchCurrentMark')<Bar>execute 'normal! #zv'<Bar>endif<CR>
+nnoremap <silent> <Plug>MarkSearchOrAnyNext   :<C-u>if !mark#SearchNext(0,'mark#SearchAnyMark')<Bar>execute 'normal! *zv'<Bar>endif<CR>
+nnoremap <silent> <Plug>MarkSearchOrAnyPrev   :<C-u>if !mark#SearchNext(1,'mark#SearchAnyMark')<Bar>execute 'normal! #zv'<Bar>endif<CR>
+nnoremap <silent> <Plug>MarkSearchGroupNext   :<C-u>call mark#SearchGroupMark(v:count, 1, 0, 1)<CR>
+nnoremap <silent> <Plug>MarkSearchGroupPrev   :<C-u>call mark#SearchGroupMark(v:count, 1, 1, 1)<CR>
+
 
 if !hasmapto('<Plug>MarkSet', 'n')
-	nmap <unique> <silent> <Leader>m <Plug>MarkSet
+	nmap <unique> <Leader>m <Plug>MarkSet
 endif
-if !hasmapto('<Plug>MarkSet', 'v')
-	vmap <unique> <silent> <Leader>m <Plug>MarkSet
+if !hasmapto('<Plug>MarkSet', 'x')
+	xmap <unique> <Leader>m <Plug>MarkSet
 endif
 if !hasmapto('<Plug>MarkRegex', 'n')
-	nmap <unique> <silent> <Leader>r <Plug>MarkRegex
+	nmap <unique> <Leader>r <Plug>MarkRegex
 endif
-if !hasmapto('<Plug>MarkRegex', 'v')
-	vmap <unique> <silent> <Leader>r <Plug>MarkRegex
+if !hasmapto('<Plug>MarkRegex', 'x')
+	xmap <unique> <Leader>r <Plug>MarkRegex
 endif
 if !hasmapto('<Plug>MarkClear', 'n')
-	nmap <unique> <silent> <Leader>n <Plug>MarkClear
+	nmap <unique> <Leader>n <Plug>MarkClear
 endif
 " No default mapping for <Plug>MarkAllClear.
 " No default mapping for <Plug>MarkToggle.
 
 if !hasmapto('<Plug>MarkSearchCurrentNext', 'n')
-	nmap <unique> <silent> <Leader>* <Plug>MarkSearchCurrentNext
+	nmap <unique> <Leader>* <Plug>MarkSearchCurrentNext
 endif
 if !hasmapto('<Plug>MarkSearchCurrentPrev', 'n')
-	nmap <unique> <silent> <Leader># <Plug>MarkSearchCurrentPrev
+	nmap <unique> <Leader># <Plug>MarkSearchCurrentPrev
 endif
 if !hasmapto('<Plug>MarkSearchAnyNext', 'n')
-	nmap <unique> <silent> <Leader>/ <Plug>MarkSearchAnyNext
+	nmap <unique> <Leader>/ <Plug>MarkSearchAnyNext
 endif
 if !hasmapto('<Plug>MarkSearchAnyPrev', 'n')
-	nmap <unique> <silent> <Leader>? <Plug>MarkSearchAnyPrev
+	nmap <unique> <Leader>? <Plug>MarkSearchAnyPrev
 endif
 if !hasmapto('<Plug>MarkSearchNext', 'n')
-	nmap <unique> <silent> * <Plug>MarkSearchNext
+	nmap <unique> * <Plug>MarkSearchNext
 endif
 if !hasmapto('<Plug>MarkSearchPrev', 'n')
-	nmap <unique> <silent> # <Plug>MarkSearchPrev
+	nmap <unique> # <Plug>MarkSearchPrev
 endif
+" No default mapping for <Plug>MarkSearchOrCurNext
+" No default mapping for <Plug>MarkSearchOrCurPrev
+" No default mapping for <Plug>MarkSearchOrAnyNext
+" No default mapping for <Plug>MarkSearchOrAnyPrev
+" No default mapping for <Plug>MarkSearchGroupNext
+" No default mapping for <Plug>MarkSearchGroupPrev
+
+function! s:MakeDirectGroupMappings()
+	for l:cnt in range(1, g:mwDirectGroupJumpMappingNum)
+		for [l:isBackward, l:direction, l:keyModifier] in [[0, 'Next', ''], [1, 'Prev', 'C-']]
+			let l:plugMappingName = printf('<Plug>MarkSearchGroup%d%s', l:cnt, l:direction)
+			execute printf('nnoremap <silent> %s :<C-u>call mark#SearchGroupMark(%d, v:count1, %d, 1)<CR>', l:plugMappingName, l:cnt, l:isBackward)
+			if ! hasmapto(l:plugMappingName, 'n')
+				execute printf('nmap <%sk%d> %s', l:keyModifier, l:cnt, l:plugMappingName)
+			endif
+		endfor
+	endfor
+endfunction
+call s:MakeDirectGroupMappings()
+delfunction s:MakeDirectGroupMappings
+
 
 
 "- commands -------------------------------------------------------------------
-command! -count -nargs=? Mark if !mark#DoMark(<count>, <f-args>) | echoerr printf('Only %d mark highlight groups', mark#GetGroupNum()) | endif
+
+command! -count -nargs=? Mark if !mark#DoMarkAndSetCurrent(<count>, <f-args>)[0] | echoerr printf('Only %d mark highlight groups', mark#GetGroupNum()) | endif
 command! -bar MarkClear call mark#ClearAll()
 command! -bar Marks call mark#List()
 
-command! -bar MarkLoad call mark#LoadCommand(1)
-command! -bar MarkSave call mark#SaveCommand()
+command! -bar -nargs=? -complete=customlist,mark#MarksVariablesComplete MarkLoad call mark#LoadCommand(1, <f-args>)
+command! -bar -nargs=? -complete=customlist,mark#MarksVariablesComplete MarkSave call mark#SaveCommand(<f-args>)
+function! s:SetPalette( paletteName )
+	if type(g:mwDefaultHighlightingPalette) == type([])
+		" Convert the directly defined list to a palette named "default".
+		let g:mwPalettes['default'] = g:mwDefaultHighlightingPalette
+		unlet! g:mwDefaultHighlightingPalette   " Avoid E706.
+	endif
+	let g:mwDefaultHighlightingPalette = a:paletteName
+
+	let l:palette = s:GetPalette()
+	if empty(l:palette)
+		return
+	endif
+
+	call mark#ReInit(s:DefineHighlightings(l:palette, 1))
+	call mark#UpdateScope()
+endfunction
+function! s:MarkPaletteComplete( ArgLead, CmdLine, CursorPos )
+	return sort(filter(keys(g:mwPalettes), 'v:val =~ ''\V\^'' . escape(a:ArgLead, "\\")'))
+endfunction
+command! -bar -nargs=1 -complete=customlist,<SID>MarkPaletteComplete MarkPalette call <SID>SetPalette(<q-args>)
+
 
 
 "- marks persistence ----------------------------------------------------------
+
 if g:mwAutoLoadMarks
 	" As the viminfo is only processed after sourcing of the runtime files, the
 	" persistent global variables are not yet available here. Defer this until Vim
