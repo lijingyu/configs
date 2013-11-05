@@ -46,7 +46,7 @@ function csseta()
 
     for arg in $@
     do
-        find ${arg}  -type f | sed '/\/\.\| \|\.o\|\.taghl\|tags\|cscope\|\.a/d'  >> cscope.files
+        find ${arg}  -type f | sed '/\/\.\| \|\.o\|\.taghl\|tags\|cscope\|\.a$/d'  >> cscope.files
     done
 
     echo "create tags"
