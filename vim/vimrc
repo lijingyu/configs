@@ -50,7 +50,6 @@ set cindent
 set tabstop=4
 set shiftwidth=0
 set et
-set ignorecase
 set smarttab
 set linebreak
 set nobackup
