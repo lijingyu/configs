@@ -59,6 +59,7 @@ set nowrapscan
 set winaltkeys=no
 set nocompatible
 set diffopt=filler,vertical
+set fileencoding=
 set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
 let c_syntax_for_h = 1
 let Tlist_WinWidth = 40
