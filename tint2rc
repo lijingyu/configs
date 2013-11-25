@@ -37,7 +37,7 @@ border_color = #B22222 100
 # Panel
 panel_monitor = all
 panel_position = bottom center horizontal
-panel_size = 80% 35
+panel_size = 80% 40
 panel_margin = 0 0
 panel_padding = 7 0
 panel_dock = 0
@@ -61,10 +61,10 @@ taskbar_active_background_id = 1
 # Tasks
 urgent_nb_of_blink = 8
 task_icon = 1
-task_text = 0
+task_text = 1
 task_centered = 1
-task_maximum_size = 50 35
-task_padding = 0 0
+task_maximum_size = 160 35
+task_padding = 6 2
 task_background_id = 2
 task_active_background_id = 5
 task_urgent_background_id = 2
@@ -77,7 +77,7 @@ task_urgent_icon_asb = 100 0 0
 task_iconified_icon_asb = 70 0 0
 
 # Fonts
-task_font = sans 10
+task_font = sans 8
 task_font_color = #FFFFFF 68
 task_active_font_color = #FFFFFF 83
 task_urgent_font_color = #FFFFFF 83
