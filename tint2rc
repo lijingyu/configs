@@ -6,7 +6,7 @@
 # ID 1
 rounded = 7
 border_width = 2
-background_color = #000000 100
+background_color = #009999 100
 border_color = #FFFFFF 16
 
 # ID 2
@@ -24,20 +24,20 @@ border_color = #FFFFFF 68
 # ID 4
 rounded = 5
 border_width = 0
-background_color = #272727 50
+background_color = #272727 100
 border_color = #00FF00 100
 
 # ID 5
 rounded = 5
 border_width = 0
-background_color = #B22222 50
-#background_color = #0000ff 50
+background_color = #B22222 100
+#background_color = #0000ff 100
 border_color = #B22222 100
 
 # Panel
 panel_monitor = all
 panel_position = bottom center horizontal
-panel_size = 80% 40
+panel_size = 90% 40
 panel_margin = 0 0
 panel_padding = 7 0
 panel_dock = 0
@@ -88,7 +88,7 @@ font_shadow = 0
 systray = 1
 systray_padding = 0 4 5
 systray_sort = right2left
-systray_background_id = 3
+systray_background_id = 2
 systray_icon_size = 0
 #systray_icon_asb = 70 0 0
 
@@ -99,7 +99,7 @@ time2_format = %F
 time2_font = sans 9
 clock_font_color = #ffff00 76
 clock_padding = 1 0
-clock_background_id = 0
+clock_background_id = 2
 clock_rclick_command = orage
 
 # Tooltips
@@ -125,6 +125,6 @@ bat1_font = sans 9
 bat2_font = sans 6
 battery_font_color = #ffff00 76
 battery_padding = 1 0
-battery_background_id = 0
+battery_background_id = 2
 
 # End of config
