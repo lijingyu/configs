@@ -68,7 +68,7 @@ task_padding = 6 2
 task_background_id = 2
 task_active_background_id = 5
 task_urgent_background_id = 2
-task_iconified_background_id = 3
+task_iconified_background_id = 2
 
 # Task Icons
 task_icon_asb = 70 0 0
