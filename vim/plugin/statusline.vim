@@ -23,8 +23,7 @@
 "         When you edit it, do not erase trailing-blanks.
 set laststatus=2
 set statusline=
-"set statusline+=\ %l/%L\ col:%c\ 
-set statusline+=\ %l/%L\ 
+set statusline+=%l/%L\ 
 set statusline+=%-f\ %w\ 
 set statusline+=%{&fenc!=''?&fenc:&enc}\ \ \ 
 set statusline+=ascii:0x%02.4B\ 
