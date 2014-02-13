@@ -16,7 +16,7 @@
             <action name="Execute"><execute>gvim</execute></action>
         </item>
         <item label="File-Manager">
-            <action name="Execute"><execute>nautilus</execute></action>
+            <action name="Execute"><execute>pcmanfm</execute></action>
         </item>
         <item label="RunCmd ...">
             <action name="Execute"><execute>dmenu_run -fn  "WenQuanYi Micro Hei:size=11"</execute></action>
@@ -27,8 +27,8 @@
         <item label="Stardict">
             <action name="Execute"><execute>stardict</execute></action>
         </item>
-        <item label="Claw-mail">
-            <action name="Execute"><execute>claws-mail</execute></action>
+        <item label="Thunderbird">
+            <action name="Execute"><execute>thunderbird</execute></action>
         </item>
         <item label="Virtualbox">
             <action name="Execute"><execute>virtualbox</execute></action>
