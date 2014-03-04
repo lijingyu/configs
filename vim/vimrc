@@ -267,11 +267,12 @@ function! LjyatSearchFileInFileList()
     endif
 
     let pattern = "'" . pattern . "'" 
-    let tmpfile = '~/.gvim.tmp' . getpid() 
+    let tmpfile = $HOME . '/.gvim.tmp' . getpid()
     let real_cmd = '!grep  -i -E ' . pattern . ' cscope.files  > '  . tmpfile
     redraw
     echomsg "Searching file..."
     execute "silent! " . real_cmd
+
 
     let ef = &errorformat 
     set efm=%f
@@ -292,6 +293,26 @@ function! LjyatSearchFileInFileList()
     lopen
 
     let &errorformat = ef 
+
+python << EOF
+import vim
+import re
+
+fname = vim.eval('tmpfile')
+f = open(fname, 'r')
+flist=f.readlines()
+f.close()
+
+old = ''
+new = ''
+args = ''
+for new in flist:
+    new = new.strip()
+    if old != new:
+        args = args + new + ' '
+    old = new
+vim.command('args ' + args)
+EOF
     execute "silent! !rm -rf " . tmpfile
 endfunction
 "CscopeFindFilePattern
