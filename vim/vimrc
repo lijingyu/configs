@@ -273,6 +273,25 @@ function! LjyatSearchFileInFileList()
     echomsg "Searching file..."
     execute "silent! " . real_cmd
 
+python << EOF
+import vim
+import re
+
+fname = vim.eval('tmpfile')
+f = open(fname, 'r')
+flist=f.readlines()
+f.close()
+
+old = ''
+new = ''
+args = ''
+for new in flist:
+    new = new.strip()
+    if old != new:
+        args = args + new + ' '
+    old = new
+vim.command('args ' + args)
+EOF
 
     let ef = &errorformat 
     set efm=%f
@@ -294,25 +313,6 @@ function! LjyatSearchFileInFileList()
 
     let &errorformat = ef 
 
-python << EOF
-import vim
-import re
-
-fname = vim.eval('tmpfile')
-f = open(fname, 'r')
-flist=f.readlines()
-f.close()
-
-old = ''
-new = ''
-args = ''
-for new in flist:
-    new = new.strip()
-    if old != new:
-        args = args + new + ' '
-    old = new
-vim.command('args ' + args)
-EOF
     execute "silent! !rm -rf " . tmpfile
 endfunction
 "CscopeFindFilePattern
