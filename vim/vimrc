@@ -43,7 +43,7 @@ set noswapfile
 set updatetime=100
 set previewheight=10
 set nu
-set linespace=4
+set linespace=3
 "set hlsearch
 set autoindent
 set smartindent
