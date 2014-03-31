@@ -42,7 +42,8 @@ set ffs=unix,dos,mac
 set noswapfile
 set updatetime=100
 set previewheight=10
-set nonu
+set nu
+set linespace=4
 "set hlsearch
 set autoindent
 set smartindent
