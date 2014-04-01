@@ -32,6 +32,22 @@ function csset()
     echo "create  success"
 }
 
+function cssetm()
+{
+    if [ $# -eq 0 ];then
+        echo "need dirname"
+        return
+    fi
+
+    csclean
+    creat_cscope $@
+
+    echo "create tags"
+    ctags  --fields=+iaS --extra=+q  -L cscope.files
+
+    echo "create  success"
+}
+
 function csseta()
 {
     if [ $# -eq 0 ];then
