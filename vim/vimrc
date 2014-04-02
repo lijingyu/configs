@@ -203,10 +203,10 @@ function! LjyatSearchStringInFiles(pattern_arg)
         return 
     endif
 
-    execute "silent! Mark " . pattern 
+    execute "silent! Mark " . pattern
 
     let pattern = "'" . pattern . "'" 
-    let tmpfile = $HOME . '/.gvim.tmp' . getpid() 
+    let tmpfile = '/tmp/gvim.tmp' . getpid()
     let real_cmd = '!cat cscope.files|xargs grep -n -E ' . pattern . '  > ' . tmpfile
     redraw
     echomsg "Searching all-str..."
@@ -270,7 +270,7 @@ function! LjyatSearchFileInFileList()
     endif
 
     let pattern = "'" . pattern . "'" 
-    let tmpfile = $HOME . '/.gvim.tmp' . getpid()
+    let tmpfile = '/tmp/gvim.tmp' . getpid()
     let real_cmd = '!grep  -i -E ' . pattern . ' cscope.files  > '  . tmpfile
     redraw
     echomsg "Searching file..."
