@@ -112,7 +112,7 @@ nmap <M-e> g_
 nmap <M-a> 0
 nmap <M-1> :pc<CR> :lcl<CR>
 
-nmap / <leader>r
+nmap / <leader>e
 nmap <M-m> <leader>m
 nmap <C-]> :ts <C-R>=expand("<cword>")<CR><CR>
 nmap <M-]> <C-]>
