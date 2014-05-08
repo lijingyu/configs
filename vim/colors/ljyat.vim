@@ -34,7 +34,7 @@ hi CursorColumn                  guibg=#293739
 hi LineNr          guifg=#555555 guibg=#232526
 hi NonText         guifg=#BCBCBC guibg=#232526
 hi StatusLine      guifg=black   guibg=#C2BFA5 gui=bold
-hi Search          guifg=green guibg=black
+hi Search          gui=bold guifg=green guibg=black
 hi Identifier      guifg=cyan
 hi String     guifg=#FF80FF         
 hi DefinedName    guifg=#FFCC00
