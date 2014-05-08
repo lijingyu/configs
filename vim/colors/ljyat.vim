@@ -20,9 +20,10 @@ hi Folded          guifg=white guibg=#403D3D
 hi FoldColumn      guifg=white guibg=#403D3D 
 hi Statement       term=bold ctermfg=14  guifg=#86C711
 hi Function        guifg=#21BC71 gui=bold 
-hi Title           guifg=#21BC71 gui=NONE
+"hi Title           guifg=#21BC71 gui=NONE
+hi Title           guibg=white guifg=DarkGreen 
 hi Keyword         guifg=#E6C84F   gui=NONE
-
+hi Directory       term=bold ctermfg=159 guifg=yellow
 hi Type            guifg=#95e454 gui=NONE
 hi VertSplit       guifg=#808080 guibg=#080808 gui=bold
 hi VisualNOS                     guibg=#403D3D
