@@ -21,7 +21,7 @@ hi FoldColumn      guifg=white guibg=#403D3D
 hi Statement       term=bold ctermfg=14  guifg=#86C711
 hi Function        guifg=#21BC71 gui=bold 
 "hi Title           guifg=#21BC71 gui=NONE
-hi Title           guibg=white guifg=DarkGreen 
+hi Title           guibg=NONE guifg=cyan 
 hi Keyword         guifg=#E6C84F   gui=NONE
 hi Directory       term=bold ctermfg=159 guifg=yellow
 hi Type            guifg=#95e454 gui=NONE
@@ -35,7 +35,7 @@ hi LineNr          guifg=#555555 guibg=#232526
 hi NonText         guifg=#BCBCBC guibg=#232526
 hi StatusLine      guifg=black   guibg=#C2BFA5 gui=bold
 hi Search          gui=bold guifg=green guibg=black
-hi Identifier      guifg=cyan
+hi Identifier      guibg=NONE guifg=cyan
 hi String     guifg=#FF80FF         
 hi DefinedName    guifg=#FFCC00
 hi clear Constant
