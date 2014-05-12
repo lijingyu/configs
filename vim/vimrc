@@ -104,9 +104,11 @@ nmap <M-3> <C-w>v
 "move
 nmap <M-j> 3<C-e>
 nmap <M-k> 3<C-y>
+nmap <M-c> :MarkClear<CR> :nohlsearch <CR>
+nmap <M-q> <C-q>
 "copy and paste
-vmap <M-c> "+y
-nmap <M-v> "+p
+vmap <C-c> "+y
+nmap <C-v> "+p
 
 nmap <M-e> g_
 nmap <M-a> 0
@@ -203,7 +205,7 @@ function! LjyatSearchStringInFiles(pattern_arg)
         return 
     endif
 
-    execute "silent! Mark " . pattern
+    execute "silent! MarkClear|Mark " . pattern
 
     let pattern = "'" . pattern . "'" 
     let tmpfile = '/tmp/gvim.tmp' . getpid()
@@ -338,7 +340,7 @@ function! LjyatSearchStringCurrentBuffer()
         return 
     endif
 
-    execute "silent! Mark " . pattern 
+    execute "silent! MarkClear|Mark " . pattern
 
     let pattern = "/" . pattern . "/" 
     let real_cmd = "lvimgrep " . pattern . " %"
