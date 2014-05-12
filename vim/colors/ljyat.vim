@@ -21,7 +21,7 @@ hi FoldColumn      guifg=white guibg=#403D3D
 hi Statement       term=bold ctermfg=14  guifg=#86C711
 hi Function        guifg=#21BC71 gui=bold 
 "hi Title           guifg=#21BC71 gui=NONE
-hi Title           guibg=NONE guifg=cyan 
+hi Title           guibg=NONE guifg=cyan
 hi Keyword         guifg=#E6C84F   gui=NONE
 hi Directory       term=bold ctermfg=159 guifg=yellow
 hi Type            guifg=#95e454 gui=NONE
