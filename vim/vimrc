@@ -104,7 +104,7 @@ nmap <M-3> <C-w>v
 "move
 nmap <M-j> 3<C-e>
 nmap <M-k> 3<C-y>
-nmap <M-c> :MarkClear<CR> :nohlsearch <CR>
+nmap <M-c> :nohlsearch <CR> :MarkClear<CR>
 nmap <M-q> <C-q>
 "copy and paste
 vmap <C-c> "+y
@@ -125,7 +125,7 @@ nmap <M-LeftMouse> <LeftMouse><leader>m
 nmap <RightMouse> <C-o>
 nmap <S-LeftMouse> <LeftMouse>:nohlsearch<CR>:MarkClear<CR><leader>m
 nmap <M-RightMouse> :nohlsearch<CR>:MarkClear<CR>
-nmap <F5> :MarkClear<CR> :nohlsearch <CR>
+nmap <F5> :nohlsearch <CR>:MarkClear<CR>
 nmap <F6> :TlistClose<CR> :JavaBrowser <CR>
 
 "grep -E 
