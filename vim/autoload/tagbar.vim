@@ -387,7 +387,7 @@ function! s:InitTypes() abort
     let type_java = s:TypeInfo.New()
     let type_java.ctagstype = 'java'
     let type_java.kinds     = [
-        \ {'short' : 'p', 'long' : 'packages',       'fold' : 1, 'stl' : 0},
+        \ {'short' : 'p', 'long' : 'packages',       'fold' : 0, 'stl' : 0},
         \ {'short' : 'f', 'long' : 'fields',         'fold' : 0, 'stl' : 0},
         \ {'short' : 'g', 'long' : 'enum types',     'fold' : 0, 'stl' : 1},
         \ {'short' : 'e', 'long' : 'enum constants', 'fold' : 0, 'stl' : 0},
