@@ -18,10 +18,10 @@ else
     set guifont=Consolas\ 14
     if has("gui_running")
         colorscheme ljyat
-        "set guioptions-=m
+        set guioptions-=m
         set guioptions-=T
     else
-        colorscheme desert
+        colorscheme default
     endif
 endif
 
