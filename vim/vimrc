@@ -184,8 +184,7 @@ function! CscopeReload_cs()
 endfunction
 command! R call CscopeReload_cs()
 
-"CscopeSearchStringPattern
-function! LjyatSearchStringInFiles(pattern_arg)
+function! Arggrep(pattern_arg)
     if !filereadable("cscope.files")
         echohl Special
         echo "   cscope.files not exist"
@@ -252,10 +251,59 @@ EOF
 
     execute "silent! !rm -rf " . tmpfile
 endfunction
+command! Arggrep call Arggrep('')
+
+"CscopeSearchStringPattern
+function! LjyatSearchStringInFiles(pattern_arg)
+    if !filereadable("cscope.files")
+        echohl Special
+        echo "   cscope.files not exist"
+        echohl None
+        return
+    endif
+
+    echohl Question
+    if a:pattern_arg != ''
+        let pattern = input("  Search all-str: ", a:pattern_arg)
+    else
+        let pattern = input("  Search all-str: ", expand("<cword>"))
+    endif
+    echohl None
+
+    if pattern == ""
+        return 
+    endif
+
+    execute "silent! MarkClear|Mark " . pattern
+
+    let pattern = "'" . pattern . "'" 
+    let tmpfile = '/tmp/gvim.tmp' . getpid()
+    let real_cmd = '!cat cscope.files|xargs grep -n -E ' . pattern . '  > ' . tmpfile
+    redraw
+    echomsg "Searching all-str..."
+    execute "silent! " . real_cmd
+
+    if v:version >= 700 
+        execute "silent! lgetfile " . tmpfile
+    else
+        if exists(":lgetfile")
+            execute "silent! lgetfile " . tmpfile
+        else
+            execute "silent! lfile " . tmpfile
+        endif
+    endif
+
+    redraw
+    echomsg ""
+    " Open the quickfix window below the current window
+    lopen
+
+    execute "silent! !rm -rf " . tmpfile
+endfunction
 command! LjyatSearchStringInFiles call LjyatSearchStringInFiles('')
 
 "CscopeFindFilePattern
-function! LjyatSearchFileInFileList()
+function! Argfind()
     if !filereadable("cscope.files")
         echohl Special
         echo "   cscope.files not exist"
@@ -297,6 +345,54 @@ for new in flist:
     old = new
 vim.command('args ' + args)
 EOF
+
+    let ef = &errorformat 
+    set efm=%f
+
+    if v:version >= 700 
+        execute "silent! lgetfile " . tmpfile
+    else
+        if exists(":lgetfile")
+            execute "silent! lgetfile " . tmpfile
+        else
+            execute "silent! lfile " . tmpfile
+        endif
+    endif
+
+    redraw
+    echomsg ""
+    " Open the quickfix window below the current window
+    lopen
+
+    let &errorformat = ef 
+
+    execute "silent! !rm -rf " . tmpfile
+endfunction
+command! Argfind call Argfind()
+
+"CscopeFindFilePattern
+function! LjyatSearchFileInFileList()
+    if !filereadable("cscope.files")
+        echohl Special
+        echo "   cscope.files not exist"
+        echohl None
+        return
+    endif
+
+    echohl Question
+    let pattern = input("  Search file: ")
+    echohl None
+
+    if pattern == ""
+        return 
+    endif
+
+    let pattern = "'" . pattern . "'" 
+    let tmpfile = '/tmp/gvim.tmp' . getpid()
+    let real_cmd = '!grep  -i -E ' . pattern . ' cscope.files  > '  . tmpfile
+    redraw
+    echomsg "Searching file..."
+    execute "silent! " . real_cmd
 
     let ef = &errorformat 
     set efm=%f
