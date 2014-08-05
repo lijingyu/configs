@@ -40,6 +40,7 @@ hi String     guifg=#FF80FF
 hi DefinedName    guifg=#FFCC00
 hi clear Constant
 
+hi! def link ModeMsg     Directory
 hi! def link Typedef        Structure
 hi! def link CTagsType        Structure
 hi! def link StatusLineNC   StatusLine
