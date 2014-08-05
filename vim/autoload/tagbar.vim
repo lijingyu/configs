@@ -3678,7 +3678,7 @@ function! s:IsValidFile(fname, ftype) abort
 
     if &previewwindow
         call s:LogDebugMessage('In preview window')
-        return 0
+"        return 0
     endif
 
     if !has_key(s:known_types, a:ftype)
