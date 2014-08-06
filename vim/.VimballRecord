@@ -1,0 +1,1 @@
+mark-2.8.4.vmb: call delete('/home/lijy/.vim/autoload/mark.vim')|call delete('/home/lijy/.vim/autoload/mark/palettes.vim')|call delete('/home/lijy/.vim/plugin/mark.vim')|call delete('/home/lijy/.vim/doc/mark.txt')
