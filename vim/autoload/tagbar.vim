@@ -3624,13 +3624,13 @@ function! s:GotoFileWindow(fileinfo, ...) abort
     call s:goto_win('p', noauto)
 
     let filebufnr = bufnr(a:fileinfo.fpath)
-    if bufnr('%') != filebufnr || &previewwindow
+    if bufnr('%') != filebufnr
         " Search for the first real window that has the correct buffer loaded
         " in it. Similar to bufwinnr() but skips the previewwindow.
         let found = 0
         for i in range(1, winnr('$'))
             call s:goto_win(i, 1)
-            if bufnr('%') == filebufnr && !&previewwindow
+            if bufnr('%') == filebufnr
                 let found = 1
                 break
             endif
@@ -3641,7 +3641,7 @@ function! s:GotoFileWindow(fileinfo, ...) abort
         if !found
             for i in range(1, winnr('$'))
                 call s:goto_win(i, 1)
-                if &buftype == '' && !&previewwindow
+                if &buftype == ''
                     execute 'buffer ' . filebufnr
                     break
                 endif
