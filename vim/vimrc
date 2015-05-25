@@ -150,7 +150,7 @@ command! LjyatNERDTreeOpenBufDir call LjyatNERDTreeOpenBufDir ()
 if has("cscope")
     set csprg=/usr/bin/cscope
     set csto=1
-    set cst
+    set nocst
     set nocsverb
     " add any database in current directory
     if filereadable("cscope.out")
