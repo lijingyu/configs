@@ -62,6 +62,7 @@ set nowrapscan
 set winaltkeys=no
 set nocompatible
 set diffopt=filler,horizontal
+set dictionary=tags
 let c_syntax_for_h = 1
 let Tlist_WinWidth = 40
 let g:tagbar_left = 1
