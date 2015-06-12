@@ -23,12 +23,12 @@ function csset()
         return
     fi
 
-    csclean 
+    csclean
     creat_cscope $@
 
     echo "create tags"
     ctags --c-kinds=-m --c++-kinds=-m --fields=+iaS --extra=+q  -L cscope.files
-
+    sed 's/\s.*$//g' tags  >  dict
     echo "create  success"
 }
 
@@ -44,6 +44,7 @@ function cssetm()
 
     echo "create tags"
     ctags  --fields=+iaS --extra=+q  -L cscope.files
+    sed 's/\s.*$//g' tags  >  dict
 
     echo "create  success"
 }
@@ -52,7 +53,7 @@ function csseta()
 {
     if [ $# -eq 0 ];then
         echo "need dirname"
-        return 
+        return
     fi
 
     csclean
@@ -67,6 +68,7 @@ function csseta()
 
     echo "create tags"
     ctags --c-kinds=-m --c++-kinds=-m --fields=+iaS --extra=+q  -L cscope.files
+    sed 's/\s.*$//g' tags  >  dict
 
     echo "create  success"
 }
@@ -78,6 +80,7 @@ function cstag()
         cscope -bki cscope.files
         echo "create tags"
         ctags --c-kinds=-m --c++-kinds=-m --fields=+iaS --extra=+q  -L cscope.files
+        sed 's/\s.*$//g' tags  >  dict
     else
         echo "no cscope.files"
     fi
@@ -86,22 +89,22 @@ function cstag()
 function csclean()
 {
     if [ $# -eq 0 ];then
-        rm  -rf cscope* tags TAGS ncscope* 
+        rm  -rf cscope* tags TAGS ncscope* dict
     else
         for arg in $@
         do
-            find $arg  -type f -name "cscope.*" -o -name tags |xargs rm -rf
+            find $arg  -type f -name "cscope.*" -o -name tags -o name dict |xargs rm -rf
         done
     fi
 }
 function cscleana()
 {
     if [ $# -eq 0 ];then
-        rm  -rf cscope* tags TAGS *.taghl 
+        rm  -rf cscope* tags TAGS *.taghl dict
     else
         for arg in $@
         do
-            find $arg  -type f -name "cscope.*" -o -name tags -o  -name "*.taghl" -o -name TAGS |xargs rm -rf
+            find $arg  -type f -name "cscope.*" -o -name tags -o  -name dict -o -name "*.taghl" -o -name TAGS |xargs rm -rf
         done
     fi
 }
