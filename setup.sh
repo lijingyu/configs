@@ -28,24 +28,7 @@ function csset()
 
     echo "create tags"
     ctags --c-kinds=-m --c++-kinds=-m --fields=+iaS --extra=+q  -L cscope.files
-    sed 's/\s.*$//g' tags  >  dict
-    echo "create  success"
-}
-
-function cssetm()
-{
-    if [ $# -eq 0 ];then
-        echo "need dirname"
-        return
-    fi
-
-    csclean
-    creat_cscope $@
-
-    echo "create tags"
-    ctags  --fields=+iaS --extra=+q  -L cscope.files
-    sed 's/\s.*$//g' tags  >  dict
-
+    sed 's/\s.*$//g' tags | uniq >  dict
     echo "create  success"
 }
 
@@ -63,12 +46,12 @@ function csseta()
 
     for arg in $@
     do
-        find ${arg}  -type f | sed '/\/\.[^\.]\| \|\.o$\|\.taghl\|tags\|cscope\|\.a$/d'  >> cscope.files
+        find ${arg}  -type f | sed '/\/\.[^\.]\| \|\.o$\|tags\|cscope\|\.a$/d'  >> cscope.files
     done
 
     echo "create tags"
     ctags --c-kinds=-m --c++-kinds=-m --fields=+iaS --extra=+q  -L cscope.files
-    sed 's/\s.*$//g' tags  >  dict
+    sed 's/\s.*$//g' tags | uniq >  dict
 
     echo "create  success"
 }
@@ -80,7 +63,7 @@ function cstag()
         cscope -bki cscope.files
         echo "create tags"
         ctags --c-kinds=-m --c++-kinds=-m --fields=+iaS --extra=+q  -L cscope.files
-        sed 's/\s.*$//g' tags  >  dict
+        sed 's/\s.*$//g' tags | uniq >  dict
     else
         echo "no cscope.files"
     fi
@@ -100,19 +83,15 @@ function csclean()
 function cscleana()
 {
     if [ $# -eq 0 ];then
-        rm  -rf cscope* tags TAGS *.taghl dict
+        rm  -rf cscope* tags TAGS dict
     else
         for arg in $@
         do
-            find $arg  -type f -name "cscope.*" -o -name tags -o  -name dict -o -name "*.taghl" -o -name TAGS |xargs rm -rf
+            find $arg  -type f -name "cscope.*" -o -name tags -o  -name dict -o -name TAGS |xargs rm -rf
         done
     fi
 }
 
-function abs()
-{
-    adb shell  dmesg > dmesg
-}
 function abins()
 {
     adb remount
