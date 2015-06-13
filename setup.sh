@@ -16,6 +16,26 @@ function creat_cscope()
     cscope -bki cscope.files
 }
 
+function create_tags()
+{
+    echo "create tags"
+    if [ -s "cscope.files" ]; then
+        ctags --c-kinds=-m --c++-kinds=-m --fields=+iaS --extra=+q  -L cscope.files
+    else
+        echo "need cscope.files"
+    fi
+}
+
+function create_dict()
+{
+    echo "create dict"
+    if [ -s "tags" ]; then
+        sed 's/\s.*$//g' tags | uniq >  dict
+    else
+        echo "need tags"
+    fi
+}
+
 function csset()
 {
     if [ $# -eq 0 ];then
@@ -26,9 +46,8 @@ function csset()
     csclean
     creat_cscope $@
 
-    echo "create tags"
-    ctags --c-kinds=-m --c++-kinds=-m --fields=+iaS --extra=+q  -L cscope.files
-    sed 's/\s.*$//g' tags | uniq >  dict
+    create_tags
+    create_dict
     echo "create  success"
 }
 
@@ -49,9 +68,8 @@ function csseta()
         find ${arg}  -type f | sed '/\/\.[^\.]\| \|\.o$\|tags\|cscope\|\.a$/d'  >> cscope.files
     done
 
-    echo "create tags"
-    ctags --c-kinds=-m --c++-kinds=-m --fields=+iaS --extra=+q  -L cscope.files
-    sed 's/\s.*$//g' tags | uniq >  dict
+    create_tags
+    create_dict
 
     echo "create  success"
 }
