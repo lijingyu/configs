@@ -13,9 +13,6 @@ if has("win32")
     set fileencodings=
 else
     set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
-    "set runtimepath
-    set rtp+=/home/lijy/.vim
-    set rtp+=/home/lijy/.vim/after
 
     set guifont=Consolas\ 14
     if has("gui_running")
