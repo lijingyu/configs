@@ -19,6 +19,7 @@ else
         colorscheme ljyat
         set guioptions-=m
         set guioptions-=T
+        set guioptions-=L
     else
         colorscheme default
     endif
