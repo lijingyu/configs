@@ -137,6 +137,12 @@ nmap <F3> :LjyatNERDTreeOpenBufDir<CR>
 
 let NERDTreeWinPos = "right"
 function! LjyatNERDTreeOpenBufDir()
+    if (exists("t:NERDTreeBufName"))
+        if (bufwinnr(t:NERDTreeBufName) != -1)
+            execute "silent! NERDTreeClose"
+            return
+        endif
+    endif
     let l:bufname = bufname("%")
     execute "silent! NERDTree " . l:bufname
 endfunction
