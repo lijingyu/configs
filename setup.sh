@@ -94,7 +94,7 @@ function csclean()
     else
         for arg in $@
         do
-            find $arg  -type f -name "cscope.*" -o -name tags -o name dict |xargs rm -rf
+            find $arg  -type f -name "cscope.*" -o -name tags -o -name dict |xargs rm -rf
         done
     fi
 }
