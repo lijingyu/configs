@@ -31,6 +31,7 @@ hi Visual          guifg=black   guibg=white
 hi Normal          guifg=White guibg=grey20
 hi CursorLine      guifg=black   guibg=white
 hi CursorColumn                  guibg=#293739
+hi Cursor          guifg=white guibg=red
 hi LineNr          guifg=#555555 guibg=#232526
 hi NonText         guifg=#BCBCBC guibg=#232526
 hi StatusLine      guifg=black   guibg=#C2BFA5 gui=bold
