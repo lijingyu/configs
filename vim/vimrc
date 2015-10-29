@@ -133,7 +133,7 @@ nmap <F9> :edit ++ff=dos <CR>
 nmap M :nohlsearch<CR>:MarkClear<CR><leader>m
 nmap n <leader>/
 nmap N <leader>?
-nmap <leader>] <C-w>}
+nmap <leader>] <C-w>g}
 
 nmap <F3> :LjyatNERDTreeOpenBufDir<CR>
 
