@@ -108,6 +108,7 @@ nmap <M-c> :nohlsearch <CR> :MarkClear<CR>
 nmap <M-q> <C-q>
 "copy and paste
 vmap <C-c> "+y
+vmap m <leader>m
 nmap <C-v> "+p
 
 nmap <M-e> g_
