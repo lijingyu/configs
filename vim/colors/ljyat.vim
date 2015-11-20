@@ -23,13 +23,11 @@ hi Function        guifg=#21BC71 gui=bold
 "hi Title           guifg=#21BC71 gui=NONE
 hi Title           guibg=NONE guifg=cyan
 hi Keyword         guifg=#E6C84F   gui=NONE
-hi Directory       term=bold ctermfg=159 guifg=yellow
 hi Type            guifg=#95e454 gui=NONE
 hi VertSplit       guifg=#808080 guibg=#080808 gui=bold
 hi VisualNOS                     guibg=#403D3D
 hi Visual          guifg=black   guibg=white
 hi Normal          guifg=White guibg=grey20
-hi CursorLine      guifg=black   guibg=white
 hi CursorColumn                  guibg=#293739
 hi Cursor          guifg=white guibg=red
 hi LineNr          guifg=#555555 guibg=#232526
@@ -41,6 +39,8 @@ hi String     guifg=#FF80FF
 hi DefinedName    guifg=#FFCC00
 hi clear Constant
 
+hi! def link Directory   Function
+hi! def link CursorLine  Search
 hi! def link ModeMsg     Directory
 hi! def link Typedef        Structure
 hi! def link CTagsType        Structure
