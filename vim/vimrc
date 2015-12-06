@@ -100,7 +100,7 @@ map <C-h> <C-w>h
 map <C-l> <C-w>l
 nmap <M-2> <C-w>c
 nmap <M-3> <C-w>v
-nmap <M-/> :tj /
+nmap <M-/> :LjyatSearchTags<CR>
 "=> switch windows end
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "=> normal set
@@ -191,6 +191,27 @@ function! CscopeReload_cs()
     endif
 endfunction
 command! R call CscopeReload_cs()
+
+function! LjyatSearchTags()
+    if !filereadable("tags")
+        echohl Special
+        echo "   tags file not exist"
+        echohl None
+        return
+    endif
+
+    echohl Question
+    let pattern = input("  Search tag: ")
+    echohl None
+
+    if pattern == ""
+        return 
+    endif
+
+    execute "tj /" . pattern
+endfunction
+
+command! LjyatSearchTags call LjyatSearchTags()
 
 function! Arggrep(pattern_arg)
     if !filereadable("cscope.files")
