@@ -4,9 +4,7 @@ if has("syntax")
     syntax on
 endif
 
-if has("autocmd")
-    filetype plugin indent on
-endif
+filetype plugin indent on
 
 if has("win32")
     set guifont=Courier_New:h10:cANSI
