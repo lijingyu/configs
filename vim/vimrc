@@ -1,4 +1,4 @@
-runtime! debian.vim
+set nocompatible
 
 if has("syntax")
     syntax on
@@ -30,7 +30,6 @@ endif
 "vimrc is not usefull for gvim
 "set vb t_vb=
 """"""""""""""""""""""""""""""""""""""""""""""
-set nocompatible
 set showmatch		" Show matching brackets.
 set incsearch		" Incremental search
 set autowrite		" Automatically save before commands like :next and :make
@@ -45,7 +44,6 @@ set updatetime=100
 set previewheight=10
 set nu
 set linespace=3
-"set hlsearch
 set autoindent
 set smartindent
 set cindent 
