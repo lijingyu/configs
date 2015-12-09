@@ -30,6 +30,7 @@ endif
 "vimrc is not usefull for gvim
 "set vb t_vb=
 """"""""""""""""""""""""""""""""""""""""""""""
+set nocompatible
 set showmatch		" Show matching brackets.
 set incsearch		" Incremental search
 set autowrite		" Automatically save before commands like :next and :make
@@ -58,7 +59,6 @@ set backspace=indent,eol,start
 set t_Co=256
 set nowrapscan
 set winaltkeys=no
-set nocompatible
 set diffopt=filler,horizontal
 set dictionary=dict
 let c_syntax_for_h = 1
