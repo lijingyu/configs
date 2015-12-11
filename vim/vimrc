@@ -6,21 +6,21 @@ endif
 
 filetype plugin indent on
 
-if has("win32")
-    set guifont=Courier_New:h10:cANSI
-    set fileencodings=
-else
-    set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
+if has("gui_running")
+    set guioptions-=m
+    set guioptions-=T
+    set guioptions-=L
 
-    set guifont=Consolas\ 14
-    if has("gui_running")
-        colorscheme ljyat
-        set guioptions-=m
-        set guioptions-=T
-        set guioptions-=L
+    if has("win32")
+        set guifont=Courier_New:h12:cANSI
+        set fileencodings=
     else
-        colorscheme default
+        set guifont=Consolas\ 14
+        set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
+        colorscheme ljyat
     endif
+else
+    colorscheme default
 endif
 
 """"""""Special in Gvim"""""""""""""""""""""""
