@@ -308,6 +308,9 @@ function! LjyatSearchStringInFiles(pattern_arg)
     echomsg "Searching all-str..."
     execute "silent! " . real_cmd
 
+    let ef = &errorformat
+    set efm=%f:%l:%m
+
     if v:version >= 700 
         execute "silent! lgetfile " . tmpfile
     else
@@ -323,6 +326,7 @@ function! LjyatSearchStringInFiles(pattern_arg)
     " Open the quickfix window below the current window
     lopen
 
+    let &errorformat=ef
     execute "silent! !rm -rf " . tmpfile
 endfunction
 command! LjyatSearchStringInFiles call LjyatSearchStringInFiles('')
