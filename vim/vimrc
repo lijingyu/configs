@@ -135,9 +135,9 @@ nmap M :nohlsearch<CR>:MarkClear<CR><leader>m
 nmap n <leader>/
 nmap N <leader>?
 nmap <leader>] <C-w>g}
-
 nmap <F3> :LjyatNERDTreeOpenBufDir<CR>
 
+let g:tmpcscope_files = 'cscope.files'
 let NERDTreeWinPos = "right"
 function! LjyatNERDTreeOpenBufDir()
     if (exists("t:NERDTreeBufName"))
@@ -149,7 +149,6 @@ function! LjyatNERDTreeOpenBufDir()
     let l:bufname = bufname("%")
     execute "silent! NERDTree " . l:bufname
 endfunction
-command! LjyatNERDTreeOpenBufDir call LjyatNERDTreeOpenBufDir ()
 
 "=> cscope set
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -157,7 +156,6 @@ if has("cscope")
     set csprg=/usr/bin/cscope
     set csto=1
     set nocst
-    set nocsverb
     " add any database in current directory
     if filereadable("cscope.out")
         cs add cscope.out
@@ -165,8 +163,30 @@ if has("cscope")
     elseif $CSCOPE_DB != ""
         cs add $CSCOPE_DB
     endif
-    set csverb
 endif
+
+function! CleanTmpCscopeFiles()
+    if g:tmpcscope_files == "cscope.files"
+        return
+    else
+        execute "silent! !rm -rf " . g:tmpcscope_files
+    endif
+endfunction
+
+function! ResetTagsAndCscope()
+    silent exe "cs kill -1"
+    call CleanTmpCscopeFiles()
+    let &tags="./tags,./TAGS,tags,TAGS"
+    let g:tmpcscope_files = 'cscope.files'
+
+    if filereadable('cscope.out')
+        silent! exe "cscope add cscope.out"
+    endif
+    echohl Special
+    echo "   ResetTagsAndCscope"
+    echohl None
+    return
+endfunction
 
 function! AddCscopeAndTags(predirs)
     if a:predirs == ''
@@ -176,12 +196,22 @@ function! AddCscopeAndTags(predirs)
         return
     endif
 
-    silent! cscope add cscope.out
+    if g:tmpcscope_files == 'cscope.files'
+        let g:tmpcscope_files = "/tmp/cscope.files." . getpid()
+        if filereadable('cscope.files')
+            silent exe "!cat cscope.files > " . g:tmpcscope_files
+        endif
+    endif
 
     for dir in split(a:predirs, ",")
         let dir = split(dir, "\"")[0]
         let new_tag_path=dir . "/tags"
         let new_cscope_path=dir . "/cscope.out"
+        let new_cscope_files=dir . "/cscope.files"
+
+        if filereadable(new_cscope_files)
+            silent exe "!cat " . new_cscope_files . "|sed 's:^:" . dir . "/:' >> " . g:tmpcscope_files
+        endif
 
         if filereadable(new_tag_path)
             let tmp = &tags
@@ -203,16 +233,7 @@ function! AddCscopeAndTags(predirs)
     endfor
 endfunction
 
-command! -nargs=+ -complete=dir R call AddCscopeAndTags('<f-args>')
-
 function! LjyatSearchTags()
-    if !filereadable("tags")
-        echohl Special
-        echo "   tags file not exist"
-        echohl None
-        return
-    endif
-
     echohl Question
     let pattern = input("  Search tag: ")
     echohl None
@@ -223,8 +244,6 @@ function! LjyatSearchTags()
 
     execute "tj /" . pattern
 endfunction
-
-command! LjyatSearchTags call LjyatSearchTags()
 
 function! Arggrep(pattern_arg)
     if !filereadable("cscope.files")
@@ -288,11 +307,10 @@ EOF
 
     execute "silent! !rm -rf " . tmpfile
 endfunction
-command! -nargs=1 Arggrep call Arggrep(<f-args>)
 
 "CscopeSearchStringPattern
 function! LjyatSearchStringInFiles(pattern_arg)
-    if !filereadable("cscope.files")
+    if !filereadable(g:tmpcscope_files)
         echohl Special
         echo "   cscope.files not exist"
         echohl None
@@ -315,7 +333,7 @@ function! LjyatSearchStringInFiles(pattern_arg)
 
     let pattern = "'" . pattern . "'"
     let tmpfile = '/tmp/gvim.tmp' . getpid()
-    let real_cmd = '!cat cscope.files|xargs grep -n -E ' . pattern . '  > ' . tmpfile
+    let real_cmd = '!cat '. g:tmpcscope_files . '|xargs grep -n -E ' . pattern . '  > ' . tmpfile
     redraw
     echomsg "Searching all-str..."
     execute "silent! " . real_cmd
@@ -341,11 +359,10 @@ function! LjyatSearchStringInFiles(pattern_arg)
     let &errorformat=ef
     execute "silent! !rm -rf " . tmpfile
 endfunction
-command! LjyatSearchStringInFiles call LjyatSearchStringInFiles('')
 
 "CscopeFindFilePattern
 function! Argfind(pattern)
-    if !filereadable("cscope.files")
+    if !filereadable(g:tmpcscope_files)
         echohl Special
         echo "   cscope.files not exist"
         echohl None
@@ -359,7 +376,7 @@ function! Argfind(pattern)
 
     let a:pattern = "'" . a:pattern . "'"
     let tmpfile = '/tmp/gvim.tmp' . getpid()
-    let real_cmd = '!grep  -i -E ' . a:pattern . ' cscope.files  > '  . tmpfile
+    let real_cmd = '!grep  -i -E ' . a:pattern . ' ' . g:tmpcscope_files . ' > '  . tmpfile
     redraw
     echomsg "Searching file..."
     execute "silent! " . real_cmd
@@ -410,7 +427,7 @@ command! -nargs=1 Argfind call Argfind(<f-args>)
 
 "CscopeFindFilePattern
 function! LjyatSearchFileInFileList()
-    if !filereadable("cscope.files")
+    if !filereadable(g:tmpcscope_files)
         echohl Special
         echo "   cscope.files not exist"
         echohl None
@@ -427,7 +444,7 @@ function! LjyatSearchFileInFileList()
 
     let pattern = "'" . pattern . "'"
     let tmpfile = '/tmp/gvim.tmp' . getpid()
-    let real_cmd = '!grep  -i -E ' . pattern . ' cscope.files  > '  . tmpfile
+    let real_cmd = '!grep  -i -E ' . pattern . ' ' . g:tmpcscope_files . ' > '  . tmpfile
     redraw
     echomsg "Searching file..."
     execute "silent! " . real_cmd
@@ -455,7 +472,6 @@ function! LjyatSearchFileInFileList()
     execute "silent! !rm -rf " . tmpfile
 endfunction
 "CscopeFindFilePattern
-command! LjyatSearchFileInFileList call LjyatSearchFileInFileList()
 
 function! LjyatSearchStringCurrentBuffer()
     let curfilename = expand("%")
@@ -488,7 +504,6 @@ function! LjyatSearchStringCurrentBuffer()
     lopen
 
 endfunction
-command! LjyatSearchStringCurrentBuffer call LjyatSearchStringCurrentBuffer()
 
 function! LjyatVSearchStringCurrentBuffer()
     let curfilename = expand("%")
@@ -516,7 +531,6 @@ function! LjyatVSearchStringCurrentBuffer()
     lopen
 
 endfunction
-command! LjyatVSearchStringCurrentBuffer call LjyatVSearchStringCurrentBuffer()
 function! LjyatVSearchStringInFiles()
     let old = @"
     exe "normal! gvy"
@@ -556,6 +570,16 @@ function! AutoToggleTlistTagbar()
     endif
 endfunction
 
+command! -nargs=+ -complete=dir A call AddCscopeAndTags('<f-args>')
+command! -nargs=0 R call ResetTagsAndCscope()
+command! LjyatNERDTreeOpenBufDir call LjyatNERDTreeOpenBufDir ()
+command! LjyatSearchTags call LjyatSearchTags()
+command! -nargs=1 Arggrep call Arggrep(<f-args>)
+command! LjyatSearchStringInFiles call LjyatSearchStringInFiles('')
+command! LjyatSearchFileInFileList call LjyatSearchFileInFileList()
+command! LjyatVSearchStringCurrentBuffer call LjyatVSearchStringCurrentBuffer()
+command! LjyatSearchStringCurrentBuffer call LjyatSearchStringCurrentBuffer()
+
 " => Set OminComplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 autocmd FileType python set omnifunc=pythoncomplete#Complete
@@ -568,6 +592,7 @@ autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 autocmd FileType c,cpp,java,cs set omnifunc=ccomplete#Complete
 
 autocmd BufEnter *.h,*.c,*.cpp,*.java call AutoToggleTlistTagbar()
+autocmd VimLeave * call CleanTmpCscopeFiles()
 
 " => Set OminComplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
