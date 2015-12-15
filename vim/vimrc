@@ -44,7 +44,7 @@ set nu
 set linespace=3
 set autoindent
 set smartindent
-set cindent 
+set cindent
 set tabstop=4
 set shiftwidth=4
 set et
@@ -87,7 +87,7 @@ nmap <C-_>d :cs find d <C-R>=expand("<cword>")<CR><CR>
 
 nmap <M-[> :cs find c <C-R>=expand("<cword>")<CR><CR>
 nmap <M-\> :cs find s <C-R>=expand("<cword>")<CR><CR>
-nmap <M-t> :cs f t 
+nmap <M-t> :cs f t
 "=> switch windows
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 map <C-j> <C-w>j
@@ -126,7 +126,7 @@ nmap <M-RightMouse> :nohlsearch<CR>:MarkClear<CR>
 nmap <F5> :nohlsearch <CR>:MarkClear<CR>
 nmap <F6> :TlistClose<CR> :JavaBrowser <CR>
 
-"grep -E 
+"grep -E
 nmap <M-s> :LjyatSearchStringInFiles<CR>
 nmap <F9> :edit ++ff=dos <CR>
 
@@ -168,25 +168,42 @@ if has("cscope")
     set csverb
 endif
 
-function! CscopeReload_cs()
-    if has("cscope")
-        if !filereadable("cscope.out")
+function! AddCscopeAndTags(predirs)
+    if a:predirs == ''
+        echohl Special
+        echo "   prepath is empty"
+        echohl None
+        return
+    endif
+
+    silent! cscope add cscope.out
+
+    for dir in split(a:predirs, ",")
+        let dir = split(dir, "\"")[0]
+        let new_tag_path=dir . "/tags"
+        let new_cscope_path=dir . "/cscope.out"
+
+        if filereadable(new_tag_path)
+            let tmp = &tags
+            let tmp = tmp . "," . new_tag_path
+            let &tags=tmp
+        else
             echohl Special
-            echo "   cscope.out not exist"
+            echo "   tags not exist:" . new_tag_path
             echohl None
-            return
         endif
 
-        set nocscopeverbose
-        cs kill -1
-        cs add  cscope.out
-        set cscopeverbose
-        echohl Question
-        echo '  Add cscope.out'
-        echohl None
-    endif
+        if filereadable(new_cscope_path)
+            silent! exe "cscope add " . new_cscope_path . " " . dir
+        else
+            echohl Special
+            echo "   cscope.out not exist:" . new_cscope_path
+            echohl None
+        endif
+    endfor
 endfunction
-command! R call CscopeReload_cs()
+
+command! -nargs=+ -complete=dir R call AddCscopeAndTags('<f-args>')
 
 function! LjyatSearchTags()
     if !filereadable("tags")
@@ -201,7 +218,7 @@ function! LjyatSearchTags()
     echohl None
 
     if pattern == ""
-        return 
+        return
     endif
 
     execute "tj /" . pattern
@@ -217,23 +234,18 @@ function! Arggrep(pattern_arg)
         return
     endif
 
-    echohl Question
-    if a:pattern_arg != ''
-        let pattern = input("  Search all-str: ", a:pattern_arg)
-    else
-        let pattern = input("  Search all-str: ", expand("<cword>"))
-    endif
-    echohl None
-
-    if pattern == ""
-        return 
+    if a:pattern_arg == ''
+        echohl Special
+        echo "   pattern is null"
+        echohl None
+        return
     endif
 
-    execute "silent! MarkClear|Mark " . pattern
+    execute "silent! MarkClear|silent! Mark " . a:pattern_arg
 
-    let pattern = "'" . pattern . "'" 
+    let a:pattern_arg = "'" . a:pattern_arg . "'"
     let tmpfile = '/tmp/gvim.tmp' . getpid()
-    let real_cmd = '!cat cscope.files|xargs grep -n -E ' . pattern . '  > ' . tmpfile
+    let real_cmd = '!cat cscope.files|xargs grep -n -E ' . a:pattern_arg . '  > ' . tmpfile
     redraw
     echomsg "Searching all-str..."
     execute "silent! " . real_cmd
@@ -259,7 +271,7 @@ for new in flist:
 vim.command('args ' + args)
 EOF
 
-    if v:version >= 700 
+    if v:version >= 700
         execute "silent! lgetfile " . tmpfile
     else
         if exists(":lgetfile")
@@ -276,7 +288,7 @@ EOF
 
     execute "silent! !rm -rf " . tmpfile
 endfunction
-command! Arggrep call Arggrep('')
+command! -nargs=1 Arggrep call Arggrep(<f-args>)
 
 "CscopeSearchStringPattern
 function! LjyatSearchStringInFiles(pattern_arg)
@@ -296,12 +308,12 @@ function! LjyatSearchStringInFiles(pattern_arg)
     echohl None
 
     if pattern == ""
-        return 
+        return
     endif
 
     execute "silent! MarkClear|Mark " . pattern
 
-    let pattern = "'" . pattern . "'" 
+    let pattern = "'" . pattern . "'"
     let tmpfile = '/tmp/gvim.tmp' . getpid()
     let real_cmd = '!cat cscope.files|xargs grep -n -E ' . pattern . '  > ' . tmpfile
     redraw
@@ -311,7 +323,7 @@ function! LjyatSearchStringInFiles(pattern_arg)
     let ef = &errorformat
     set efm=%f:%l:%m
 
-    if v:version >= 700 
+    if v:version >= 700
         execute "silent! lgetfile " . tmpfile
     else
         if exists(":lgetfile")
@@ -332,7 +344,7 @@ endfunction
 command! LjyatSearchStringInFiles call LjyatSearchStringInFiles('')
 
 "CscopeFindFilePattern
-function! Argfind()
+function! Argfind(pattern)
     if !filereadable("cscope.files")
         echohl Special
         echo "   cscope.files not exist"
@@ -340,17 +352,14 @@ function! Argfind()
         return
     endif
 
-    echohl Question
-    let pattern = input("  Search file: ")
-    echohl None
-
-    if pattern == ""
-        return 
+    if a:pattern == ''
+        echo "   pattern is null"
+        return
     endif
 
-    let pattern = "'" . pattern . "'" 
+    let a:pattern = "'" . a:pattern . "'"
     let tmpfile = '/tmp/gvim.tmp' . getpid()
-    let real_cmd = '!grep  -i -E ' . pattern . ' cscope.files  > '  . tmpfile
+    let real_cmd = '!grep  -i -E ' . a:pattern . ' cscope.files  > '  . tmpfile
     redraw
     echomsg "Searching file..."
     execute "silent! " . real_cmd
@@ -375,10 +384,10 @@ for new in flist:
 vim.command('args ' + args)
 EOF
 
-    let ef = &errorformat 
+    let ef = &errorformat
     set efm=%f
 
-    if v:version >= 700 
+    if v:version >= 700
         execute "silent! lgetfile " . tmpfile
     else
         if exists(":lgetfile")
@@ -393,11 +402,11 @@ EOF
     " Open the quickfix window below the current window
     lopen
 
-    let &errorformat = ef 
+    let &errorformat = ef
 
     execute "silent! !rm -rf " . tmpfile
 endfunction
-command! Argfind call Argfind()
+command! -nargs=1 Argfind call Argfind(<f-args>)
 
 "CscopeFindFilePattern
 function! LjyatSearchFileInFileList()
@@ -413,20 +422,20 @@ function! LjyatSearchFileInFileList()
     echohl None
 
     if pattern == ""
-        return 
+        return
     endif
 
-    let pattern = "'" . pattern . "'" 
+    let pattern = "'" . pattern . "'"
     let tmpfile = '/tmp/gvim.tmp' . getpid()
     let real_cmd = '!grep  -i -E ' . pattern . ' cscope.files  > '  . tmpfile
     redraw
     echomsg "Searching file..."
     execute "silent! " . real_cmd
 
-    let ef = &errorformat 
+    let ef = &errorformat
     set efm=%f
 
-    if v:version >= 700 
+    if v:version >= 700
         execute "silent! lgetfile " . tmpfile
     else
         if exists(":lgetfile")
@@ -441,7 +450,7 @@ function! LjyatSearchFileInFileList()
     " Open the quickfix window below the current window
     lopen
 
-    let &errorformat = ef 
+    let &errorformat = ef
 
     execute "silent! !rm -rf " . tmpfile
 endfunction
@@ -462,12 +471,12 @@ function! LjyatSearchStringCurrentBuffer()
     echohl None
 
     if pattern == ""
-        return 
+        return
     endif
 
     execute "silent! MarkClear|Mark " . pattern
 
-    let pattern = "/" . pattern . "/" 
+    let pattern = "/" . pattern . "/"
     let real_cmd = "lvimgrep " . pattern . " %"
     redraw
     echomsg "Searching cur-str..."
@@ -497,7 +506,7 @@ function! LjyatVSearchStringCurrentBuffer()
 
     let pattern = input("  Search cur-str: ", pattern)
 
-    let pattern = "/" . pattern . "/" 
+    let pattern = "/" . pattern . "/"
     let real_cmd = "lvimgrep " . pattern . " %"
     execute "silent! " . real_cmd
 
@@ -549,13 +558,13 @@ endfunction
 
 " => Set OminComplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-autocmd FileType python set omnifunc=pythoncomplete#Complete 
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS 
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags 
-autocmd FileType htm set omnifunc=htmlcomplete#CompleteTags 
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS 
-autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags 
-autocmd FileType php set omnifunc=phpcomplete#CompletePHP 
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType htm set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 autocmd FileType c,cpp,java,cs set omnifunc=ccomplete#Complete
 
 autocmd BufEnter *.h,*.c,*.cpp,*.java call AutoToggleTlistTagbar()
