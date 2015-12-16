@@ -225,7 +225,7 @@ function! AddCscopeAndTags(predirs)
         endif
 
         if filereadable(new_cscope_path)
-            silent! exe "cscope add " . new_cscope_path . " " . dir
+            silent! exe "cscope add " . new_cscope_path . " " . dir . '/'
         else
             echohl Special
             echo "   cscope.out not exist:" . new_cscope_path
