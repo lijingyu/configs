@@ -206,6 +206,7 @@ function! AddCscopeAndTags(predirs)
     for dir in split(a:predirs, ",")
         let dir = split(dir, "\"")[0]
         let dir = substitute(dir, '/$', '','')
+        let dir = substitute(dir, '/$', '','')
         let new_tag_path=dir . "/tags"
         let new_cscope_path=dir . "/cscope.out"
         let new_cscope_files=dir . "/cscope.files"
@@ -214,21 +215,15 @@ function! AddCscopeAndTags(predirs)
             silent exe "!cat " . new_cscope_files . "|sed 's:^:" . dir . "/:' >> " . g:tmpcscope_files
         endif
 
-        if filereadable(new_tag_path)
+        if filereadable(new_tag_path) && filereadable(new_cscope_path)
             let tmp = &tags
             let tmp = tmp . "," . new_tag_path
             let &tags=tmp
-        else
-            echohl Special
-            echo "   tags not exist:" . new_tag_path
-            echohl None
-        endif
 
-        if filereadable(new_cscope_path)
-            silent! exe "cscope add " . new_cscope_path . " " . dir . '/'
+            silent! exe "cscope add " . new_cscope_path . " ./" . dir
         else
             echohl Special
-            echo "   cscope.out not exist:" . new_cscope_path
+            echo "   No needed file in: " . dir
             echohl None
         endif
     endfor
