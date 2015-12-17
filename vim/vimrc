@@ -261,9 +261,9 @@ function! Arggrep(pattern_arg)
 
     execute "silent! MarkClear|silent! Mark " . a:pattern_arg
 
-    let a:pattern_arg = "'" . a:pattern_arg . "'"
+    let pattern_arg = "'" . a:pattern_arg . "'"
     let tmpfile = '/tmp/gvim.tmp' . getpid()
-    let real_cmd = '!cat cscope.files|xargs grep -n -E ' . a:pattern_arg . '  > ' . tmpfile
+    let real_cmd = '!cat cscope.files|xargs grep -n -E ' . pattern_arg . '  > ' . tmpfile
     redraw
     echomsg "Searching all-str..."
     execute "silent! " . real_cmd
@@ -373,9 +373,9 @@ function! Argfind(pattern)
         return
     endif
 
-    let a:pattern = "'" . a:pattern . "'"
+    let pattern = "'" . a:pattern . "'"
     let tmpfile = '/tmp/gvim.tmp' . getpid()
-    let real_cmd = '!grep  -i -E ' . a:pattern . ' ' . g:tmpcscope_files . ' > '  . tmpfile
+    let real_cmd = '!grep  -i -E ' . pattern . ' ' . g:tmpcscope_files . ' > '  . tmpfile
     redraw
     echomsg "Searching file..."
     execute "silent! " . real_cmd
