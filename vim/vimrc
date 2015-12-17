@@ -219,7 +219,11 @@ function! AddCscopeAndTags(predirs)
             let tmp = tmp . "," . new_tag_path
             let &tags=tmp
 
-            silent! exe "cscope add " . new_cscope_path . " ./" . dir
+            "cscope prepath always need a '/'
+            if stridx(dir, "/") == -1
+                let dir = substitute(dir, '^', './','')
+            endif
+            silent! exe "cscope add " . new_cscope_path . " " . dir
         else
             echohl Special
             echo "   No needed file in: " . dir
