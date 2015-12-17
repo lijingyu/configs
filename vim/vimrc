@@ -110,7 +110,6 @@ nmap <M-q> <C-q>
 vmap <C-c> "+y
 vmap m <leader>m
 nmap <C-v> "+p
-
 nmap <M-e> g_
 nmap <M-a> 0
 nmap <M-1> :pc<CR>:lcl<CR>:echomsg ""<CR>
@@ -301,13 +300,11 @@ EOF
 
     redraw
     echomsg ""
-    " Open the quickfix window below the current window
     lopen
 
     execute "silent! !rm -rf " . tmpfile
 endfunction
 
-"CscopeSearchStringPattern
 function! LjyatSearchStringInFiles(pattern_arg)
     if !filereadable(g:tmpcscope_files)
         echohl Special
@@ -352,14 +349,12 @@ function! LjyatSearchStringInFiles(pattern_arg)
 
     redraw
     echomsg ""
-    " Open the quickfix window below the current window
     lopen
 
     let &errorformat=ef
     execute "silent! !rm -rf " . tmpfile
 endfunction
 
-"CscopeFindFilePattern
 function! Argfind(pattern)
     if !filereadable(g:tmpcscope_files)
         echohl Special
@@ -415,16 +410,13 @@ EOF
 
     redraw
     echomsg ""
-    " Open the quickfix window below the current window
     lopen
 
     let &errorformat = ef
 
     execute "silent! !rm -rf " . tmpfile
 endfunction
-command! -nargs=1 Argfind call Argfind(<f-args>)
 
-"CscopeFindFilePattern
 function! LjyatSearchFileInFileList()
     if !filereadable(g:tmpcscope_files)
         echohl Special
@@ -463,14 +455,12 @@ function! LjyatSearchFileInFileList()
 
     redraw
     echomsg ""
-    " Open the quickfix window below the current window
     lopen
 
     let &errorformat = ef
 
     execute "silent! !rm -rf " . tmpfile
 endfunction
-"CscopeFindFilePattern
 
 function! LjyatSearchStringCurrentBuffer()
     let curfilename = expand("%")
@@ -499,7 +489,6 @@ function! LjyatSearchStringCurrentBuffer()
 
     redraw
     echomsg ""
-    " Open the quickfix window below the current window
     lopen
 
 endfunction
@@ -526,10 +515,9 @@ function! LjyatVSearchStringCurrentBuffer()
 
     redraw
     echomsg ""
-    " Open the quickfix window below the current window
     lopen
-
 endfunction
+
 function! LjyatVSearchStringInFiles()
     let old = @"
     exe "normal! gvy"
@@ -569,6 +557,7 @@ function! AutoToggleTlistTagbar()
     endif
 endfunction
 
+command! -nargs=1 Argfind call Argfind(<f-args>)
 command! -nargs=+ -complete=dir A call AddCscopeAndTags('<f-args>')
 command! -nargs=0 R call ResetTagsAndCscope()
 command! LjyatNERDTreeOpenBufDir call LjyatNERDTreeOpenBufDir ()
