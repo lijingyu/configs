@@ -181,7 +181,7 @@ function! ResetTagsAndCscope()
     if filereadable('cscope.out')
         silent! exe "cscope add cscope.out"
     endif
-    echohl Special
+    echohl Todo
     echo "   ResetTagsAndCscope"
     echohl None
     return
@@ -189,7 +189,7 @@ endfunction
 
 function! AddCscopeAndTags(predirs)
     if a:predirs == ''
-        echohl Special
+        echohl Todo
         echo "   prepath is empty"
         echohl None
         return
@@ -224,7 +224,7 @@ function! AddCscopeAndTags(predirs)
             endif
             silent! exe "cscope add " . new_cscope_path . " " . dir
         else
-            echohl Special
+            echohl Todo
             echo "   No needed file in: " . dir
             echohl None
         endif
@@ -245,14 +245,14 @@ endfunction
 
 function! Arggrep(pattern_arg)
     if !filereadable("cscope.files")
-        echohl Special
+        echohl Todo
         echo "   cscope.files not exist"
         echohl None
         return
     endif
 
     if a:pattern_arg == ''
-        echohl Special
+        echohl Todo
         echo "   pattern is null"
         echohl None
         return
@@ -307,7 +307,7 @@ endfunction
 
 function! LjyatSearchStringInFiles(pattern_arg)
     if !filereadable(g:tmpcscope_files)
-        echohl Special
+        echohl Todo
         echo "   cscope.files not exist"
         echohl None
         return
@@ -357,7 +357,7 @@ endfunction
 
 function! Argfind(pattern)
     if !filereadable(g:tmpcscope_files)
-        echohl Special
+        echohl Todo
         echo "   cscope.files not exist"
         echohl None
         return
@@ -419,7 +419,7 @@ endfunction
 
 function! LjyatSearchFileInFileList()
     if !filereadable(g:tmpcscope_files)
-        echohl Special
+        echohl Todo
         echo "   cscope.files not exist"
         echohl None
         return
@@ -465,7 +465,7 @@ endfunction
 function! LjyatSearchStringCurrentBuffer()
     let curfilename = expand("%")
     if curfilename == ""
-        echohl Special
+        echohl Todo
         echo "   buffer name is NULL"
         echohl None
         return
@@ -496,7 +496,7 @@ endfunction
 function! LjyatVSearchStringCurrentBuffer()
     let curfilename = expand("%")
     if curfilename == ""
-        echohl Special
+        echohl Todo
         echo "   buffer name is NULL"
         echohl None
         return
