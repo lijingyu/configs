@@ -87,6 +87,18 @@ function cstag()
     fi
 }
 
+function delete_cscope_tags()
+{
+   if [ -d $@ ];then
+       cur_dir=`pwd`
+       cd $@
+       rm  -rf cscope* tags TAGS ncscope* dict
+       cd $cur_dir
+   else
+       echo "$@ is not directory!!"
+   fi
+}
+
 function csclean()
 {
     if [ $# -eq 0 ];then
@@ -94,18 +106,7 @@ function csclean()
     else
         for arg in $@
         do
-            find $arg  -type f -name "cscope.*" -o -name tags -o -name dict |xargs rm -rf
-        done
-    fi
-}
-function cscleana()
-{
-    if [ $# -eq 0 ];then
-        rm  -rf cscope* tags TAGS dict
-    else
-        for arg in $@
-        do
-            find $arg  -type f -name "cscope.*" -o -name tags -o  -name dict -o -name TAGS |xargs rm -rf
+            delete_cscope_tags $arg
         done
     fi
 }
