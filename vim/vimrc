@@ -264,7 +264,7 @@ function! Arggrep(pattern_arg)
     let pattern_arg = "'" . a:pattern_arg . "'"
     let tmpfile = '/tmp/gvim.tmp' . getpid()
     let real_cmd = '!cat cscope.files|xargs grep -n -E ' . pattern_arg . '  > ' . tmpfile
-    redraw
+    redraw!
     echomsg "Searching all-str..."
     execute "silent! " . real_cmd
 
@@ -299,8 +299,7 @@ EOF
         endif
     endif
 
-    redraw
-    echomsg ""
+    redraw!
     lopen
 
     execute "silent! !rm -rf " . tmpfile
@@ -331,7 +330,7 @@ function! LjyatSearchStringInFiles(pattern_arg)
     let pattern = "'" . pattern . "'"
     let tmpfile = '/tmp/gvim.tmp' . getpid()
     let real_cmd = '!cat '. g:tmpcscope_files . '|xargs grep -n -E ' . pattern . '  > ' . tmpfile
-    redraw
+    redraw!
     echomsg "Searching all-str..."
     execute "silent! " . real_cmd
 
@@ -348,8 +347,7 @@ function! LjyatSearchStringInFiles(pattern_arg)
         endif
     endif
 
-    redraw
-    echomsg ""
+    redraw!
     lopen
 
     let &errorformat=ef
@@ -372,7 +370,7 @@ function! Argfind(pattern)
     let pattern = "'" . a:pattern . "'"
     let tmpfile = '/tmp/gvim.tmp' . getpid()
     let real_cmd = '!grep  -i -E ' . pattern . ' ' . g:tmpcscope_files . ' > '  . tmpfile
-    redraw
+    redraw!
     echomsg "Searching file..."
     execute "silent! " . real_cmd
 
@@ -409,8 +407,7 @@ EOF
         endif
     endif
 
-    redraw
-    echomsg ""
+    redraw!
     lopen
 
     let &errorformat = ef
@@ -437,7 +434,7 @@ function! LjyatSearchFileInFileList()
     let pattern = "'" . pattern . "'"
     let tmpfile = '/tmp/gvim.tmp' . getpid()
     let real_cmd = '!grep  -i -E ' . pattern . ' ' . g:tmpcscope_files . ' > '  . tmpfile
-    redraw
+    redraw!
     echomsg "Searching file..."
     execute "silent! " . real_cmd
 
@@ -454,8 +451,7 @@ function! LjyatSearchFileInFileList()
         endif
     endif
 
-    redraw
-    echomsg ""
+    redraw!
     lopen
 
     let &errorformat = ef
@@ -484,12 +480,11 @@ function! LjyatSearchStringCurrentBuffer()
 
     let pattern = "/" . pattern . "/"
     let real_cmd = "lvimgrep " . pattern . " %"
-    redraw
+    redraw!
     echomsg "Searching cur-str..."
     execute "silent! " . real_cmd
 
-    redraw
-    echomsg ""
+    redraw!
     lopen
 
 endfunction
@@ -514,8 +509,7 @@ function! LjyatVSearchStringCurrentBuffer()
     let real_cmd = "lvimgrep " . pattern . " %"
     execute "silent! " . real_cmd
 
-    redraw
-    echomsg ""
+    redraw!
     lopen
 endfunction
 
