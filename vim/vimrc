@@ -204,6 +204,7 @@ function! AddCscopeAndTags(predirs)
 
     for dir in split(a:predirs, ",")
         let dir = split(dir, "\"")[0]
+        let dir = expand(dir)
         let dir = substitute(dir, '/$', '','')
         let new_tag_path=dir . "/tags"
         let new_cscope_path=dir . "/cscope.out"
