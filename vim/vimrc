@@ -147,6 +147,7 @@ function! LjyatNERDTreeOpenBufDir()
     endif
     let l:bufname = bufname("%")
     execute "silent! NERDTree " . l:bufname
+    redraw!
 endfunction
 
 "=> cscope set
@@ -170,6 +171,7 @@ function! CleanTmpCscopeFiles()
     else
         execute "silent! !rm -rf " . g:tmpcscope_files
     endif
+    redraw!
 endfunction
 
 function! ResetTagsAndCscope()
@@ -185,6 +187,7 @@ function! ResetTagsAndCscope()
     echo "   ResetTagsAndCscope"
     echohl None
     return
+    redraw!
 endfunction
 
 function! AddCscopeAndTags(predirs)
@@ -228,8 +231,10 @@ function! AddCscopeAndTags(predirs)
             echohl Todo
             echo "   No needed file in: " . dir
             echohl None
+            return
         endif
     endfor
+    redraw!
 endfunction
 
 function! LjyatSearchTags()
@@ -242,6 +247,7 @@ function! LjyatSearchTags()
     endif
 
     execute "tj /" . pattern
+    redraw!
 endfunction
 
 function! Arggrep(pattern_arg)
@@ -264,7 +270,6 @@ function! Arggrep(pattern_arg)
     let pattern_arg = "'" . a:pattern_arg . "'"
     let tmpfile = '/tmp/gvim.tmp' . getpid()
     let real_cmd = '!cat cscope.files|xargs grep -n -E ' . pattern_arg . '  > ' . tmpfile
-    redraw!
     echomsg "Searching all-str..."
     execute "silent! " . real_cmd
 
@@ -299,10 +304,9 @@ EOF
         endif
     endif
 
-    redraw!
     lopen
-
     execute "silent! !rm -rf " . tmpfile
+    redraw!
 endfunction
 
 function! LjyatSearchStringInFiles(pattern_arg)
@@ -330,7 +334,6 @@ function! LjyatSearchStringInFiles(pattern_arg)
     let pattern = "'" . pattern . "'"
     let tmpfile = '/tmp/gvim.tmp' . getpid()
     let real_cmd = '!cat '. g:tmpcscope_files . '|xargs grep -n -E ' . pattern . '  > ' . tmpfile
-    redraw!
     echomsg "Searching all-str..."
     execute "silent! " . real_cmd
 
@@ -347,11 +350,10 @@ function! LjyatSearchStringInFiles(pattern_arg)
         endif
     endif
 
-    redraw!
     lopen
-
     let &errorformat=ef
     execute "silent! !rm -rf " . tmpfile
+    redraw!
 endfunction
 
 function! Argfind(pattern)
@@ -370,7 +372,6 @@ function! Argfind(pattern)
     let pattern = "'" . a:pattern . "'"
     let tmpfile = '/tmp/gvim.tmp' . getpid()
     let real_cmd = '!grep  -i -E ' . pattern . ' ' . g:tmpcscope_files . ' > '  . tmpfile
-    redraw!
     echomsg "Searching file..."
     execute "silent! " . real_cmd
 
@@ -407,12 +408,10 @@ EOF
         endif
     endif
 
-    redraw!
     lopen
-
     let &errorformat = ef
-
     execute "silent! !rm -rf " . tmpfile
+    redraw!
 endfunction
 
 function! LjyatSearchFileInFileList()
@@ -434,7 +433,6 @@ function! LjyatSearchFileInFileList()
     let pattern = "'" . pattern . "'"
     let tmpfile = '/tmp/gvim.tmp' . getpid()
     let real_cmd = '!grep  -i -E ' . pattern . ' ' . g:tmpcscope_files . ' > '  . tmpfile
-    redraw!
     echomsg "Searching file..."
     execute "silent! " . real_cmd
 
@@ -451,12 +449,10 @@ function! LjyatSearchFileInFileList()
         endif
     endif
 
-    redraw!
     lopen
-
     let &errorformat = ef
-
     execute "silent! !rm -rf " . tmpfile
+    redraw!
 endfunction
 
 function! LjyatSearchStringCurrentBuffer()
@@ -480,13 +476,10 @@ function! LjyatSearchStringCurrentBuffer()
 
     let pattern = "/" . pattern . "/"
     let real_cmd = "lvimgrep " . pattern . " %"
-    redraw!
     echomsg "Searching cur-str..."
     execute "silent! " . real_cmd
-
-    redraw!
     lopen
-
+    redraw!
 endfunction
 
 function! LjyatVSearchStringCurrentBuffer()
@@ -509,8 +502,8 @@ function! LjyatVSearchStringCurrentBuffer()
     let real_cmd = "lvimgrep " . pattern . " %"
     execute "silent! " . real_cmd
 
-    redraw!
     lopen
+    redraw!
 endfunction
 
 function! LjyatVSearchStringInFiles()
@@ -519,6 +512,7 @@ function! LjyatVSearchStringInFiles()
     let pattern = @"
     call LjyatSearchStringInFiles(pattern)
     let @" = old
+    redraw!
 endfunction
 
 function! ToggleTlistTagbar()
