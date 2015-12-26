@@ -20,7 +20,7 @@ if has("gui_running")
         colorscheme ljyat
     endif
 else
-    colorscheme default
+    colorscheme cterm
 endif
 
 """"""""Special in Gvim"""""""""""""""""""""""
