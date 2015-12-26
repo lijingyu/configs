@@ -1,5 +1,9 @@
 hi clear
+if exists("syntax_on")
+    syntax reset
+endif
 
+let colors_name="cterm"
 hi Normal ctermfg=255 ctermbg=235
 hi Comment ctermfg=242
 hi Comment ctermfg=244
