@@ -158,7 +158,7 @@ if has("cscope")
     set nocst
     " add any database in current directory
     if filereadable("cscope.out")
-        cs add cscope.out
+        silent! cs add cscope.out
         " else add database pointed to by environment
     elseif $CSCOPE_DB != ""
         cs add $CSCOPE_DB
