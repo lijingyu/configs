@@ -5,7 +5,6 @@ endif
 
 let colors_name="cterm"
 hi Normal ctermfg=255 ctermbg=235
-hi Comment ctermfg=242
 hi Comment ctermfg=244
 hi LineNr ctermfg=242 ctermbg=0
 hi Constant ctermfg=13
