@@ -12,7 +12,8 @@ hi PreProc ctermfg=13
 hi Statement ctermfg=70 cterm=bold
 hi SpecialKey ctermfg=167
 hi Type ctermfg=green
-hi Identifier cterm=bold  ctermfg=35
+hi Identifier ctermfg=45
+hi Function cterm=bold  ctermfg=35
 hi Search ctermbg=11 ctermfg=black
 hi Visual ctermbg=white ctermfg=black
 
