@@ -146,7 +146,7 @@ function! LjyatNERDTreeOpenBufDir()
         endif
     endif
     let l:bufname = bufname("%")
-    execute "silent! NERDTree " . l:bufname
+    execute "silent! NERDTree \"" . l:bufname . "\""
     redraw!
 endfunction
 
