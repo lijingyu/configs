@@ -26,10 +26,10 @@ hi Type            guifg=#95e454 gui=NONE
 hi VertSplit       guifg=#808080 guibg=#080808 gui=bold
 hi VisualNOS                     guibg=#403D3D
 hi Visual          guifg=black   guibg=white
-hi Normal          guifg=White guibg=#303030
+hi Normal          guifg=#EEEEEE guibg=#303030
 hi CursorColumn                  guibg=#293739
 hi Cursor          guifg=white guibg=red
-hi LineNr          guifg=#555555 guibg=#1C1C1C
+hi LineNr          guifg=#606060 guibg=#222222
 hi NonText         guifg=#BCBCBC guibg=#232526
 hi StatusLine      guifg=black   guibg=#C2BFA5 gui=bold
 hi Search          gui=bold guifg=green guibg=black
