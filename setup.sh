@@ -66,10 +66,9 @@ function cssetl()
     cur_dir=`pwd`
     for arg in $@
     do
-        echo_msg "change dir: $arg"
+        echo_msg "---- $arg ----"
         cd $arg
         csset .
-        echo_msg "change dir back"
         cd $cur_dir
     done
 }
