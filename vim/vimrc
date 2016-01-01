@@ -569,7 +569,7 @@ autocmd FileType c,cpp,java,cs set omnifunc=ccomplete#Complete
 
 autocmd BufEnter *.h,*.c,*.cpp,*.java call AutoToggleTlistTagbar()
 autocmd VimLeave * call CleanTmpCscopeFiles()
-
+au BufNewFile,BufRead *.aidl setf java 
 " => Set OminComplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
