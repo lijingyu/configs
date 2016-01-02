@@ -79,6 +79,12 @@ map <C-l> <C-w>l
 nmap <F4> :TagbarToggle<CR>
 nmap <C-s> :LjyatSearchStringCurrentBuffer <CR>
 
+"color set
+nmap M :nohlsearch<CR>:MarkClear<CR><leader>m
+nmap n <leader>/
+nmap N <leader>?
+nmap <leader>] <C-w>g}
+
 if has("gui_running")
     nmap <M-f> :LjyatSearchFileInFileList <CR>
     vnoremap <M-r> <ESC>:call LjyatVSearchStringInFiles() <CR>
@@ -121,12 +127,6 @@ if has("gui_running")
     "grep -E
     nmap <M-s> :LjyatSearchStringInFiles<CR>
     nmap <F9> :edit ++ff=dos <CR>
-
-    "color set
-    nmap M :nohlsearch<CR>:MarkClear<CR><leader>m
-    nmap n <leader>/
-    nmap N <leader>?
-    nmap <leader>] <C-w>g}
 else
     nmap { :cs find c <C-R>=expand("<cword>")<CR><CR>
     nmap } g<C-]>
