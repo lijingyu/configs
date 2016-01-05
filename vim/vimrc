@@ -562,18 +562,21 @@ command! LjyatSearchStringCurrentBuffer call LjyatSearchStringCurrentBuffer()
 
 " => Set OminComplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-autocmd FileType python set omnifunc=pythoncomplete#Complete
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType htm set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
-autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-autocmd FileType c,cpp,java,cs set omnifunc=ccomplete#Complete
+augroup LjyatAutoCmds
+    autocmd!
+    autocmd FileType python set omnifunc=pythoncomplete#Complete
+    autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+    autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+    autocmd FileType htm set omnifunc=htmlcomplete#CompleteTags
+    autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+    autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+    autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+    autocmd FileType c,cpp,java,cs set omnifunc=ccomplete#Complete
 
-autocmd BufEnter *.h,*.c,*.cpp,*.java call AutoToggleTlistTagbar()
-autocmd VimLeave * call CleanTmpCscopeFiles()
-au BufNewFile,BufRead *.aidl setf java 
+    autocmd BufEnter *.h,*.c,*.cpp,*.java call AutoToggleTlistTagbar()
+    autocmd VimLeave * call CleanTmpCscopeFiles()
+    autocmd BufNewFile,BufRead *.aidl setf java
+augroup end
 " => Set OminComplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
