@@ -64,6 +64,11 @@ let g:tagbar_sort = 0
 let html_wrong_comments = 1
 "config for taglist
 let Tlist_Inc_Winwidth = 0
+let NERDTreeWinPos = "right"
+
+if !exists("g:tmpcscope_files")
+    let g:tmpcscope_files = 'cscope.files'
+endif
 
 "=> key maps
 nmap <F2> :call ToggleTlistTagbar()<CR>
@@ -136,11 +141,6 @@ else
     nmap F :LjyatSearchFileInFileList <CR>
 endif
 
-if !exists("g:tmpcscope_files")
-    let g:tmpcscope_files = 'cscope.files'
-endif
-
-let NERDTreeWinPos = "right"
 function! LjyatNERDTreeOpenBufDir()
     if (exists("t:NERDTreeBufName"))
         if (bufwinnr(t:NERDTreeBufName) != -1)
