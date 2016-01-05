@@ -136,7 +136,10 @@ else
     nmap F :LjyatSearchFileInFileList <CR>
 endif
 
-let g:tmpcscope_files = 'cscope.files'
+if !exists("g:tmpcscope_files")
+    let g:tmpcscope_files = 'cscope.files'
+endif
+
 let NERDTreeWinPos = "right"
 function! LjyatNERDTreeOpenBufDir()
     if (exists("t:NERDTreeBufName"))
