@@ -12,7 +12,7 @@ if has("gui_running")
     set guioptions-=L
 
     if has("win32")
-        set guifont=Courier_New:h12:cANSI
+        set guifont=Courier_New:h13:cANSI
         set fileencodings=
     else
         set guifont=Consolas\ 14
