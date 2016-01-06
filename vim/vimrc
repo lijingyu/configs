@@ -47,6 +47,7 @@ set cindent
 set tabstop=4
 set shiftwidth=4
 set et
+set nonumber
 set nohlsearch
 set smarttab
 set linebreak
@@ -57,6 +58,16 @@ set nowrapscan
 set winaltkeys=no
 set diffopt=filler,horizontal
 set dictionary=dict
+
+"set statusline
+set laststatus=2
+set statusline=
+set statusline+=%-f\ %w\ 
+set statusline+=%{&fenc!=''?&fenc:&enc}\ \ 
+set statusline+=%l/%L\ \ 
+set statusline+=ascii:0x%02.4B\ 
+set statusline+=%-3m 
+
 let c_syntax_for_h = 1
 let Tlist_WinWidth = 40
 let g:tagbar_left = 1
@@ -564,14 +575,14 @@ command! LjyatSearchStringCurrentBuffer call LjyatSearchStringCurrentBuffer()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 augroup LjyatAutoCmds
     autocmd!
-    autocmd FileType python set omnifunc=pythoncomplete#Complete
-    autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-    autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-    autocmd FileType htm set omnifunc=htmlcomplete#CompleteTags
-    autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-    autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
-    autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-    autocmd FileType c,cpp,java,cs set omnifunc=ccomplete#Complete
+"    autocmd FileType python set omnifunc=pythoncomplete#Complete
+"    autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+"    autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+"    autocmd FileType htm set omnifunc=htmlcomplete#CompleteTags
+"    autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+"    autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+"    autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+"    autocmd FileType c,cpp,java,cs set omnifunc=ccomplete#Complete
 
     autocmd BufEnter *.h,*.c,*.cpp,*.java call AutoToggleTlistTagbar()
     autocmd VimLeave * call CleanTmpCscopeFiles()
