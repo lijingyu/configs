@@ -268,7 +268,7 @@ function! LjyatSearchTags()
 endfunction
 
 function! Arggrep(pattern_arg)
-    if !filereadable("cscope.files")
+    if !filereadable(g:tmpcscope_files)
         echohl Todo
         echo "   cscope.files not exist"
         echohl None
@@ -286,7 +286,7 @@ function! Arggrep(pattern_arg)
 
     let pattern_arg = "'" . a:pattern_arg . "'"
     let tmpfile = '/tmp/gvim.tmp' . getpid()
-    let real_cmd = '!cat cscope.files|xargs grep -n -E ' . pattern_arg . '  > ' . tmpfile
+    let real_cmd = '!cat ' . g:tmpcscope_files .' |xargs grep -n -E ' . pattern_arg . '  > ' . tmpfile
     echomsg "Searching all-str..."
     execute "silent! " . real_cmd
 
