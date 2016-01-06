@@ -57,7 +57,6 @@ set t_Co=256
 set nowrapscan
 set winaltkeys=no
 set diffopt=filler,horizontal
-set dictionary=dict
 
 "set statusline
 set laststatus=2
@@ -81,6 +80,9 @@ if !exists("g:tmpcscope_files")
     let g:tmpcscope_files = 'cscope.files'
 endif
 
+if &dict == ''
+    let &dict = 'dict'
+endif
 "=> key maps
 nmap <F2> :call ToggleTlistTagbar()<CR>
 nmap <F3> :LjyatNERDTreeOpenBufDir<CR>
@@ -192,6 +194,7 @@ function! ResetTagsAndCscope()
     silent exe "cs kill -1"
     call CleanTmpCscopeFiles()
     let &tags="./tags,./TAGS,tags,TAGS"
+    let &dict="dict"
     let g:tmpcscope_files = 'cscope.files'
 
     if filereadable('cscope.out')
@@ -224,6 +227,7 @@ function! AddCscopeAndTags(predirs)
         let dir = expand(dir)
         let dir = substitute(dir, '/$', '','')
         let new_tag_path=dir . "/tags"
+        let new_dict_path=dir . "/dict"
         let new_cscope_path=dir . "/cscope.out"
         let new_cscope_files=dir . "/cscope.files"
 
@@ -231,10 +235,9 @@ function! AddCscopeAndTags(predirs)
             silent exe "!cat " . new_cscope_files . "|sed 's:^:" . dir . "/:' >> " . g:tmpcscope_files
         endif
 
-        if filereadable(new_tag_path) && filereadable(new_cscope_path)
-            let tmp = &tags
-            let tmp = tmp . "," . new_tag_path
-            let &tags=tmp
+        if filereadable(new_tag_path) && filereadable(new_cscope_path) && (filereadable(new_dict_path))
+            let &tags = &tags . "," . new_tag_path
+            let &dict = &dict . "," . new_dict_path
 
             "cscope prepath always need a '/'
             if stridx(dir, "/") == -1
@@ -575,14 +578,14 @@ command! LjyatSearchStringCurrentBuffer call LjyatSearchStringCurrentBuffer()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 augroup LjyatAutoCmds
     autocmd!
-"    autocmd FileType python set omnifunc=pythoncomplete#Complete
-"    autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-"    autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-"    autocmd FileType htm set omnifunc=htmlcomplete#CompleteTags
-"    autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-"    autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
-"    autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-"    autocmd FileType c,cpp,java,cs set omnifunc=ccomplete#Complete
+    autocmd FileType python set omnifunc=pythoncomplete#Complete
+    autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+    autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+    autocmd FileType htm set omnifunc=htmlcomplete#CompleteTags
+    autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+    autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+    autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+    autocmd FileType c,cpp,java,cs set omnifunc=ccomplete#Complete
 
     autocmd BufEnter *.h,*.c,*.cpp,*.java call AutoToggleTlistTagbar()
     autocmd VimLeave * call CleanTmpCscopeFiles()
