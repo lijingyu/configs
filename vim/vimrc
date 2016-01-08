@@ -146,12 +146,29 @@ if has("gui_running")
     nmap <M-s> :LjyatSearchStringInFiles<CR>
     nmap <F9> :edit ++ff=dos <CR>
 else
-    nmap { :cs find c <C-R>=expand("<cword>")<CR><CR>
-    nmap } g<C-]>
-    nmap <C-\> :cs find s <C-R>=expand("<cword>")<CR><CR>
-    nmap ? :LjyatSearchTags<CR>
-    nmap S :LjyatSearchStringInFiles<CR>
-    nmap F :LjyatSearchFileInFileList <CR>
+    nmap <Space> <Nop>
+    nmap <Space>s :LjyatSearchStringInFiles<CR>
+    nmap <Space>] g<C-]>
+    nmap <Space>m <leader>m
+    nmap <Space>1 :pc<CR>:lcl<CR>:echomsg ""<CR>
+    nmap <Space>a 0
+    nmap <Space>e g_
+    nmap <Space>q <C-q>
+    nmap <Space>c :nohlsearch <CR> :MarkClear<CR>
+    nmap <Space>k 3<C-y>
+    nmap <Space>j 3<C-e>
+    nmap <Space>/ :LjyatSearchTags<CR>
+    nmap <Space>3 <C-w>v
+    nmap <Space>2 <C-w>c
+    nmap <Space>t :cs f t
+    nmap <Space>\ :cs find s <C-R>=expand("<cword>")<CR><CR>
+    nmap <Space>[ :cs find c <C-R>=expand("<cword>")<CR><CR>
+    nmap <Space>f :LjyatSearchFileInFileList <CR>
+    nmap <Space>] g<C-]>
+    nmap <Space><RightMouse> :nohlsearch<CR>:MarkClear<CR>
+    nmap <Space><LeftMouse> <LeftMouse><leader>m
+    vnoremap <Space>R <ESC>:call LjyatVSearchStringCurrentBuffer() <CR>
+    vnoremap <Space>r <ESC>:call LjyatVSearchStringInFiles() <CR>
 endif
 
 function! LjyatNERDTreeOpenBufDir()
