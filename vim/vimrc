@@ -85,6 +85,7 @@ if &dict == ''
     let &dict = 'dict'
 endif
 "=> key maps
+"gui_running and only vim
 nmap <F2> :call ToggleTlistTagbar()<CR>
 nmap <F3> :LjyatNERDTreeOpenBufDir<CR>
 nmap j gj
@@ -105,72 +106,71 @@ nmap N <leader>?
 nmap <leader>] <C-w>g}
 nmap <Space> <Nop>
 
-if has("gui_running")
-    nmap <M-f> :LjyatSearchFileInFileList <CR>
-    vnoremap <M-r> <ESC>:call LjyatVSearchStringInFiles() <CR>
-    vnoremap <M-R> <ESC>:call LjyatVSearchStringCurrentBuffer() <CR>
+"gui_running
+nmap <M-f> :LjyatSearchFileInFileList <CR>
+vnoremap <M-r> <ESC>:call LjyatVSearchStringInFiles() <CR>
+vnoremap <M-R> <ESC>:call LjyatVSearchStringCurrentBuffer() <CR>
 
-    nmap <M-[> :cs find c <C-R>=expand("<cword>")<CR><CR>
-    nmap <M-\> :cs find s <C-R>=expand("<cword>")<CR><CR>
-    nmap <M-t> :cs f t
-    "=> switch windows
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    nmap <M-2> <C-w>c
-    nmap <M-3> <C-w>v
-    nmap <M-/> :LjyatSearchTags<CR>
-    "=> switch windows end
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    "=> normal set
-    """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    "move
-    nmap <M-j> 3<C-e>
-    nmap <M-k> 3<C-y>
-    nmap <M-c> :nohlsearch <CR> :MarkClear<CR>
-    nmap <M-q> <C-q>
-    "copy and paste
-    vmap <C-c> "+y
-    vmap m <leader>m
-    nmap <C-v> "+p
-    nmap <M-e> g_
-    nmap <M-a> 0
-    nmap <M-1> :pc<CR>:lcl<CR>:echomsg ""<CR>
-    nmap <M-m> <leader>m
-    nmap <M-]> g<C-]>
+nmap <M-[> :cs find c <C-R>=expand("<cword>")<CR><CR>
+nmap <M-\> :cs find s <C-R>=expand("<cword>")<CR><CR>
+nmap <M-t> :cs f t
+"=> switch windows
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nmap <M-2> <C-w>c
+nmap <M-3> <C-w>v
+nmap <M-/> :LjyatSearchTags<CR>
+"=> switch windows end
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"=> normal set
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"move
+nmap <M-j> 3<C-e>
+nmap <M-k> 3<C-y>
+nmap <M-c> :nohlsearch <CR> :MarkClear<CR>
+nmap <M-q> <C-q>
+"copy and paste
+vmap <C-c> "+y
+vmap m <leader>m
+nmap <C-v> "+p
+nmap <M-e> g_
+nmap <M-a> 0
+nmap <M-1> :pc<CR>:lcl<CR>:echomsg ""<CR>
+nmap <M-m> <leader>m
+nmap <M-]> g<C-]>
+nmap <M-LeftMouse> <LeftMouse><leader>m
+nmap <RightMouse> <C-o>
+nmap <S-LeftMouse> <LeftMouse>:nohlsearch<CR>:MarkClear<CR><leader>m
+nmap <M-RightMouse> :nohlsearch<CR>:MarkClear<CR>
+nmap <F5> :nohlsearch <CR>:MarkClear<CR>
+nmap <F6> :TlistClose<CR> :JavaBrowser <CR>
 
-    nmap <M-LeftMouse> <LeftMouse><leader>m
-    nmap <RightMouse> <C-o>
-    nmap <S-LeftMouse> <LeftMouse>:nohlsearch<CR>:MarkClear<CR><leader>m
-    nmap <M-RightMouse> :nohlsearch<CR>:MarkClear<CR>
-    nmap <F5> :nohlsearch <CR>:MarkClear<CR>
-    nmap <F6> :TlistClose<CR> :JavaBrowser <CR>
+"grep -E
+nmap <M-s> :LjyatSearchStringInFiles<CR>
+nmap <F9> :edit ++ff=dos <CR>
 
-    "grep -E
-    nmap <M-s> :LjyatSearchStringInFiles<CR>
-    nmap <F9> :edit ++ff=dos <CR>
-else
-    nmap <Space>s :LjyatSearchStringInFiles<CR>
-    nmap <Space>] g<C-]>
-    nmap <Space>m <leader>m
-    nmap <Space>1 :pc<CR>:lcl<CR>:echomsg ""<CR>
-    nmap <Space>a 0
-    nmap <Space>e g_
-    nmap <Space>q <C-q>
-    nmap <Space>c :nohlsearch <CR> :MarkClear<CR>
-    nmap <Space>k 3<C-y>
-    nmap <Space>j 3<C-e>
-    nmap <Space>/ :LjyatSearchTags<CR>
-    nmap <Space>3 <C-w>v
-    nmap <Space>2 <C-w>c
-    nmap <Space>t :cs f t
-    nmap <Space>\ :cs find s <C-R>=expand("<cword>")<CR><CR>
-    nmap <Space>[ :cs find c <C-R>=expand("<cword>")<CR><CR>
-    nmap <Space>f :LjyatSearchFileInFileList <CR>
-    nmap <Space>] g<C-]>
-    nmap <Space><RightMouse> :nohlsearch<CR>:MarkClear<CR>
-    nmap <Space><LeftMouse> <LeftMouse><leader>m
-    vnoremap <Space>R <ESC>:call LjyatVSearchStringCurrentBuffer() <CR>
-    vnoremap <Space>r <ESC>:call LjyatVSearchStringInFiles() <CR>
-endif
+"vim nmap
+nmap <Space>s :LjyatSearchStringInFiles<CR>
+nmap <Space>] g<C-]>
+nmap <Space>m <leader>m
+nmap <Space>1 :pc<CR>:lcl<CR>:echomsg ""<CR>
+nmap <Space>a 0
+nmap <Space>e g_
+nmap <Space>q <C-q>
+nmap <Space>c :nohlsearch <CR> :MarkClear<CR>
+nmap <Space>k 3<C-y>
+nmap <Space>j 3<C-e>
+nmap <Space>/ :LjyatSearchTags<CR>
+nmap <Space>3 <C-w>v
+nmap <Space>2 <C-w>c
+nmap <Space>t :cs f t
+nmap <Space>\ :cs find s <C-R>=expand("<cword>")<CR><CR>
+nmap <Space>[ :cs find c <C-R>=expand("<cword>")<CR><CR>
+nmap <Space>f :LjyatSearchFileInFileList <CR>
+nmap <Space>] g<C-]>
+nmap <Space><RightMouse> :nohlsearch<CR>:MarkClear<CR>
+nmap <Space><LeftMouse> <LeftMouse><leader>m
+vnoremap <Space>R <ESC>:call LjyatVSearchStringCurrentBuffer() <CR>
+vnoremap <Space>r <ESC>:call LjyatVSearchStringInFiles() <CR>
 
 function! LjyatNERDTreeOpenBufDir()
     if (exists("t:NERDTreeBufName"))
