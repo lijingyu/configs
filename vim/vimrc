@@ -48,7 +48,7 @@ set cindent
 set tabstop=4
 set shiftwidth=4
 set et
-set nonumber
+set number
 set nohlsearch
 set smarttab
 set linebreak
@@ -100,7 +100,7 @@ nmap <F4> :TagbarToggle<CR>
 nmap <C-s> :LjyatSearchStringCurrentBuffer <CR>
 
 "color set
-nmap M :nohlsearch<CR>:MarkClear<CR><leader>m
+nmap M :MarkClear<CR><leader>m
 nmap n <leader>/
 nmap N <leader>?
 nmap <leader>] <C-w>g}
@@ -126,7 +126,7 @@ nmap <M-/> :LjyatSearchTags<CR>
 "move
 nmap <M-j> 3<C-e>
 nmap <M-k> 3<C-y>
-nmap <M-c> :nohlsearch <CR> :MarkClear<CR>
+nmap <M-c> :MarkClear<CR>
 nmap <M-q> <C-q>
 "copy and paste
 vmap <C-c> "+y
@@ -134,14 +134,14 @@ vmap m <leader>m
 nmap <C-v> "+p
 nmap <M-e> g_
 nmap <M-a> 0
-nmap <M-1> :pc<CR>:lcl<CR>:echomsg ""<CR>
+nmap <silent> <M-1> :pc<CR>:lcl<CR>
 nmap <M-m> <leader>m
 nmap <M-]> g<C-]>
 nmap <M-LeftMouse> <LeftMouse><leader>m
 nmap <RightMouse> <C-o>
-nmap <S-LeftMouse> <LeftMouse>:nohlsearch<CR>:MarkClear<CR><leader>m
-nmap <M-RightMouse> :nohlsearch<CR>:MarkClear<CR>
-nmap <F5> :nohlsearch <CR>:MarkClear<CR>
+nmap <S-LeftMouse> <LeftMouse>:MarkClear<CR><leader>m
+nmap <M-RightMouse> :MarkClear<CR>
+nmap <F5> :MarkClear<CR>
 nmap <F6> :TlistClose<CR> :JavaBrowser <CR>
 
 "grep -E
@@ -152,11 +152,11 @@ nmap <F9> :edit ++ff=dos <CR>
 nmap <Space>s :LjyatSearchStringInFiles<CR>
 nmap <Space>] g<C-]>
 nmap <Space>m <leader>m
-nmap <Space>1 :pc<CR>:lcl<CR>:echomsg ""<CR>
+nmap <silent> <Space>1 :pc<CR>:lcl<CR>
 nmap <Space>a 0
 nmap <Space>e g_
 nmap <Space>q <C-q>
-nmap <Space>c :nohlsearch <CR> :MarkClear<CR>
+nmap <Space>c :MarkClear<CR>
 nmap <Space>k 3<C-y>
 nmap <Space>j 3<C-e>
 nmap <Space>/ :LjyatSearchTags<CR>
@@ -167,7 +167,7 @@ nmap <Space>\ :cs find s <C-R>=expand("<cword>")<CR><CR>
 nmap <Space>[ :cs find c <C-R>=expand("<cword>")<CR><CR>
 nmap <Space>f :LjyatSearchFileInFileList <CR>
 nmap <Space>] g<C-]>
-nmap <Space><RightMouse> :nohlsearch<CR>:MarkClear<CR>
+nmap <Space><RightMouse> :MarkClear<CR>
 nmap <Space><LeftMouse> <LeftMouse><leader>m
 vnoremap <Space>R <ESC>:call LjyatVSearchStringCurrentBuffer() <CR>
 vnoremap <Space>r <ESC>:call LjyatVSearchStringInFiles() <CR>
