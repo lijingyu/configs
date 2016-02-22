@@ -14,7 +14,7 @@ hi SpecialKey ctermfg=167
 hi Type ctermfg=green
 hi Identifier ctermfg=45
 hi Function cterm=bold  ctermfg=35
-hi Search ctermbg=11 ctermfg=black
+hi Search ctermbg=35 ctermfg=black
 hi Visual ctermbg=white ctermfg=black
 
 hi! def link Directory Function
