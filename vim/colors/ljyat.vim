@@ -32,7 +32,7 @@ hi Cursor          guifg=white guibg=red
 hi LineNr          guifg=#606060 guibg=#222222
 hi NonText         guifg=#BCBCBC guibg=#232526
 hi StatusLine      guifg=black   guibg=#C2BFA5 gui=bold
-hi Search          gui=bold guifg=green guibg=black
+hi Search          gui=bold guifg=black guibg=#00AF5F
 hi Identifier      guibg=NONE guifg=cyan
 hi String     guifg=#FF80FF         
 hi DefinedName    guifg=#FFCC00
