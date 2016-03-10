@@ -180,7 +180,8 @@ function! LjyatNERDTreeOpenBufDir()
         endif
     endif
     let l:bufname = bufname("%")
-    silent execute "silent! NERDTree " . l:bufname
+    execute "silent! NERDTree " . l:bufname
+    redraw!
 endfunction
 
 "=> cscope set
@@ -204,6 +205,7 @@ function! CleanTmpCscopeFiles()
     else
         execute "silent! !rm -rf " . g:tmpcscope_files
     endif
+    redraw!
 endfunction
 
 function! ResetTagsAndCscope()
@@ -220,6 +222,7 @@ function! ResetTagsAndCscope()
     echo "   ResetTagsAndCscope"
     echohl None
     return
+    redraw!
 endfunction
 
 function! AddCscopeAndTags(predirs)
@@ -266,6 +269,7 @@ function! AddCscopeAndTags(predirs)
             return
         endif
     endfor
+    redraw!
 endfunction
 
 function! LjyatSearchTags()
@@ -277,7 +281,8 @@ function! LjyatSearchTags()
         return
     endif
 
-    silent execute "tj /" . pattern
+    execute "tj /" . pattern
+    redraw!
 endfunction
 
 function! Arggrep(pattern_arg)
@@ -336,6 +341,7 @@ EOF
 
     lopen
     execute "silent! !rm -rf " . tmpfile
+    redraw!
 endfunction
 
 function! LjyatSearchStringInFiles(pattern_arg)
@@ -382,6 +388,7 @@ function! LjyatSearchStringInFiles(pattern_arg)
     lopen
     let &errorformat=ef
     execute "silent! !rm -rf " . tmpfile
+    redraw!
 endfunction
 
 function! Argfind(pattern)
@@ -439,6 +446,7 @@ EOF
     lopen
     let &errorformat = ef
     execute "silent! !rm -rf " . tmpfile
+    redraw!
 endfunction
 
 function! LjyatSearchFileInFileList()
@@ -479,6 +487,7 @@ function! LjyatSearchFileInFileList()
     lopen
     let &errorformat = ef
     execute "silent! !rm -rf " . tmpfile
+    redraw!
 endfunction
 
 function! LjyatSearchStringCurrentBuffer()
@@ -505,6 +514,7 @@ function! LjyatSearchStringCurrentBuffer()
     echomsg "Searching cur-str..."
     execute "silent! " . real_cmd
     lopen
+    redraw!
 endfunction
 
 function! LjyatVSearchStringCurrentBuffer()
@@ -528,6 +538,7 @@ function! LjyatVSearchStringCurrentBuffer()
     execute "silent! " . real_cmd
 
     lopen
+    redraw!
 endfunction
 
 function! LjyatVSearchStringInFiles()
@@ -536,6 +547,7 @@ function! LjyatVSearchStringInFiles()
     let pattern = @"
     call LjyatSearchStringInFiles(pattern)
     let @" = old
+    redraw!
 endfunction
 
 function! ToggleTlistTagbar()
