@@ -22,6 +22,7 @@ hi Search ctermbg=35 ctermfg=black
 hi Visual ctermbg=white ctermfg=black
 
 hi! def link Directory Function
+hi! def link CursorLine Search
 hi! def link Special Function
 hi! def link Title Function
 hi! def link ModeMsg Function
