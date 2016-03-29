@@ -58,6 +58,9 @@ set t_Co=256
 set nowrapscan
 set winaltkeys=no
 set diffopt=filler,horizontal
+set foldmethod=syntax
+set foldlevel=5
+set nofoldenable
 
 "set statusline
 set laststatus=2
