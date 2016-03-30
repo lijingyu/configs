@@ -368,6 +368,7 @@ function! LjyatSearchStringInFiles(pattern_arg)
     endif
 
     "silent execute "MarkClear|Mark " . pattern
+    redraw
 
     let pattern = "'" . pattern . "'"
     let tmpfile = '/tmp/gvim.tmp' . getpid()
