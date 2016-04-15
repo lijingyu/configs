@@ -29,7 +29,8 @@
   <!-- when followMouse is enabled, and a window is given focus by moving the
        mouse into it, also raise the window -->
 </focus>
-
+<!--window.active.title.bg.color: #008BFF
+    window.active.title.bg.colorTo: #008BFF -->
 <placement>
     <policy>Smart</policy>
     <!-- 'Smart' or 'UnderMouse' -->
