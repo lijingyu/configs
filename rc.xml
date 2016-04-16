@@ -29,8 +29,6 @@
   <!-- when followMouse is enabled, and a window is given focus by moving the
        mouse into it, also raise the window -->
 </focus>
-<!--window.active.title.bg.color: #008BFF
-    window.active.title.bg.colorTo: #008BFF -->
 <placement>
     <policy>Smart</policy>
     <!-- 'Smart' or 'UnderMouse' -->
@@ -49,6 +47,9 @@
                   'Active' - where the active window is -->
 </placement>
 
+<!--window.active.title.bg.colorTo: #00008B
+    window.active.label.text.color: #FFFFFF
+    -->
 <theme>
     <name>Onyx</name>
     <titleLayout>NLIMC</titleLayout>
