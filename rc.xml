@@ -47,9 +47,6 @@
                   'Active' - where the active window is -->
 </placement>
 
-<!--window.active.title.bg.colorTo: #00008B
-    window.active.label.text.color: #FFFFFF
-    -->
 <theme>
     <name>Onyx</name>
     <titleLayout>NLIMC</titleLayout>
