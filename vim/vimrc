@@ -58,7 +58,7 @@ set t_Co=256
 set nowrapscan
 set winaltkeys=no
 set diffopt=filler,horizontal
-set foldmethod=syntax
+set foldmethod=manual
 set foldlevel=5
 set nofoldenable
 
