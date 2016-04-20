@@ -20,7 +20,7 @@ hi Identifier ctermfg=45
 hi Function cterm=bold  ctermfg=35
 hi Search ctermbg=35 ctermfg=black
 hi Visual ctermbg=white ctermfg=black
-hi Pmenu ctermbg=darkgreen ctermfg=white
+hi Pmenu ctermbg=22 ctermfg=white
 hi PmenuSel ctermbg=darkblue ctermfg=white
 
 hi! def link Directory Function
