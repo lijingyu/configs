@@ -16,7 +16,7 @@
             <action name="Execute"><execute>gvim</execute></action>
         </item>
         <item label="File-Manager">
-            <action name="Execute"><execute>pcmanfm</execute></action>
+            <action name="Execute"><execute>filemanager</execute></action>
         </item>
         <item label="RunCmd ...">
             <action name="Execute"><execute>dmenu_run -fn  "WenQuanYi Micro Hei:size=11"</execute></action>
