@@ -41,7 +41,7 @@ set ffs=unix,dos,mac
 set noswapfile
 set updatetime=100
 set previewheight=10
-set linespace=3
+set linespace=0
 set autoindent
 set smartindent
 set cindent
