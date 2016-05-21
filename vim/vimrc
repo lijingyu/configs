@@ -46,7 +46,7 @@ set autoindent
 set smartindent
 set cindent
 set tabstop=4
-set shiftwidth=4
+set shiftwidth=0
 set et
 set number
 set nohlsearch
