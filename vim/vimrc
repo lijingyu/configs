@@ -15,7 +15,7 @@ if has("gui_running")
         set guifont=Courier_New:h13:cANSI
         set fileencodings=
     else
-        set guifont=Consolas\ 15
+        set guifont=yahei\ consolas\ hybrid\ 15
         set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
         colorscheme ljyat
     endif
