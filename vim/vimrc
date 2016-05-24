@@ -142,7 +142,6 @@ nmap <M-LeftMouse> <LeftMouse><leader>m
 nmap <RightMouse> <C-o>
 nmap <S-LeftMouse> <LeftMouse>:MarkClear<CR><leader>m
 nmap <M-RightMouse> :MarkClear<CR>
-nmap <F6> :TlistClose<CR> :JavaBrowser <CR>
 
 "grep -E
 nmap <M-s> :LjyatSearchStringInFiles<CR>
