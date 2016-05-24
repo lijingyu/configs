@@ -92,7 +92,7 @@ nmap <F3> :LjyatNERDTreeOpenBufDir<CR>
 nmap j gj
 nmap k gk
 nmap <F5> :set noet ts=8 <CR>
-nmap <F6> :set et shiftwidth=4 ts=4 <CR>
+nmap <F6> :set et ts=4 <CR>
 map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-h> <C-w>h
