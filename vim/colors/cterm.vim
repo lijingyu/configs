@@ -3,6 +3,7 @@ if has('gui_running')
 endif
 
 hi clear
+set background=dark
 if exists("syntax_on")
     syntax reset
 endif
