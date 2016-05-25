@@ -18,6 +18,7 @@ if has("gui_running")
         set guifont=yahei\ consolas\ hybrid\ 15
         set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
         colorscheme ljyat
+        set linespace=-2
     endif
 else
     set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
@@ -41,7 +42,6 @@ set ffs=unix,dos,mac
 set noswapfile
 set updatetime=100
 set previewheight=10
-set linespace=0
 set autoindent
 set smartindent
 set cindent
