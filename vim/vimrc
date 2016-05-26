@@ -93,7 +93,7 @@ nmap j gj
 nmap k gk
 nmap <F5> :set noet ts=8 <CR>
 nmap <F6> :set et ts=4 <CR>
-nmap <F7> :set guifont=yahei\ consolas\ hybrid\ 15<CR>:set linespace=-3 <CR>
+nmap <F7> :set guifont=yahei\ consolas\ hybrid\ 15<CR>:set linespace=0 <CR>
 nmap <F8> :set guifont=Consolas\ 15<CR>:set linespace=3 <CR>
 map <C-j> <C-w>j
 map <C-k> <C-w>k
