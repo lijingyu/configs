@@ -18,7 +18,6 @@ if has("gui_running")
         set guifont=Consolas\ 15
         set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
         colorscheme ljyat
-        set linespace=3
     endif
 else
     set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
@@ -52,6 +51,7 @@ set number
 set nohlsearch
 set smarttab
 set linebreak
+set linespace=3
 set nobackup
 set backspace=indent,eol,start
 set t_Co=256
@@ -93,8 +93,8 @@ nmap j gj
 nmap k gk
 nmap <F5> :set noet ts=8 <CR>
 nmap <F6> :set et ts=4 <CR>
-nmap <F7> :set guifont=yahei\ consolas\ hybrid\ 15<CR>:set linespace=0 <CR>
-nmap <F8> :set guifont=Consolas\ 15<CR>:set linespace=3 <CR>
+nmap <F7> :set guifont=Microsoft\ Yahei\ Mono\ 15<CR>
+nmap <F8> :set guifont=Consolas\ 15<CR>
 map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-h> <C-w>h
