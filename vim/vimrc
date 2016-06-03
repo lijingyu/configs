@@ -493,6 +493,16 @@ function! LjyatSearchFileInFileList()
 endfunction
 
 function! LjyatSearchStringCurrentBuffer()
+    let win_count = winnr('$') + 1 "loop this file again
+    let win_pos = 0
+    while &buftype != ""
+        let win_pos = win_pos + 1
+        if win_pos == win_count
+            break
+        endif
+        wincmd w
+    endwhile
+
     let curfilename = expand("%")
     if curfilename == ""
         echohl Todo
