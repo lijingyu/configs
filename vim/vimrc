@@ -493,13 +493,13 @@ function! LjyatSearchFileInFileList()
 endfunction
 
 function! LjyatSearchStringCurrentBuffer()
-    let win_count = winnr('$') + 1 "loop this file again
+    let win_count = winnr('$') "loop back to this window again
     let win_pos = 0
     while &buftype != ""
-        let win_pos = win_pos + 1
         if win_pos == win_count
             break
         endif
+        let win_pos = win_pos + 1
         wincmd w
     endwhile
 
