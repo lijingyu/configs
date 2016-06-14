@@ -5,13 +5,13 @@
 # Background definitions
 # ID 1
 rounded = 7
-border_width = 2
+border_width = 0
 background_color = #009999 100
 border_color = #FFFFFF 16
 
 # ID 2
 rounded = 5
-border_width = 0
+border_width = 2
 background_color = #202020 100
 border_color = #FFFFFF 48
 
@@ -28,17 +28,17 @@ background_color = #272727 100
 border_color = #00FF00 100
 
 # ID 5
-rounded = 8
-border_width = 0
+rounded = 6
+border_width = 2
 background_color = #990000 100
-border_color = #000000 100
+border_color = #FFFFFF 48
 
 # Panel
 panel_monitor = all
 panel_position = bottom center horizontal
-panel_size = 90% 40
+panel_size = 100% 40
 panel_margin = 0 0
-panel_padding = 7 0
+panel_padding = 80 0 7
 panel_dock = 0
 wm_menu = 1
 panel_layer = top
