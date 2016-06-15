@@ -138,11 +138,3 @@ function csclean()
     fi
 }
 
-function abins()
-{
-    adb remount
-    adb push ~/bin/busybox  /system/xbin
-    adb shell " ./system/xbin/busybox --install   /system/xbin"
-    adb shell PATH=$PATH:/data
-}
-
