@@ -39,7 +39,7 @@ set scrolloff=0
 set autoread
 set ffs=unix,dos,mac
 set noswapfile
-set updatetime=100
+set updatetime=200
 set previewheight=10
 set autoindent
 set smartindent
@@ -620,6 +620,7 @@ augroup LjyatAutoCmds
     autocmd BufEnter *.h,*.c,*.cpp,*.java call AutoToggleTlistTagbar()
     autocmd VimLeave * call CleanTmpCscopeFiles()
     autocmd BufNewFile,BufRead *.aidl setf java
+    autocmd CursorHold * silent! update
 augroup end
 " => Set OminComplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
