@@ -44,9 +44,7 @@ set previewheight=10
 set autoindent
 set smartindent
 set cindent
-set tabstop=4
-set shiftwidth=0
-set et
+set expandtab tabstop=4 shiftwidth=4
 set number
 set nohlsearch
 set smarttab
@@ -91,16 +89,16 @@ nmap <F2> :call ToggleTlistTagbar()<CR>
 nmap <F3> :LjyatNERDTreeOpenBufDir<CR>
 nmap j gj
 nmap k gk
-nmap <F5> :set noet ts=8 <CR>
-nmap <F6> :set et ts=4 <CR>
-nmap <F7> :set guifont=Microsoft\ Yahei\ Mono\ 15<CR>:set linespace=6<CR>
-nmap <F8> :set guifont=Consolas\ 15<CR>:set linespace=3<CR>
+nmap <F5> :set noexpandtab tabstop=8 shiftwidth=8<CR>
+nmap <F6> :set expandtab tabstop=4 shiftwidth=4<CR>
+nmap <F7> :set guifont=Microsoft\ Yahei\ Mono\ 15 linespace=6<CR>
+nmap <F8> :set guifont=Consolas\ 15 linespace=3<CR>
 map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-h> <C-w>h
 map <C-l> <C-w>l
-nmap <F4> :LjyatSearchStringCurrentBuffer <CR>
-nmap <C-s> :LjyatSearchStringCurrentBuffer <CR>
+nmap <F4> :LjyatSearchStringCurrentBuffer<CR>
+nmap <C-s> :LjyatSearchStringCurrentBuffer<CR>
 
 "color set
 nmap M :MarkClear<CR><leader>m
@@ -110,9 +108,9 @@ nmap <leader>] <C-w>g}
 nmap <Space> <Nop>
 
 "gui_running
-nmap <M-f> :LjyatSearchFileInFileList <CR>
-vnoremap <M-r> <ESC>:call LjyatVSearchStringInFiles() <CR>
-vnoremap <M-R> <ESC>:call LjyatVSearchStringCurrentBuffer() <CR>
+nmap <M-f> :LjyatSearchFileInFileList<CR>
+vnoremap <M-r> <ESC>:call LjyatVSearchStringInFiles()<CR>
+vnoremap <M-R> <ESC>:call LjyatVSearchStringCurrentBuffer()<CR>
 
 nmap <M-[> :cs find c <C-R>=expand("<cword>")<CR><CR>
 nmap <M-\> :cs find s <C-R>=expand("<cword>")<CR><CR>
@@ -147,7 +145,7 @@ nmap <M-RightMouse> :MarkClear<CR>
 
 "grep -E
 nmap <M-s> :LjyatSearchStringInFiles<CR>
-nmap <F9> :edit ++ff=dos <CR>
+nmap <F9> :edit ++ff=dos<CR>
 
 "vim nmap
 nmap <Space>s :LjyatSearchStringInFiles<CR>
@@ -166,12 +164,12 @@ nmap <Space>2 <C-w>c
 nmap <Space>t :cs f t
 nmap <Space>\ :cs find s <C-R>=expand("<cword>")<CR><CR>
 nmap <Space>[ :cs find c <C-R>=expand("<cword>")<CR><CR>
-nmap <Space>f :LjyatSearchFileInFileList <CR>
+nmap <Space>f :LjyatSearchFileInFileList<CR>
 nmap <Space>] g<C-]>
 nmap <Space><RightMouse> :MarkClear<CR>
 nmap <Space><LeftMouse> <LeftMouse><leader>m
-vnoremap <Space>R <ESC>:call LjyatVSearchStringCurrentBuffer() <CR>
-vnoremap <Space>r <ESC>:call LjyatVSearchStringInFiles() <CR>
+vnoremap <Space>R <ESC>:call LjyatVSearchStringCurrentBuffer()<CR>
+vnoremap <Space>r <ESC>:call LjyatVSearchStringInFiles()<CR>
 
 function! LjyatNERDTreeOpenBufDir()
     if (exists("t:NERDTreeBufName"))
