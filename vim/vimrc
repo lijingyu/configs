@@ -618,7 +618,6 @@ augroup LjyatAutoCmds
     autocmd BufEnter *.h,*.c,*.cpp,*.java call AutoToggleTlistTagbar()
     autocmd VimLeave * call CleanTmpCscopeFiles()
     autocmd BufNewFile,BufRead *.aidl setf java
-    autocmd CursorHold * silent! update
 augroup end
 " => Set OminComplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
