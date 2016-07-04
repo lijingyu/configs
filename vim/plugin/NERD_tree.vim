@@ -3672,7 +3672,7 @@ function! s:closeTreeWindow()
         exec "buffer " . b:NERDTreePreviousBuf
     else
         if winnr("$") > 1
-            close
+            call s:closeTree()
         else
             call s:echo("Cannot close last window")
         endif
