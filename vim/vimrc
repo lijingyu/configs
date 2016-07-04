@@ -172,6 +172,7 @@ vnoremap <Space>R <ESC>:call LjyatVSearchStringCurrentBuffer()<CR>
 vnoremap <Space>r <ESC>:call LjyatVSearchStringInFiles()<CR>
 
 function! LjyatNERDTreeOpenBufDir()
+    call LjyatSkipSpecWindow()
     if (exists("t:NERDTreeBufName"))
         if (bufwinnr(t:NERDTreeBufName) != -1)
             execute "silent! NERDTreeClose"
@@ -490,7 +491,7 @@ function! LjyatSearchFileInFileList()
     redraw!
 endfunction
 
-function! LjyatSearchStringCurrentBuffer()
+function! LjyatSkipSpecWindow()
     let win_count = winnr('$') "loop back to this window again
     let win_pos = 0
     while &buftype != ""
@@ -500,7 +501,10 @@ function! LjyatSearchStringCurrentBuffer()
         let win_pos = win_pos + 1
         wincmd w
     endwhile
+endfunction
 
+function! LjyatSearchStringCurrentBuffer()
+    call LjyatSkipSpecWindow()
     let curfilename = expand("%")
     if curfilename == ""
         echohl Todo
