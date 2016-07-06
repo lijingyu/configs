@@ -55,7 +55,7 @@ set backspace=indent,eol,start
 set t_Co=256
 set nowrapscan
 set winaltkeys=no
-set diffopt=filler,horizontal
+set diffopt=filler,vertical
 set foldmethod=manual
 
 "set statusline
