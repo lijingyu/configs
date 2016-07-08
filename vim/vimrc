@@ -63,8 +63,7 @@ set laststatus=2
 set statusline=
 set statusline+=%-f\ %w\ 
 set statusline+=%{&fenc!=''?&fenc:&enc}\ \ 
-set statusline+=%l/%L\ \ 
-set statusline+=ascii:0x%02.4B\ 
+set statusline+=%l/%L\ 
 set statusline+=%-3m 
 
 let c_syntax_for_h = 1
