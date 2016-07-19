@@ -55,7 +55,7 @@ set backspace=indent,eol,start
 set t_Co=256
 set nowrapscan
 set winaltkeys=no
-set diffopt=filler,horizontal
+set diffopt=filler,vertical
 set foldmethod=manual
 
 "set statusline
@@ -63,14 +63,14 @@ set laststatus=2
 set statusline=
 set statusline+=%-f\ %w\ 
 set statusline+=%{&fenc!=''?&fenc:&enc}\ \ 
-set statusline+=%l/%L\ \ 
-set statusline+=ascii:0x%02.4B\ 
+set statusline+=%l/%L\ 
 set statusline+=%-3m 
 
 let c_syntax_for_h = 1
 let Tlist_WinWidth = 40
 let g:tagbar_left = 1
 let g:tagbar_sort = 0
+let g:tagbar_indent = 4
 let html_wrong_comments = 1
 "config for taglist
 let Tlist_Inc_Winwidth = 0
@@ -97,6 +97,8 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-h> <C-w>h
 map <C-l> <C-w>l
+nmap <M-=> :call IncreaseFontSize()<CR>
+nmap <M--> :call DecreaseFontSize()<CR>
 nmap <F4> :LjyatSearchStringCurrentBuffer<CR>
 nmap <C-s> :LjyatSearchStringCurrentBuffer<CR>
 
@@ -135,7 +137,7 @@ vmap m <leader>m
 nmap <C-v> "+p
 nmap <M-e> g_
 nmap <M-a> 0
-nmap <silent> <M-1> :pc<CR>:lcl<CR>
+nmap <silent> <M-1> :pc<CR>:lclose<CR>cclose<CR>
 nmap <M-m> <leader>m
 nmap <M-]> g<C-]>
 nmap <M-LeftMouse> <LeftMouse><leader>m
@@ -151,7 +153,7 @@ nmap <F9> :edit ++ff=dos<CR>
 nmap <Space>s :LjyatSearchStringInFiles<CR>
 nmap <Space>] g<C-]>
 nmap <Space>m <leader>m
-nmap <silent> <Space>1 :pc<CR>:lcl<CR>
+nmap <silent> <Space>1 :pc<CR>:lclose<CR>:cclose<CR>
 nmap <Space>a 0
 nmap <Space>e g_
 nmap <Space>q <C-q>
@@ -592,6 +594,28 @@ function! AutoToggleTlistTagbar()
                 TagbarToggle
             endif
         endif
+    endif
+endfunction
+
+function! IncreaseFontSize()
+    if has("gui_running")
+        let oldft=&guifont
+        let ft_sz = split(oldft, ' ')
+        let font_name=ft_sz[0]
+        let font_size=ft_sz[1]
+        let font_size += 1
+        let &guifont=font_name . " " . font_size
+    endif
+endfunction
+
+function! DecreaseFontSize()
+    if has("gui_running")
+        let oldft=&guifont
+        let ft_sz = split(oldft, ' ')
+        let font_name=ft_sz[0]
+        let font_size=ft_sz[1]
+        let font_size -= 1
+        let &guifont=font_name . " " . font_size
     endif
 endfunction
 
