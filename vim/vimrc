@@ -97,6 +97,8 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-h> <C-w>h
 map <C-l> <C-w>l
+nmap <M-=> :call IncreaseFontSize()<CR>
+nmap <M--> :call DecreaseFontSize()<CR>
 nmap <F4> :LjyatSearchStringCurrentBuffer<CR>
 nmap <C-s> :LjyatSearchStringCurrentBuffer<CR>
 
@@ -592,6 +594,28 @@ function! AutoToggleTlistTagbar()
                 TagbarToggle
             endif
         endif
+    endif
+endfunction
+
+function! IncreaseFontSize()
+    if has("gui_running")
+        let oldft=&guifont
+        let ft_sz = split(oldft, ' ')
+        let font_name=ft_sz[0]
+        let font_size=ft_sz[1]
+        let font_size += 1
+        let &guifont=font_name . " " . font_size
+    endif
+endfunction
+
+function! DecreaseFontSize()
+    if has("gui_running")
+        let oldft=&guifont
+        let ft_sz = split(oldft, ' ')
+        let font_name=ft_sz[0]
+        let font_size=ft_sz[1]
+        let font_size -= 1
+        let &guifont=font_name . " " . font_size
     endif
 endfunction
 
