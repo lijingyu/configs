@@ -600,9 +600,8 @@ endfunction
 function! IncreaseFontSize()
     if has("gui_running")
         let oldft=&guifont
-        let ft_sz = split(oldft, ' ')
-        let font_name=ft_sz[0]
-        let font_size=ft_sz[1]
+        let font_name=substitute(oldft, ' \d\+$', "", "")
+        let font_size=substitute(oldft, '.\+ ', "", "")
         let font_size += 1
         let &guifont=font_name . " " . font_size
     endif
@@ -611,9 +610,8 @@ endfunction
 function! DecreaseFontSize()
     if has("gui_running")
         let oldft=&guifont
-        let ft_sz = split(oldft, ' ')
-        let font_name=ft_sz[0]
-        let font_size=ft_sz[1]
+        let font_name=substitute(oldft, ' \d\+$', "", "")
+        let font_size=substitute(oldft, '.\+ ', "", "")
         let font_size -= 1
         let &guifont=font_name . " " . font_size
     endif
