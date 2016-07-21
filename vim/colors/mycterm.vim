@@ -8,7 +8,7 @@ if exists("syntax_on")
     syntax reset
 endif
 
-let colors_name="cterm"
+let colors_name="mycterm"
 hi Normal ctermfg=255 ctermbg=236
 hi Comment ctermfg=244
 hi LineNr ctermfg=242 ctermbg=235
