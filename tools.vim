@@ -62,10 +62,11 @@ endfunction
 
 
 function! Colors_test()
+    exe "hi Normal ctermbg=236"
     let colornum=1
     while colornum < 255
-        echo  "hi Normal ctermbg=". colornum
-        exe "hi Normal ctermbg=". colornum
+        echo  "hi Normal ctermfg=". colornum
+        exe "hi Normal ctermfg=". colornum
         let colornum = colornum+1
     endwhile
     colorscheme cterm
