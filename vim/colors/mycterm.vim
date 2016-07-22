@@ -29,3 +29,4 @@ hi! def link CursorLine Search
 hi! def link Special Function
 hi! def link Title Function
 hi! def link ModeMsg Function
+hi! def link String PreProc
