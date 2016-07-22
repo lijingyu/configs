@@ -11,7 +11,7 @@ endif
 let colors_name="mycterm"
 hi Normal ctermfg=255 ctermbg=235
 hi Comment ctermfg=244
-hi LineNr ctermfg=242 ctermbg=235
+hi LineNr ctermfg=242 ctermbg=234
 hi Constant ctermfg=5
 hi PreProc ctermfg=171
 hi Statement ctermfg=70 cterm=bold
