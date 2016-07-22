@@ -12,11 +12,11 @@ let colors_name="mycterm"
 hi Normal ctermfg=255 ctermbg=236
 hi Comment ctermfg=244
 hi LineNr ctermfg=242 ctermbg=235
-hi Constant ctermfg=199
-hi PreProc ctermfg=13
+hi Constant ctermfg=5
+hi PreProc ctermfg=171
 hi Statement ctermfg=70 cterm=bold
 hi SpecialKey ctermfg=167
-hi Type ctermfg=10
+hi Type ctermfg=76
 hi Identifier ctermfg=45
 hi Function cterm=bold  ctermfg=35
 hi Search ctermbg=35 ctermfg=black
