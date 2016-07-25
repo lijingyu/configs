@@ -137,7 +137,7 @@ vmap m <leader>m
 nmap <C-v> "+p
 nmap <M-e> g_
 nmap <M-a> 0
-nmap <silent> <M-1> :pc<CR>:lclose<CR>cclose<CR>
+nmap <silent> <M-1> :pc<CR>:lclose<CR>:cclose<CR>
 nmap <M-m> <leader>m
 nmap <M-]> g<C-]>
 nmap <M-LeftMouse> <LeftMouse><leader>m
