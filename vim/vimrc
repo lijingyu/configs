@@ -88,6 +88,8 @@ endif
 "gui_running and only vim
 nmap <F2> :call ToggleTlistTagbar()<CR>
 nmap <F3> :LjyatNERDTreeOpenBufDir<CR>
+nmap <Tab> gt
+nmap <S-Tab> gT
 nmap j gj
 nmap k gk
 "set for view kernel code
