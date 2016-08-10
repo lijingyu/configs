@@ -516,6 +516,11 @@ function! s:SearchAnyMark(...) " SearchAnyMark(flags)
 		let p = ""
 	endif
 	let w = s:AnyMark()
+
+  if w == " "
+    return
+  endif
+
   echohl Question
   echo " Mark: " . w
   echohl None
