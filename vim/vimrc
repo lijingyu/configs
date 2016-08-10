@@ -108,6 +108,7 @@ nmap <F4> :LjyatSearchStringCurrentBuffer<CR>
 nmap <C-s> :LjyatSearchStringCurrentBuffer<CR>
 
 "color set
+nmap / <leader>r
 nmap M :MarkClear<CR><leader>m
 nmap n <leader>/
 nmap N <leader>?
