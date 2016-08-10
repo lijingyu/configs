@@ -518,6 +518,9 @@ function! s:SearchAnyMark(...) " SearchAnyMark(flags)
 	let w = s:AnyMark()
 
   if w == ""
+    echohl Todo
+    echo " No marks!!!"
+    echohl None
     return
   endif
 
