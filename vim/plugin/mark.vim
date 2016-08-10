@@ -133,8 +133,6 @@ vnoremap <silent> <Plug>MarkRegex <c-\><c-n>:call
 "       do a \*; otherwise (\/ is the
 "       most recently used), do a \/.
 
-nnoremap <silent> <leader>* :call <sid>SearchCurrentMark()<cr>
-nnoremap <silent> <leader># :call <sid>SearchCurrentMark("b")<cr>
 nnoremap <silent> <leader>/ :call <sid>SearchAnyMark()<cr>
 nnoremap <silent> <leader>? :call <sid>SearchAnyMark("b")<cr>
 
