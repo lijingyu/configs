@@ -517,7 +517,7 @@ function! s:SearchAnyMark(...) " SearchAnyMark(flags)
 	endif
 	let w = s:AnyMark()
 
-  if w == " "
+  if w == ""
     return
   endif
 
