@@ -102,9 +102,6 @@ endif
 if !hasmapto('<Plug>MarkRegex', 'v')
 	vmap <unique> <silent> <leader>r <Plug>MarkRegex
 endif
-if !hasmapto('<Plug>MarkClear', 'n')
-	nmap <unique> <silent> <leader>n <Plug>MarkClear
-endif
 
 nnoremap <silent> <Plug>MarkSet   :call
 	\ <sid>MarkCurrentWord()<cr>
@@ -114,8 +111,6 @@ nnoremap <silent> <Plug>MarkRegex :call
 	\ <sid>MarkRegex()<cr>
 vnoremap <silent> <Plug>MarkRegex <c-\><c-n>:call
 	\ <sid>MarkRegex(<sid>GetVisualSelectionEscaped("N"))<cr>
-nnoremap <silent> <Plug>MarkClear :call
-	\ <sid>DoMark(<sid>CurrentMark())<cr>
 
 " Here is a sumerization of the following keys' behaviors:
 " 
@@ -142,8 +137,6 @@ nnoremap <silent> <leader>* :call <sid>SearchCurrentMark()<cr>
 nnoremap <silent> <leader># :call <sid>SearchCurrentMark("b")<cr>
 nnoremap <silent> <leader>/ :call <sid>SearchAnyMark()<cr>
 nnoremap <silent> <leader>? :call <sid>SearchAnyMark("b")<cr>
-nnoremap <silent> * :if !<sid>SearchNext()<bar>execute "norm! *"<bar>endif<cr>
-nnoremap <silent> # :if !<sid>SearchNext("b")<bar>execute "norm! #"<bar>endif<cr>
 
 command! -nargs=? Mark call s:DoMark(<f-args>)
 command! -nargs=0 MarkClear call s:DoMarkClear()
@@ -433,56 +426,6 @@ function! s:UpdateMark()
 	endwhile
 endfunction
 
-" return the mark string under the cursor. multi-lines marks not supported
-function! s:CurrentMark()
-	" define variables if they don't exist
-	call s:InitMarkVariables()
-
-	let line = getline(".")
-	let i = 1
-	while i <= g:mwCycleMax
-		if g:mwWord{i} != ""
-			let start = 0
-			while start >= 0 && start < strlen(line) && start < col(".")
-				let b = match(line, g:mwWord{i}, start)
-				let e = matchend(line, g:mwWord{i}, start)
-				if b < col(".") && col(".") <= e
-					let s:current_mark_position = line(".") . "_" . b
-					return g:mwWord{i}
-				endif
-				let start = e
-			endwhile
-		endif
-		let i = i + 1
-	endwhile
-	return ""
-endfunction
-
-" search current mark
-function! s:SearchCurrentMark(...) " SearchCurrentMark(flags)
-	let flags = ""
-	if a:0 > 0
-		let flags = a:1
-	endif
-	let w = s:CurrentMark()
-	if w != ""
-		let p = s:current_mark_position
-		call search(w, flags)
-		call s:CurrentMark()
-		if p == s:current_mark_position
-			call search(w, flags)
-		endif
-		let g:mwLastSearched = w
-	else
-		if g:mwLastSearched != ""
-			call search(g:mwLastSearched, flags)
-		else
-			call s:SearchAnyMark(flags)
-			let g:mwLastSearched = s:CurrentMark()
-		endif
-	endif
-endfunction
-
 " combine all marks into one regexp
 function! s:AnyMark()
 	" define variables if they don't exist
@@ -509,12 +452,6 @@ function! s:SearchAnyMark(...) " SearchAnyMark(flags)
 	if a:0 > 0
 		let flags = a:1
 	endif
-	let w = s:CurrentMark()
-	if w != ""
-		let p = s:current_mark_position
-	else
-		let p = ""
-	endif
 	let w = s:AnyMark()
 
   if w == ""
@@ -528,30 +465,7 @@ function! s:SearchAnyMark(...) " SearchAnyMark(flags)
   echo " Mark: " . w
   echohl None
 	call search(w, flags)
-	call s:CurrentMark()
-	if p == s:current_mark_position
-		call search(w, flags)
-	endif
 	let g:mwLastSearched = ""
-endfunction
-
-" search last searched mark
-function! s:SearchNext(...) " SearchNext(flags)
-	let flags = ""
-	if a:0 > 0
-		let flags = a:1
-	endif
-	let w = s:CurrentMark()
-	if w != ""
-		if g:mwLastSearched != ""
-			call s:SearchCurrentMark(flags)
-		else
-			call s:SearchAnyMark(flags)
-		endif
-		return 1
-	else
-		return 0
-	endif
 endfunction
 
 " Restore previous 'cpo' value
