@@ -146,6 +146,7 @@ nnoremap <silent> * :if !<sid>SearchNext()<bar>execute "norm! *"<bar>endif<cr>
 nnoremap <silent> # :if !<sid>SearchNext("b")<bar>execute "norm! #"<bar>endif<cr>
 
 command! -nargs=? Mark call s:DoMark(<f-args>)
+command! -nargs=0 MarkClear call s:DoMarkClear()
 
 autocmd! BufWinEnter,WinEnter * call s:UpdateMark()
 
@@ -196,7 +197,9 @@ function! s:MarkRegex(...) " MarkRegex(regexp)
 		let regexp = a:1
 	endif
 	call inputsave()
-	let r = input("@", regexp)
+  echohl Question
+	let r = input(" Input pattern to mark: ", regexp)
+  echohl None
 	call inputrestore()
 	if r != ""
 		call s:DoMark(r)
@@ -238,6 +241,29 @@ function! s:PrevWord()
 	else
 		return substitute(strpart(line, 0, col(".") - 1), '^.\{-}\(\w\+\)\W*$', '\1', '')
 	endif
+endfunction
+
+function! s:DoMarkClear()
+  call s:InitMarkVariables()
+
+  let i = 1
+  while i <= g:mwCycleMax
+    if g:mwWord{i} != ""
+      let g:mwWord{i} = ""
+      let lastwinnr = winnr()
+      let winview = winsaveview()
+      if exists("*matchadd")
+        windo silent! call matchdelete(3333 + i)
+      else
+        exe "windo syntax clear MarkWord" . i
+      endif
+      exe lastwinnr . "wincmd w"
+      call winrestview(winview)
+    endif
+    let i = i + 1
+  endwhile
+  let g:mwLastSearched = ""
+  return 0
 endfunction
 
 " mark or unmark a regular expression
@@ -490,6 +516,9 @@ function! s:SearchAnyMark(...) " SearchAnyMark(flags)
 		let p = ""
 	endif
 	let w = s:AnyMark()
+  echohl Question
+  echo " Mark: " . w
+  echohl None
 	call search(w, flags)
 	call s:CurrentMark()
 	if p == s:current_mark_position
