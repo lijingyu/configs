@@ -150,6 +150,7 @@ nmap <M-LeftMouse> <LeftMouse><leader>m
 nmap <RightMouse> <C-o>
 nmap <S-LeftMouse> <LeftMouse>:MarkClear<CR><leader>m
 nmap <M-RightMouse> :MarkClear<CR>
+nmap <M-l> :marks<CR>
 
 "grep -E
 nmap <M-s> :LjyatSearchStringInFiles<CR>
@@ -176,6 +177,7 @@ nmap <Space>f :LjyatSearchFileInFileList<CR>
 nmap <Space>] g<C-]>
 nmap <Space><RightMouse> :MarkClear<CR>
 nmap <Space><LeftMouse> <LeftMouse><leader>m
+nmap <Space>l :marks<CR>
 vnoremap <Space>R <ESC>:call LjyatVSearchStringCurrentBuffer()<CR>
 vnoremap <Space>r <ESC>:call LjyatVSearchStringInFiles()<CR>
 
