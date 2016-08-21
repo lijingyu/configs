@@ -150,7 +150,9 @@ nmap <M-LeftMouse> <LeftMouse><leader>m
 nmap <RightMouse> <C-o>
 nmap <S-LeftMouse> <LeftMouse>:MarkClear<CR><leader>m
 nmap <M-RightMouse> :MarkClear<CR>
-nmap <M-l> :marks<CR>
+nmap <M-l> :LjyatShowMarks<CR>
+nmap C :LjyatMarkClear<CR>
+nmap B :LjyatAddMark<CR>
 
 "grep -E
 nmap <M-s> :LjyatSearchStringInFiles<CR>
@@ -177,7 +179,7 @@ nmap <Space>f :LjyatSearchFileInFileList<CR>
 nmap <Space>] g<C-]>
 nmap <Space><RightMouse> :MarkClear<CR>
 nmap <Space><LeftMouse> <LeftMouse><leader>m
-nmap <Space>l :marks<CR>
+nmap <Space>l :LjyatShowMarks<CR>
 vnoremap <Space>R <ESC>:call LjyatVSearchStringCurrentBuffer()<CR>
 vnoremap <Space>r <ESC>:call LjyatVSearchStringInFiles()<CR>
 
@@ -625,6 +627,31 @@ function! DecreaseFontSize()
     endif
 endfunction
 
+let s:mark_index = 0
+let s:mark_list=[]
+function! LjyatAddMark()
+    let s:mark_tag_{s:mark_index} = bufname('%'). ":". getcurpos()[1] .":".getline('.')
+    let s:mark_list+=[s:mark_tag_{s:mark_index}]
+    let s:mark_index+=1
+endfunction
+
+function! LjyatShowMarks()
+    if s:mark_index == 0
+        echohl Todo
+        echo " No marks "
+        echohl None
+        return
+    endif
+
+    exe "cgetexpr s:mark_list"
+    exe "copen"
+endfunction
+
+function! LjyatMarkClear()
+    let s:mark_index = 0
+    let s:mark_list=[]
+endfunction
+
 command! -nargs=1 Argfind call Argfind(<f-args>)
 command! -nargs=+ -complete=dir A call AddCscopeAndTags('<f-args>')
 command! -nargs=0 R call ResetTagsAndCscope()
@@ -635,6 +662,9 @@ command! LjyatSearchStringInFiles call LjyatSearchStringInFiles('')
 command! LjyatSearchFileInFileList call LjyatSearchFileInFileList()
 command! LjyatVSearchStringCurrentBuffer call LjyatVSearchStringCurrentBuffer()
 command! LjyatSearchStringCurrentBuffer call LjyatSearchStringCurrentBuffer()
+command! LjyatAddMark call LjyatAddMark()
+command! LjyatShowMarks call LjyatShowMarks()
+command! LjyatMarkClear call LjyatMarkClear()
 
 " => Set OminComplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
