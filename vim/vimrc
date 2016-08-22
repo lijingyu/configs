@@ -630,7 +630,7 @@ endfunction
 let s:mark_index = 0
 let s:mark_list=[]
 function! LjyatAddMark()
-    let s:mark_tag_{s:mark_index} = bufname('%'). ":". getcurpos()[1] .":".getline('.')
+    let s:mark_tag_{s:mark_index} = bufname('%'). ":". line('.') .":".getline('.')
     let s:mark_list+=[s:mark_tag_{s:mark_index}]
     let s:mark_index+=1
 endfunction
