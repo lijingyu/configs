@@ -650,6 +650,7 @@ endfunction
 function! LjyatMarkClear()
     let s:mark_index = 0
     let s:mark_list=[]
+    execute "cclose"
 endfunction
 
 command! -nargs=1 Argfind call Argfind(<f-args>)
