@@ -646,7 +646,7 @@ function! LjyatShowMarks()
     let ef = &errorformat
     set efm=%f:%l:%m
     exe "cgetexpr s:mark_list"
-    exe "copen"
+    exe "botright copen"
     let &errorformat = ef
 endfunction
 
