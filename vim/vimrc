@@ -643,8 +643,11 @@ function! LjyatShowMarks()
         return
     endif
 
+    let ef = &errorformat
+    set efm=%f:%l:%m
     exe "cgetexpr s:mark_list"
     exe "copen"
+    let &errorformat = ef
 endfunction
 
 function! LjyatMarkClear()
