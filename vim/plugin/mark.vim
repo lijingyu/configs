@@ -262,8 +262,8 @@ function! s:CheckCurCharInMark()
     let s:match_str = ""
     let save_pos = getpos('.')
     let w = s:AnyMark()
-    let match_line = search(w)
-    if (match_line == save_pos[1]) && (getpos('.')[2] != save_pos[2])
+    let match_line = search(w,'c')
+    if (match_line == save_pos[1]) && (getpos('.')[2] == save_pos[2])
       call setpos('.', save_pos)
     else
       let match_line = search(w, "b")
