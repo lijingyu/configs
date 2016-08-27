@@ -174,7 +174,7 @@ function! s:GetVisualSelectionEscaped(flags)
 		elseif a:flags[i] ==# "N"
 			let result = substitute(result, '\n', '', 'g')
 		elseif a:flags[i] ==# "V"
-			let result = '\V' . result
+			let result = result
 		endif
 		let i = i + 1
 	endwhile
@@ -257,6 +257,41 @@ function! s:DoMarkClear()
   return 0
 endfunction
 
+let s:match_str = ""
+function! s:CheckCurCharInMark()
+    let s:match_str = ""
+    let save_pos = getpos('.')
+    let w = s:AnyMark()
+    let match_line = search(w)
+    if getpos('.')[2] != save_pos[2]
+      call setpos('.', save_pos)
+      let match_line = search(w, "b")
+    endif
+
+    if (match_line == 0) || (match_line != save_pos[1])
+        call setpos('.', save_pos)
+        return -1
+    endif
+    " get match start col in current line
+    let col_s = getpos('.')[2]
+
+    " get match end col in current line
+    if search(w, 'e') == 0
+        call setpos('.', save_pos)
+        return -1
+    endif
+    let col_e = getpos('.')[2]
+
+    " get match end col in current line
+	let col_c = save_pos[2]
+
+  if col_c >= col_s && col_c <= col_e
+    let s:match_str = getline('.')[col_s-1:col_e-1]
+  endif
+  call setpos('.', save_pos)
+  return 0
+endfunction
+
 " mark or unmark a regular expression
 function! s:DoMark(...) " DoMark(regexp)
 	" define variables if they don't exist
@@ -289,9 +324,11 @@ function! s:DoMark(...) " DoMark(regexp)
 	endif
 
 	" clear the mark if it has been marked
+    call s:CheckCurCharInMark()
+    echo "match_str " .s:match_str
 	let i = 1
 	while i <= g:mwCycleMax
-		if regexp == g:mwWord{i}
+		if (regexp == g:mwWord{i}) || ((s:match_str != "") &&(s:match_str == g:mwWord{i}))
 			if g:mwLastSearched == g:mwWord{i}
 				let g:mwLastSearched = ""
 			endif
