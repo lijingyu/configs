@@ -277,7 +277,7 @@ function! s:CheckCurCharInMark()
     let col_s = getpos('.')[2]
 
     " get match end col in current line
-    if search(w, 'e') == 0
+    if search(w, 'ce') == 0
         call setpos('.', save_pos)
         return -1
     endif
@@ -324,9 +324,8 @@ function! s:DoMark(...) " DoMark(regexp)
 		return 0
 	endif
 
-	" clear the mark if it has been marked
-    call s:CheckCurCharInMark()
-    echo "match_str " .s:match_str
+  " clear the mark if it has been marked
+  call s:CheckCurCharInMark()
 	let i = 1
 	while i <= g:mwCycleMax
 		if (regexp == g:mwWord{i}) || ((s:match_str != "") &&(s:match_str == g:mwWord{i}))
