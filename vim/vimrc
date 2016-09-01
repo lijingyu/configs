@@ -22,7 +22,11 @@ if has("gui_running")
     endif
 else
     set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
-    colorscheme mycterm
+    if &t_Co == 8
+        colorscheme default
+    else
+        colorscheme mycterm
+    endif
     set mouse=""	" Disenable mouse in vim
 endif
 
@@ -110,6 +114,7 @@ nmap <C-s> :LjyatSearchStringCurrentBuffer<CR>
 nmap / <leader>r
 nmap n <leader>/
 nmap N <leader>?
+nmap M :MarkClear<CR><leader>m
 nmap <leader>] <C-w>g}
 nmap <Space> <Nop>
 
