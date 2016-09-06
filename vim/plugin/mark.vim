@@ -332,7 +332,7 @@ function! s:DoMark(...) " DoMark(regexp)
   call s:CheckCurCharInMark()
 	let i = 1
 	while i <= g:mwCycleMax
-		if (regexp == g:mwWord{i}) || ((s:match_str != "") &&(s:match_str == g:mwWord{i}))
+		if (regexp == g:mwWord{i}) || ((s:match_str != "")&&(s:match_str != regexp)&&(s:match_str == g:mwWord{i}))
 			if g:mwLastSearched == g:mwWord{i}
 				let g:mwLastSearched = ""
 			endif
