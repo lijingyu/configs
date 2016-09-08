@@ -22,11 +22,7 @@ if has("gui_running")
     endif
 else
     set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
-    if &t_Co == 8
-        colorscheme default
-    else
-        colorscheme mycterm
-    endif
+    colorscheme mycterm
     set mouse=""	" Disenable mouse in vim
 endif
 
@@ -35,6 +31,7 @@ endif
 "vimrc is not usefull for gvim
 "set vb t_vb=
 """"""""""""""""""""""""""""""""""""""""""""""
+set t_Co=256
 set showmatch		" Show matching brackets.
 set incsearch		" Incremental search
 set autowrite		" Automatically save before commands like :next and :make
