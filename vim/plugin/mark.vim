@@ -258,8 +258,14 @@ function! s:DoMarkClear()
 endfunction
 
 let s:match_str = ""
-function! s:CheckCurCharInMark()
+function! s:CheckCurCharInMark(regexp)
     let s:match_str = ""
+    "init match_str
+    let s:match_str = ""
+    "if it is not word mark ignore this check
+    if a:regexp[0:1] != '\<' || a:regexp[-2:-1] != '\>'
+      return
+    endif
     let save_pos = getpos('.')
     let w = s:AnyMark()
     if w == ""
@@ -329,10 +335,10 @@ function! s:DoMark(...) " DoMark(regexp)
 	endif
 
   " clear the mark if it has been marked
-  call s:CheckCurCharInMark()
+  call s:CheckCurCharInMark(regexp)
 	let i = 1
 	while i <= g:mwCycleMax
-		if (regexp == g:mwWord{i}) || ((s:match_str != "")&&(s:match_str != regexp)&&(s:match_str == g:mwWord{i}))
+		if (regexp == g:mwWord{i}) || ((s:match_str != "")&&(s:match_str == g:mwWord{i}))
 			if g:mwLastSearched == g:mwWord{i}
 				let g:mwLastSearched = ""
 			endif
