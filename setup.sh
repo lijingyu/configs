@@ -11,7 +11,7 @@ function creat_cscope()
     do
         find  ${arg}  -type f -regextype posix-egrep \
             -iregex '.*\/(makefile|Kconfig)' -prune -o \
-            -regex '.*\.(c|h|m|s|S|java|sh|cpp|vim|hp|aidl|rc|py|cc|def|xml|mk)'\
+            -regex '.*\.(c|h|m|s|S|java|sh|cpp|vim|hp|aidl|rc|py|cc|def|xml|mk|el)'\
             |sed  -e '/ /d' -e 's:^\./::' >> cscope.files
     done
 
