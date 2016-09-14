@@ -150,9 +150,9 @@ nmap <M-LeftMouse> <LeftMouse><leader>m
 nmap <RightMouse> <C-o>
 nmap <S-LeftMouse> <LeftMouse>:MarkClear<CR><leader>m
 nmap <M-RightMouse> :MarkClear<CR>
-nmap <M-l> :LjyatShowMarks<CR>
-nmap C :LjyatMarkClear<CR>
-nmap B :LjyatAddMark<CR>
+nmap <M-l> :LjyatShowBookMarks<CR>
+nmap C :LjyatBookMarkClear<CR>
+nmap B :LjyatAddBookMark<CR>
 
 "grep -E
 nmap <M-s> :LjyatSearchStringInFiles<CR>
@@ -179,7 +179,7 @@ nmap <Space>f :LjyatSearchFileInFileList<CR>
 nmap <Space>] g<C-]>
 nmap <Space><RightMouse> :MarkClear<CR>
 nmap <Space><LeftMouse> <LeftMouse><leader>m
-nmap <Space>l :LjyatShowMarks<CR>
+nmap <Space>l :LjyatShowBookMarks<CR>
 vnoremap <Space>R <ESC>:call LjyatVSearchStringCurrentBuffer()<CR>
 vnoremap <Space>r <ESC>:call LjyatVSearchStringInFiles()<CR>
 
@@ -629,13 +629,13 @@ endfunction
 
 let s:mark_index = 0
 let s:mark_list=[]
-function! LjyatAddMark()
+function! LjyatAddBookMark()
     let s:mark_tag_{s:mark_index} = bufname('%'). ":". line('.') .":".getline('.')
     let s:mark_list+=[s:mark_tag_{s:mark_index}]
     let s:mark_index+=1
 endfunction
 
-function! LjyatShowMarks()
+function! LjyatShowBookMarks()
     if s:mark_index == 0
         echohl Todo
         echo " No marks "
@@ -650,7 +650,7 @@ function! LjyatShowMarks()
     let &errorformat = ef
 endfunction
 
-function! LjyatMarkClear()
+function! LjyatBookMarkClear()
     let s:mark_index = 0
     let s:mark_list=[]
     execute "cclose"
@@ -666,9 +666,9 @@ command! LjyatSearchStringInFiles call LjyatSearchStringInFiles('')
 command! LjyatSearchFileInFileList call LjyatSearchFileInFileList()
 command! LjyatVSearchStringCurrentBuffer call LjyatVSearchStringCurrentBuffer()
 command! LjyatSearchStringCurrentBuffer call LjyatSearchStringCurrentBuffer()
-command! LjyatAddMark call LjyatAddMark()
-command! LjyatShowMarks call LjyatShowMarks()
-command! LjyatMarkClear call LjyatMarkClear()
+command! LjyatAddBookMark call LjyatAddBookMark()
+command! LjyatShowBookMarks call LjyatShowBookMarks()
+command! LjyatBookMarkClear call LjyatBookMarkClear()
 
 " => Set OminComplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
