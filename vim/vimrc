@@ -368,7 +368,7 @@ function! LjyatSearchStringInFiles(pattern_arg)
     if a:pattern_arg != ''
         let pattern = input("  Search all-str: ", a:pattern_arg)
     else
-        let pattern = input("  Search all-str: ", substitute(expand("<cword>"), "#", '\\#', "g"))
+        let pattern = input("  Search all-str: ", escape(expand("<cword>"), '#'))
     endif
     echohl None
 
