@@ -380,28 +380,26 @@ function! LjyatSearchStringInFiles(pattern_arg)
     redraw
 
     let pattern = "'" . pattern . "'"
-    let tmpfile = '/tmp/gvim.tmp' . getpid()
-    let real_cmd = '!cat '. g:tmpcscope_files . '|xargs grep -n -E ' . pattern . '  > ' . tmpfile
+    let real_cmd = 'cat '. g:tmpcscope_files . '|xargs grep -n -E ' . pattern
     echomsg "Searching all-str..."
-    execute "silent! " . real_cmd
+    let match_list = system(real_cmd, "\n")
 
     let ef = &errorformat
     set efm=%f:%l:%m
 
     if v:version >= 700
-        execute "silent! lgetfile " . tmpfile
+        execute "lexpr match_list"
     else
         if exists(":lgetfile")
-            execute "silent! lgetfile " . tmpfile
+            execute "silent! lexpr " . match_list
         else
-            execute "silent! lfile " . tmpfile
+            execute "silent! lfile " . match_list
         endif
     endif
 
     lopen
     let &errorformat=ef
-    execute "silent! !rm -rf " . tmpfile
-    redraw!
+    redraw
 endfunction
 
 function! Argfind(pattern)
