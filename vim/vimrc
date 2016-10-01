@@ -477,27 +477,25 @@ function! LjyatSearchFileInFileList()
     endif
 
     let pattern = "'" . pattern . "'"
-    let tmpfile = '/tmp/gvim.tmp' . getpid()
-    let real_cmd = '!grep  -i -E ' . pattern . ' ' . g:tmpcscope_files . ' > '  . tmpfile
+    let real_cmd = 'grep  -i -E ' . pattern . ' ' . g:tmpcscope_files
     echomsg "Searching file..."
-    execute "silent! " . real_cmd
+
+    let match_files = system(real_cmd)
+    if match_files == ""
+        redraw!
+        echohl Todo
+        echo "   No match files!!!"
+        echohl None
+        return
+    endif
 
     let ef = &errorformat
     set efm=%f
 
-    if v:version >= 700
-        execute "silent! lgetfile " . tmpfile
-    else
-        if exists(":lgetfile")
-            execute "silent! lgetfile " . tmpfile
-        else
-            execute "silent! lfile " . tmpfile
-        endif
-    endif
+    execute "silent! lexpr match_files"
 
     lopen
     let &errorformat = ef
-    execute "silent! !rm -rf " . tmpfile
     redraw!
 endfunction
 
