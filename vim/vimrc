@@ -315,45 +315,37 @@ function! Arggrep(pattern_arg)
     execute "silent! MarkClear|silent! Mark " . a:pattern_arg
 
     let pattern_arg = "'" . a:pattern_arg . "'"
-    let tmpfile = '/tmp/gvim.tmp' . getpid()
-    let real_cmd = '!cat ' . g:tmpcscope_files .' |xargs grep -n -E ' . pattern_arg . '  > ' . tmpfile
+    let real_cmd = 'cat ' . g:tmpcscope_files .' |xargs grep -n -E ' . pattern_arg
     echomsg "Searching all-str..."
-    execute "silent! " . real_cmd
 
-python << EOF
-import vim
-import re
-
-fname = vim.eval('tmpfile')
-f = open(fname, 'r')
-flist=f.readlines()
-f.close()
-
-old = ''
-new = ''
-args = ''
-for new in flist:
-    new = re.sub('\:.+$', '', new)
-    new = new.strip()
-    if old != new:
-        args = args + new + ' '
-    old = new
-vim.command('args ' + args)
-EOF
-
-    if v:version >= 700
-        execute "silent! lgetfile " . tmpfile
-    else
-        if exists(":lgetfile")
-            execute "silent! lgetfile " . tmpfile
-        else
-            execute "silent! lfile " . tmpfile
-        endif
+    let match_string = system(real_cmd)
+    if match_string == ""
+        redraw
+        echohl Todo
+        echo "   No match string!!!"
+        echohl None
+        return
     endif
 
+    let old = ''
+    let new = ''
+    let match_files = ''
+    for line in split(match_string, '\n')
+        let new = substitute(line, ':.*', '', 'g')
+        if old != new
+            let match_files = match_files . " " . new
+        endif
+        let old = new
+    endfor
+    exec "args " . match_files
+
+    let ef = &errorformat
+    set efm=%f:%l:%m
+
+    execute "lexpr match_string"
     lopen
-    execute "silent! !rm -rf " . tmpfile
-    redraw!
+    let &errorformat=ef
+    redraw
 endfunction
 
 function! LjyatSearchStringInFiles(pattern_arg)
