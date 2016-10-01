@@ -467,7 +467,7 @@ function! LjyatSearchFileInFileList()
 
     lopen
     let &errorformat = ef
-    redraw
+    redraw!
 endfunction
 
 function! LjyatSkipSpecWindow()
