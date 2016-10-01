@@ -382,21 +382,19 @@ function! LjyatSearchStringInFiles(pattern_arg)
     let pattern = "'" . pattern . "'"
     let real_cmd = 'cat '. g:tmpcscope_files . '|xargs grep -n -E ' . pattern
     echomsg "Searching all-str..."
-    let match_list = system(real_cmd, "\n")
+    let match_string = system(real_cmd, "\n")
+    if match_string == ""
+        redraw
+        echohl Todo
+        echo "   No match string!!!"
+        echohl None
+        return
+    endif
 
     let ef = &errorformat
     set efm=%f:%l:%m
 
-    if v:version >= 700
-        execute "lexpr match_list"
-    else
-        if exists(":lgetfile")
-            execute "silent! lexpr " . match_list
-        else
-            execute "silent! lfile " . match_list
-        endif
-    endif
-
+    execute "lexpr match_string"
     lopen
     let &errorformat=ef
     redraw
@@ -482,7 +480,7 @@ function! LjyatSearchFileInFileList()
 
     let match_files = system(real_cmd)
     if match_files == ""
-        redraw!
+        redraw
         echohl Todo
         echo "   No match files!!!"
         echohl None
@@ -496,7 +494,7 @@ function! LjyatSearchFileInFileList()
 
     lopen
     let &errorformat = ef
-    redraw!
+    redraw
 endfunction
 
 function! LjyatSkipSpecWindow()
