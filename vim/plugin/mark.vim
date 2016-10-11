@@ -84,6 +84,9 @@ if exists('g:loaded_mark') && !exists('g:force_reload_mark')
 	finish
 endif
 
+let s:state_f = {'re':'', 'line':0, 'end':0}
+let s:state_b = {'re':'', 'line':0, 'end':0}
+
 " Support for |line-continuation|
 let s:save_cpo = &cpo
 set cpo&vim
@@ -491,25 +494,46 @@ function! s:AnyMark()
 	return w
 endfunction
 
+function! WarningMsg(msg)
+    echohl Todo
+    echo a:msg
+    echohl None
+    return
+endfunction
+
 " search any mark
 function! s:SearchAnyMark(...) " SearchAnyMark(flags)
 	let flags = ""
 	if a:0 > 0
 		let flags = a:1
+    let l:state = s:state_b
+  else
+    let l:state = s:state_f
 	endif
 	let w = s:AnyMark()
 
   if w == ""
-    echohl Todo
-    echo " No marks!!!"
-    echohl None
+    call WarningMsg(" No marks!!!")
     return
   endif
 
-  echohl Question
-  echo " Mark: " . w
-  echohl None
-	call search(w, flags)
+  if (l:state.re == w) && (l:state.end == 1) && (line('.') == l:state.line)
+    call WarningMsg(" Search at Top or End!")
+    return
+  endif
+
+  let l:state.re = w
+  let l:state.line = line('.')
+	if search(w, flags) == 0
+    let l:state.end = 1
+    call WarningMsg(" Search at Top or End!")
+  else
+    echohl Question
+    echo " Mark: " . w
+    echohl None
+    let l:state.end = 0
+  endif
+
 	let g:mwLastSearched = ""
 endfunction
 
