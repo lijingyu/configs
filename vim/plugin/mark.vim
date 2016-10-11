@@ -84,8 +84,7 @@ if exists('g:loaded_mark') && !exists('g:force_reload_mark')
 	finish
 endif
 
-let s:state_f = {'re':'', 'line':0, 'end':0}
-let s:state_b = {'re':'', 'line':0, 'end':0}
+let s:state = {'dir':'', 're':'', 'line':0, 'end':0}
 
 " Support for |line-continuation|
 let s:save_cpo = &cpo
@@ -506,9 +505,6 @@ function! s:SearchAnyMark(...) " SearchAnyMark(flags)
 	let flags = ""
 	if a:0 > 0
 		let flags = a:1
-    let l:state = s:state_b
-  else
-    let l:state = s:state_f
 	endif
 	let w = s:AnyMark()
 
@@ -517,21 +513,22 @@ function! s:SearchAnyMark(...) " SearchAnyMark(flags)
     return
   endif
 
-  if (l:state.re == w) && (l:state.end == 1) && (line('.') == l:state.line)
+  if (s:state.re == w) && (s:state.end == 1) && (line('.') == s:state.line) && (s:state.dir == flags)
     call WarningMsg(" Search at Top or End!")
     return
   endif
 
-  let l:state.re = w
-  let l:state.line = line('.')
+  let s:state.re = w
+  let s:state.line = line('.')
+  let s:state.dir = flags
 	if search(w, flags) == 0
-    let l:state.end = 1
+    let s:state.end = 1
     call WarningMsg(" Search at Top or End!")
   else
     echohl Question
     echo " Mark: " . w
     echohl None
-    let l:state.end = 0
+    let s:state.end = 0
   endif
 
 	let g:mwLastSearched = ""
