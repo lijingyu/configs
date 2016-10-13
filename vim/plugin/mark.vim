@@ -493,9 +493,13 @@ function! s:AnyMark()
 	return w
 endfunction
 
-function! WarningMsg(msg)
+function! SearchWarningMsg(w, flags)
     echohl Todo
-    echo a:msg
+    if a:flags == "b"
+      echo " Search Hit Top: " . a:w
+    else
+      echo " Search Hit Bottom: " . a:w
+    endif
     echohl None
     return
 endfunction
@@ -509,12 +513,14 @@ function! s:SearchAnyMark(...) " SearchAnyMark(flags)
 	let w = s:AnyMark()
 
   if w == ""
-    call WarningMsg(" No marks!!!")
+    echohl Todo
+    echo " No marks!!!"
+    echohl None
     return
   endif
 
   if (s:state.re == w) && (s:state.end == 1) && (line('.') == s:state.line) && (s:state.dir == flags)
-    call WarningMsg(" Search at Top or End!")
+    call SearchWarningMsg(w, flags)
     return
   endif
 
@@ -523,7 +529,7 @@ function! s:SearchAnyMark(...) " SearchAnyMark(flags)
   let s:state.dir = flags
 	if search(w, flags) == 0
     let s:state.end = 1
-    call WarningMsg(" Search at Top or End!")
+    call SearchWarningMsg(w, flags)
   else
     echohl Question
     echo " Mark: " . w
