@@ -81,7 +81,7 @@ hi MarkWord6  ctermbg=Blue     ctermfg=Black  guibg=#9999FF    guifg=Black
 
 " Anti reinclusion guards
 if exists('g:loaded_mark') && !exists('g:force_reload_mark')
-	finish
+    finish
 endif
 
 let s:state = {'dir':'', 're':'', 'line':0, 'end':0}
@@ -93,26 +93,26 @@ set cpo&vim
 " Default bindings
 
 if !hasmapto('<Plug>MarkSet', 'n')
-	nmap <unique> <silent> <leader>m <Plug>MarkSet
+    nmap <unique> <silent> <leader>m <Plug>MarkSet
 endif
 if !hasmapto('<Plug>MarkSet', 'v')
-	vmap <unique> <silent> <leader>m <Plug>MarkSet
+    vmap <unique> <silent> <leader>m <Plug>MarkSet
 endif
 if !hasmapto('<Plug>MarkRegex', 'n')
-	nmap <unique> <silent> <leader>r <Plug>MarkRegex
+    nmap <unique> <silent> <leader>r <Plug>MarkRegex
 endif
 if !hasmapto('<Plug>MarkRegex', 'v')
-	vmap <unique> <silent> <leader>r <Plug>MarkRegex
+    vmap <unique> <silent> <leader>r <Plug>MarkRegex
 endif
 
 nnoremap <silent> <Plug>MarkSet   :call
-	\ <sid>MarkCurrentWord()<cr>
+            \ <sid>MarkCurrentWord()<cr>
 vnoremap <silent> <Plug>MarkSet   <c-\><c-n>:call
-	\ <sid>DoMark(<sid>GetVisualSelectionEscaped("enV"))<cr>
+            \ <sid>DoMark(<sid>GetVisualSelectionEscaped("enV"))<cr>
 nnoremap <silent> <Plug>MarkRegex :call
-	\ <sid>MarkRegex()<cr>
+            \ <sid>MarkRegex()<cr>
 vnoremap <silent> <Plug>MarkRegex <c-\><c-n>:call
-	\ <sid>MarkRegex(<sid>GetVisualSelectionEscaped("N"))<cr>
+            \ <sid>MarkRegex(<sid>GetVisualSelectionEscaped("N"))<cr>
 
 " Here is a sumerization of the following keys' behaviors:
 " 
@@ -146,113 +146,113 @@ autocmd! BufWinEnter,WinEnter * call s:UpdateMark()
 " Functions
 
 function! s:MarkCurrentWord()
-	let w = s:PrevWord()
-	if w != ""
-		call s:DoMark('\<' . w . '\>')
-	endif
+    let w = s:PrevWord()
+    if w != ""
+        call s:DoMark('\<' . w . '\>')
+    endif
 endfunction
 
 function! s:GetVisualSelection()
-	let save_a = @a
-	silent normal! gv"ay
-	let res = @a
-	let @a = save_a
-	return res
+    let save_a = @a
+    silent normal! gv"ay
+    let res = @a
+    let @a = save_a
+    return res
 endfunction
 
 function! s:GetVisualSelectionEscaped(flags)
-	" flags:
-	"  "e" \  -> \\  
-	"  "n" \n -> \\n  for multi-lines visual selection
-	"  "N" \n removed
-	"  "V" \V added   for marking plain ^, $, etc.
-	let result = s:GetVisualSelection()
-	let i = 0
-	while i < strlen(a:flags)
-		if a:flags[i] ==# "e"
-			let result = escape(result, '\')
-		elseif a:flags[i] ==# "n"
-			let result = substitute(result, '\n', '\\n', 'g')
-		elseif a:flags[i] ==# "N"
-			let result = substitute(result, '\n', '', 'g')
-		elseif a:flags[i] ==# "V"
-			let result = result
-		endif
-		let i = i + 1
-	endwhile
-	return result
+    " flags:
+    "  "e" \  -> \\  
+    "  "n" \n -> \\n  for multi-lines visual selection
+    "  "N" \n removed
+    "  "V" \V added   for marking plain ^, $, etc.
+    let result = s:GetVisualSelection()
+    let i = 0
+    while i < strlen(a:flags)
+        if a:flags[i] ==# "e"
+            let result = escape(result, '\')
+        elseif a:flags[i] ==# "n"
+            let result = substitute(result, '\n', '\\n', 'g')
+        elseif a:flags[i] ==# "N"
+            let result = substitute(result, '\n', '', 'g')
+        elseif a:flags[i] ==# "V"
+            let result = result
+        endif
+        let i = i + 1
+    endwhile
+    return result
 endfunction
 
 " manually input a regular expression
 function! s:MarkRegex(...) " MarkRegex(regexp)
-	let regexp = ""
-	if a:0 > 0
-		let regexp = a:1
-	endif
-	call inputsave()
-  echohl Question
-	let r = input(" Input pattern to mark: ", regexp)
-  echohl None
-	call inputrestore()
-	if r != ""
-		call s:DoMark(r)
-	endif
+    let regexp = ""
+    if a:0 > 0
+        let regexp = a:1
+    endif
+    call inputsave()
+    echohl Question
+    let r = input(" Input pattern to mark: ", regexp)
+    echohl None
+    call inputrestore()
+    if r != ""
+        call s:DoMark(r)
+    endif
 endfunction
 
 " define variables if they don't exist
 function! s:InitMarkVariables()
-	if !exists("g:mwHistAdd")
-		let g:mwHistAdd = "/@"
-	endif
-	if !exists("g:mwCycleMax")
-		let i = 1
-		while hlexists("MarkWord" . i)
-			let i = i + 1
-		endwhile
-		let g:mwCycleMax = i - 1
-	endif
-	if !exists("g:mwCycle")
-		let g:mwCycle = 1
-	endif
-	let i = 1
-	while i <= g:mwCycleMax
-		if !exists("g:mwWord" . i)
-			let g:mwWord{i} = ""
-		endif
-		let i = i + 1
-	endwhile
-	if !exists("g:mwLastSearched")
-		let g:mwLastSearched = ""
-	endif
+    if !exists("g:mwHistAdd")
+        let g:mwHistAdd = "/@"
+    endif
+    if !exists("g:mwCycleMax")
+        let i = 1
+        while hlexists("MarkWord" . i)
+            let i = i + 1
+        endwhile
+        let g:mwCycleMax = i - 1
+    endif
+    if !exists("g:mwCycle")
+        let g:mwCycle = 1
+    endif
+    let i = 1
+    while i <= g:mwCycleMax
+        if !exists("g:mwWord" . i)
+            let g:mwWord{i} = ""
+        endif
+        let i = i + 1
+    endwhile
+    if !exists("g:mwLastSearched")
+        let g:mwLastSearched = ""
+    endif
 endfunction
 
 " return the word under or before the cursor
 function! s:PrevWord()
-	let line = getline(".")
-	if line[col(".") - 1] =~ '\w'
-		return expand("<cword>")
-	else
-		return substitute(strpart(line, 0, col(".") - 1), '^.\{-}\(\w\+\)\W*$', '\1', '')
-	endif
+    let line = getline(".")
+    if line[col(".") - 1] =~ '\w'
+        return expand("<cword>")
+    else
+        return substitute(strpart(line, 0, col(".") - 1), '^.\{-}\(\w\+\)\W*$', '\1', '')
+    endif
 endfunction
 
 function! s:DoMarkClear()
-  call s:InitMarkVariables()
+    call s:InitMarkVariables()
 
-  let i = 1
-  while i <= g:mwCycleMax
-    if g:mwWord{i} != ""
-      let g:mwWord{i} = ""
-      let lastwinnr = winnr()
-      let winview = winsaveview()
-      windo silent! call matchdelete(3333 + i)
-      exe lastwinnr . "wincmd w"
-      call winrestview(winview)
-    endif
-    let i = i + 1
-  endwhile
-  let g:mwLastSearched = ""
-  return 0
+    let i = 1
+    while i <= g:mwCycleMax
+        if g:mwWord{i} != ""
+            let g:mwWord{i} = ""
+            let lastwinnr = winnr()
+            let winview = winsaveview()
+            windo silent! call matchdelete(3333 + i)
+            exe lastwinnr . "wincmd w"
+            call winrestview(winview)
+        endif
+        let i = i + 1
+    endwhile
+    let g:mwLastSearched = ""
+    return 0
 endfunction
 
 let s:match_str = ""
@@ -262,19 +262,19 @@ function! s:CheckCurCharInMark(regexp)
     let s:match_str = ""
     "if it is not word mark ignore this check
     if a:regexp[0:1] != '\<' || a:regexp[-2:-1] != '\>'
-      return
+        return
     endif
     let save_pos = getpos('.')
     let w = s:AnyMark()
     if w == ""
-      return
+        return
     endif
 
     let match_line = search(w,'c')
     if (match_line == save_pos[1]) && (getpos('.')[2] == save_pos[2])
-      call setpos('.', save_pos)
+        call setpos('.', save_pos)
     else
-      let match_line = search(w, "b")
+        let match_line = search(w, "b")
     endif
 
     if (match_line == 0) || (match_line != save_pos[1])
@@ -292,186 +292,186 @@ function! s:CheckCurCharInMark(regexp)
     let col_e = getpos('.')[2]
 
     " get match end col in current line
-	let col_c = save_pos[2]
+    let col_c = save_pos[2]
 
-  if col_c >= col_s && col_c <= col_e
-    let s:match_str = getline('.')[col_s-1:col_e-1]
-  endif
-  call setpos('.', save_pos)
-  return 0
+    if col_c >= col_s && col_c <= col_e
+        let s:match_str = getline('.')[col_s-1:col_e-1]
+    endif
+    call setpos('.', save_pos)
+    return 0
 endfunction
 
 " mark or unmark a regular expression
 function! s:DoMark(...) " DoMark(regexp)
-	" define variables if they don't exist
-	call s:InitMarkVariables()
+    " define variables if they don't exist
+    call s:InitMarkVariables()
 
-	" clear all marks if regexp is null
-	let regexp = ""
-	if a:0 > 0
-		let regexp = a:1
-	endif
-	if regexp == ""
-		let i = 1
-		while i <= g:mwCycleMax
-			if g:mwWord{i} != ""
-				let g:mwWord{i} = ""
-				let lastwinnr = winnr()
-				let winview = winsaveview()
-        windo silent! call matchdelete(3333 + i)
-				exe lastwinnr . "wincmd w"
-				call winrestview(winview)
-			endif
-			let i = i + 1
-		endwhile
-		let g:mwLastSearched = ""
-		return 0
-	endif
+    " clear all marks if regexp is null
+    let regexp = ""
+    if a:0 > 0
+        let regexp = a:1
+    endif
+    if regexp == ""
+        let i = 1
+        while i <= g:mwCycleMax
+            if g:mwWord{i} != ""
+                let g:mwWord{i} = ""
+                let lastwinnr = winnr()
+                let winview = winsaveview()
+                windo silent! call matchdelete(3333 + i)
+                exe lastwinnr . "wincmd w"
+                call winrestview(winview)
+            endif
+            let i = i + 1
+        endwhile
+        let g:mwLastSearched = ""
+        return 0
+    endif
 
-  " clear the mark if it has been marked
-  call s:CheckCurCharInMark(regexp)
-	let i = 1
-	while i <= g:mwCycleMax
-		if (regexp == g:mwWord{i}) || ((s:match_str != "")&&(s:match_str == g:mwWord{i}))
-			if g:mwLastSearched == g:mwWord{i}
-				let g:mwLastSearched = ""
-			endif
-			let g:mwWord{i} = ""
-			let lastwinnr = winnr()
-			let winview = winsaveview()
-      windo silent! call matchdelete(3333 + i)
-			exe lastwinnr . "wincmd w"
-			call winrestview(winview)
-			return 0
-		endif
-		let i = i + 1
-	endwhile
+    " clear the mark if it has been marked
+    call s:CheckCurCharInMark(regexp)
+    let i = 1
+    while i <= g:mwCycleMax
+        if (regexp == g:mwWord{i}) || ((s:match_str != "")&&(s:match_str == g:mwWord{i}))
+            if g:mwLastSearched == g:mwWord{i}
+                let g:mwLastSearched = ""
+            endif
+            let g:mwWord{i} = ""
+            let lastwinnr = winnr()
+            let winview = winsaveview()
+            windo silent! call matchdelete(3333 + i)
+            exe lastwinnr . "wincmd w"
+            call winrestview(winview)
+            return 0
+        endif
+        let i = i + 1
+    endwhile
 
-	" add to history
-	if stridx(g:mwHistAdd, "/") >= 0
-		call histadd("/", regexp)
-	endif
-	if stridx(g:mwHistAdd, "@") >= 0
-		call histadd("@", regexp)
-	endif
+    " add to history
+    if stridx(g:mwHistAdd, "/") >= 0
+        call histadd("/", regexp)
+    endif
+    if stridx(g:mwHistAdd, "@") >= 0
+        call histadd("@", regexp)
+    endif
 
-	" quote regexp with / etc. e.g. pattern => /pattern/
-	let quote = "/?~!@#$%^&*+-=,.:"
-	let i = 0
-	while i < strlen(quote)
-		if stridx(regexp, quote[i]) < 0
-			let quoted_regexp = quote[i] . regexp . quote[i]
-			break
-		endif
-		let i = i + 1
-	endwhile
-	if i >= strlen(quote)
-		return -1
-	endif
+    " quote regexp with / etc. e.g. pattern => /pattern/
+    let quote = "/?~!@#$%^&*+-=,.:"
+    let i = 0
+    while i < strlen(quote)
+        if stridx(regexp, quote[i]) < 0
+            let quoted_regexp = quote[i] . regexp . quote[i]
+            break
+        endif
+        let i = i + 1
+    endwhile
+    if i >= strlen(quote)
+        return -1
+    endif
 
-	" choose an unused mark group
-	let i = 1
-	while i <= g:mwCycleMax
-		if g:mwWord{i} == ""
-			let g:mwWord{i} = regexp
-			if i < g:mwCycleMax
-				let g:mwCycle = i + 1
-			else
-				let g:mwCycle = 1
-			endif
-			let lastwinnr = winnr()
-			let winview = winsaveview()
-      windo silent! call matchdelete(3333 + i)
-      windo silent! call matchadd("MarkWord" . i, g:mwWord{i}, -10, 3333 + i)
-			exe lastwinnr . "wincmd w"
-			call winrestview(winview)
-			return i
-		endif
-		let i = i + 1
-	endwhile
+    " choose an unused mark group
+    let i = 1
+    while i <= g:mwCycleMax
+        if g:mwWord{i} == ""
+            let g:mwWord{i} = regexp
+            if i < g:mwCycleMax
+                let g:mwCycle = i + 1
+            else
+                let g:mwCycle = 1
+            endif
+            let lastwinnr = winnr()
+            let winview = winsaveview()
+            windo silent! call matchdelete(3333 + i)
+            windo silent! call matchadd("MarkWord" . i, g:mwWord{i}, -10, 3333 + i)
+            exe lastwinnr . "wincmd w"
+            call winrestview(winview)
+            return i
+        endif
+        let i = i + 1
+    endwhile
 
-	" choose a mark group by cycle
-	let i = 1
-	while i <= g:mwCycleMax
-		if g:mwCycle == i
-			if g:mwLastSearched == g:mwWord{i}
-				let g:mwLastSearched = ""
-			endif
-			let g:mwWord{i} = regexp
-			if i < g:mwCycleMax
-				let g:mwCycle = i + 1
-			else
-				let g:mwCycle = 1
-			endif
-			let lastwinnr = winnr()
-			let winview = winsaveview()
-      windo silent! call matchdelete(3333 + i)
-      windo silent! call matchadd("MarkWord" . i, g:mwWord{i}, -10, 3333 + i)
-			exe lastwinnr . "wincmd w"
-			call winrestview(winview)
-			return i
-		endif
-		let i = i + 1
-	endwhile
+    " choose a mark group by cycle
+    let i = 1
+    while i <= g:mwCycleMax
+        if g:mwCycle == i
+            if g:mwLastSearched == g:mwWord{i}
+                let g:mwLastSearched = ""
+            endif
+            let g:mwWord{i} = regexp
+            if i < g:mwCycleMax
+                let g:mwCycle = i + 1
+            else
+                let g:mwCycle = 1
+            endif
+            let lastwinnr = winnr()
+            let winview = winsaveview()
+            windo silent! call matchdelete(3333 + i)
+            windo silent! call matchadd("MarkWord" . i, g:mwWord{i}, -10, 3333 + i)
+            exe lastwinnr . "wincmd w"
+            call winrestview(winview)
+            return i
+        endif
+        let i = i + 1
+    endwhile
 endfunction
 
 " update mark colors
 function! s:UpdateMark()
-	" define variables if they don't exist
-	call s:InitMarkVariables()
+    " define variables if they don't exist
+    call s:InitMarkVariables()
 
-	let i = 1
-  let lastwinnr = winnr()
-	while i <= g:mwCycleMax
-    windo silent! call matchdelete(3333 + i)
-		if g:mwWord{i} != ""
-			" quote regexp with / etc. e.g. pattern => /pattern/
-			let quote = "/?~!@#$%^&*+-=,.:"
-			let j = 0
-			while j < strlen(quote)
-				if stridx(g:mwWord{i}, quote[j]) < 0
-					let quoted_regexp = quote[j] . g:mwWord{i} . quote[j]
-					break
-				endif
-				let j = j + 1
-			endwhile
-			if j >= strlen(quote)
-				continue
-			endif
+    let i = 1
+    let lastwinnr = winnr()
+    while i <= g:mwCycleMax
+        windo silent! call matchdelete(3333 + i)
+        if g:mwWord{i} != ""
+            " quote regexp with / etc. e.g. pattern => /pattern/
+            let quote = "/?~!@#$%^&*+-=,.:"
+            let j = 0
+            while j < strlen(quote)
+                if stridx(g:mwWord{i}, quote[j]) < 0
+                    let quoted_regexp = quote[j] . g:mwWord{i} . quote[j]
+                    break
+                endif
+                let j = j + 1
+            endwhile
+            if j >= strlen(quote)
+                continue
+            endif
 
-      windo silent! call matchadd("MarkWord" . i, g:mwWord{i}, -10, 3333 + i)
-		endif
-		let i = i + 1
-	endwhile
-  exe lastwinnr . "wincmd w"
+            windo silent! call matchadd("MarkWord" . i, g:mwWord{i}, -10, 3333 + i)
+        endif
+        let i = i + 1
+    endwhile
+    exe lastwinnr . "wincmd w"
 endfunction
 
 " combine all marks into one regexp
 function! s:AnyMark()
-	" define variables if they don't exist
-	call s:InitMarkVariables()
+    " define variables if they don't exist
+    call s:InitMarkVariables()
 
-	let w = ""
-	let i = 1
-	while i <= g:mwCycleMax
-		if g:mwWord{i} != ""
-			if w != ""
-				let w = w . '\|' . g:mwWord{i}
-			else
-				let w = g:mwWord{i}
-			endif
-		endif
-		let i = i + 1
-	endwhile
-	return w
+    let w = ""
+    let i = 1
+    while i <= g:mwCycleMax
+        if g:mwWord{i} != ""
+            if w != ""
+                let w = w . '\|' . g:mwWord{i}
+            else
+                let w = g:mwWord{i}
+            endif
+        endif
+        let i = i + 1
+    endwhile
+    return w
 endfunction
 
 function! SearchWarningMsg(w, flags)
     echohl Todo
     if a:flags == "b"
-      echo " Search Hit Top: " . a:w
+        echo " Search Hit Top: " . a:w
     else
-      echo " Search Hit Bottom: " . a:w
+        echo " Search Hit Bottom: " . a:w
     endif
     echohl None
     return
@@ -479,41 +479,41 @@ endfunction
 
 " search any mark
 function! s:SearchAnyMark(...) " SearchAnyMark(flags)
-	let flags = ""
-	if a:0 > 0
-		let flags = a:1
-	endif
-	let w = s:AnyMark()
+    let flags = ""
+    if a:0 > 0
+        let flags = a:1
+    endif
+    let w = s:AnyMark()
 
-  if w == ""
-    echohl Todo
-    echo " No marks!!!"
-    echohl None
-    return
-  endif
+    if w == ""
+        echohl Todo
+        echo " No marks!!!"
+        echohl None
+        return
+    endif
 
-  if (s:state.re == w) && (s:state.end == 1) && (line('.') == s:state.line) && (s:state.dir == flags)
-    call SearchWarningMsg(w, flags)
-    return
-  endif
+    if (s:state.re == w) && (s:state.end == 1) && (line('.') == s:state.line) && (s:state.dir == flags)
+        call SearchWarningMsg(w, flags)
+        return
+    endif
 
-  let s:state.re = w
-  let s:state.line = line('.')
-  let s:state.dir = flags
-	if search(w, flags) == 0
-    let s:state.end = 1
-    call SearchWarningMsg(w, flags)
-  else
-    echohl Question
-    echo " Mark: " . w
-    echohl None
-    let s:state.end = 0
-  endif
+    let s:state.re = w
+    let s:state.line = line('.')
+    let s:state.dir = flags
+    if search(w, flags) == 0
+        let s:state.end = 1
+        call SearchWarningMsg(w, flags)
+    else
+        echohl Question
+        echo " Mark: " . w
+        echohl None
+        let s:state.end = 0
+    endif
 
-	let g:mwLastSearched = ""
+    let g:mwLastSearched = ""
 endfunction
 
 " Restore previous 'cpo' value
 let &cpo = s:save_cpo
 
-" vim: ts=2 sw=2
+" vim: ts=4 sw=4
