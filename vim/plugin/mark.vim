@@ -245,11 +245,7 @@ function! s:DoMarkClear()
       let g:mwWord{i} = ""
       let lastwinnr = winnr()
       let winview = winsaveview()
-      if exists("*matchadd")
-        windo silent! call matchdelete(3333 + i)
-      else
-        exe "windo syntax clear MarkWord" . i
-      endif
+      windo silent! call matchdelete(3333 + i)
       exe lastwinnr . "wincmd w"
       call winrestview(winview)
     endif
@@ -322,11 +318,7 @@ function! s:DoMark(...) " DoMark(regexp)
 				let g:mwWord{i} = ""
 				let lastwinnr = winnr()
 				let winview = winsaveview()
-				if exists("*matchadd")
-					windo silent! call matchdelete(3333 + i)
-				else
-					exe "windo syntax clear MarkWord" . i
-				endif
+        windo silent! call matchdelete(3333 + i)
 				exe lastwinnr . "wincmd w"
 				call winrestview(winview)
 			endif
@@ -347,11 +339,7 @@ function! s:DoMark(...) " DoMark(regexp)
 			let g:mwWord{i} = ""
 			let lastwinnr = winnr()
 			let winview = winsaveview()
-			if exists("*matchadd")
-				windo silent! call matchdelete(3333 + i)
-			else
-				exe "windo syntax clear MarkWord" . i
-			endif
+      windo silent! call matchdelete(3333 + i)
 			exe lastwinnr . "wincmd w"
 			call winrestview(winview)
 			return 0
@@ -393,14 +381,8 @@ function! s:DoMark(...) " DoMark(regexp)
 			endif
 			let lastwinnr = winnr()
 			let winview = winsaveview()
-			if exists("*matchadd")
-				windo silent! call matchdelete(3333 + i)
-				windo silent! call matchadd("MarkWord" . i, g:mwWord{i}, -10, 3333 + i)
-			else
-				exe "windo syntax clear MarkWord" . i
-				" suggested by Marc Weber, use .* instead off ALL
-				exe "windo syntax match MarkWord" . i . " " . quoted_regexp . " containedin=.*"
-			endif
+      windo silent! call matchdelete(3333 + i)
+      windo silent! call matchadd("MarkWord" . i, g:mwWord{i}, -10, 3333 + i)
 			exe lastwinnr . "wincmd w"
 			call winrestview(winview)
 			return i
@@ -423,14 +405,8 @@ function! s:DoMark(...) " DoMark(regexp)
 			endif
 			let lastwinnr = winnr()
 			let winview = winsaveview()
-			if exists("*matchadd")
-				windo silent! call matchdelete(3333 + i)
-				windo silent! call matchadd("MarkWord" . i, g:mwWord{i}, -10, 3333 + i)
-			else
-				exe "windo syntax clear MarkWord" . i
-				" suggested by Marc Weber, use .* instead off ALL
-				exe "windo syntax match MarkWord" . i . " " . quoted_regexp . " containedin=.*"
-			endif
+      windo silent! call matchdelete(3333 + i)
+      windo silent! call matchadd("MarkWord" . i, g:mwWord{i}, -10, 3333 + i)
 			exe lastwinnr . "wincmd w"
 			call winrestview(winview)
 			return i
@@ -445,8 +421,9 @@ function! s:UpdateMark()
 	call s:InitMarkVariables()
 
 	let i = 1
+  let lastwinnr = winnr()
 	while i <= g:mwCycleMax
-		exe "syntax clear MarkWord" . i
+    windo silent! call matchdelete(3333 + i)
 		if g:mwWord{i} != ""
 			" quote regexp with / etc. e.g. pattern => /pattern/
 			let quote = "/?~!@#$%^&*+-=,.:"
@@ -462,15 +439,11 @@ function! s:UpdateMark()
 				continue
 			endif
 
-			if exists("*matchadd")
-				silent! call matchadd("MarkWord" . i, g:mwWord{i}, -10, 3333 + i)
-			else
-				" suggested by Marc Weber, use .* instead off ALL
-				exe "syntax match MarkWord" . i . " " . quoted_regexp . " containedin=.*"
-			endif
+      windo silent! call matchadd("MarkWord" . i, g:mwWord{i}, -10, 3333 + i)
 		endif
 		let i = i + 1
 	endwhile
+  exe lastwinnr . "wincmd w"
 endfunction
 
 " combine all marks into one regexp
