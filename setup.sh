@@ -1,5 +1,4 @@
 #!/bin/bash
-
 function creat_cscope()
 {
     if [ -e "cscope.files" ]; then
@@ -9,10 +8,16 @@ function creat_cscope()
     echo_msg "create cscope.files in $@"
     for arg in $@
     do
-        find  ${arg}  -type f -regextype posix-egrep \
-            -iregex '.*\/(makefile|Kconfig)' -prune -o \
-            -regex '.*\.(c|h|m|s|S|java|sh|cpp|vim|hp|aidl|rc|py|cc|def|xml|mk|el|lisp)'\
-            |sed  -e '/ /d' -e 's:^\./::' >> cscope.files
+        case "$(uname -s)" in
+            "Linux")
+                find  ${arg}  -type f -regextype posix-egrep \
+                    -iregex '.*\/(makefile|Kconfig)' -prune -o \
+                    -regex '.*\.(c|h|m|s|S|java|sh|cpp|vim|hp|aidl|rc|py|cc|def|xml|mk|el|lisp)'\
+                    |sed  -e '/ /d' -e 's:^\./::' >> cscope.files;;
+
+            "Darwin")
+                echo "Darwin";;
+        esac
     done
 
     echo_msg "create cscope"
