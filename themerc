@@ -33,7 +33,7 @@ window.inactive.title.bg.color: #DEE0D8
 window.inactive.title.bg.colorTo: #E0E0D8
 
 !! Titlebar text
-window.label.text.justify: center
+window.label.text.justify: left
 window.active.label.bg: parentrelative
 window.active.label.text.color: #FFFFFF
 window.inactive.label.bg: parentrelative
