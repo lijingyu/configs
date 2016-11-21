@@ -38,7 +38,7 @@ panel_monitor = all
 panel_position = bottom center horizontal
 panel_size = 100% 35
 panel_margin = 0 0
-panel_padding = 80 0 7
+panel_padding = 80 0 4
 panel_dock = 0
 wm_menu = 1
 panel_layer = top
@@ -63,7 +63,7 @@ task_icon = 1
 task_text = 1
 task_centered = 1
 task_maximum_size = 180 35
-task_padding = 2 2
+task_padding = 5 2
 task_background_id = 2
 task_active_background_id = 5
 task_urgent_background_id = 2
@@ -76,11 +76,12 @@ task_urgent_icon_asb = 100 0 0
 task_iconified_icon_asb = 70 0 0
 
 # Fonts
-task_font = Serif 9
+task_font = Serif 12
 task_font_color = #FFFFFF 68
 task_active_font_color = #66ffff 100
 task_urgent_font_color = #FFFFFF 83
 task_iconified_font_color = #FFFFFF 68
+task_tooltip = 0
 font_shadow = 0
 
 # System Tray
@@ -92,16 +93,16 @@ systray_icon_size = 0
 #systray_icon_asb = 70 0 0
 
 # Clock
-time1_format = %H:%M
+time1_format = %H:%M %b %d
 time1_font = sans bold 12
 clock_font_color = #ffff00 76
 clock_padding = 1 0
 clock_background_id = 2
-clock_tooltip = %a, %F
+#clock_tooltip = %a, %F
 clock_rclick_command = orage
 
 # Tooltips
-tooltip = 1
+tooltip = 0
 tooltip_padding = 2 2
 tooltip_show_timeout = 0.7
 tooltip_hide_timeout = 0.3
