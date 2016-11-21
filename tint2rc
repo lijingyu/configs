@@ -85,7 +85,7 @@ font_shadow = 0
 
 # System Tray
 systray = 1
-systray_padding = 0 2 2
+systray_padding = 2 2 2
 systray_sort = right2left
 systray_background_id = 2
 systray_icon_size = 0
@@ -106,7 +106,7 @@ tooltip_padding = 2 2
 tooltip_show_timeout = 0.7
 tooltip_hide_timeout = 0.3
 tooltip_background_id = 1
-tooltip_font = sans bold 14
+tooltip_font = sans bold 12
 tooltip_font_color = #000000 80
 
 # Mouse
@@ -121,7 +121,7 @@ battery_low_status = 10
 battery_low_cmd = notify-send "battery low"
 bat1_font = sans bold 12
 bat2_font = sans 6
-battery_font_color = #ffff00 76
+battery_font_color = #00ff00 76
 battery_padding = 1 0
 battery_background_id = 2
 
