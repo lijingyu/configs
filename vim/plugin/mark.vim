@@ -468,10 +468,16 @@ endfunction
 
 function! SearchWarningMsg(w, flags)
     echohl Todo
-    if a:flags == "b"
-        echo " Search Hit Top: " . a:w
+
+    if strlen(a:w) > (winwidth("%") + 26) 
+        let show_marks = a:w[0:(winwidth("%") - 26)]
     else
-        echo " Search Hit Bottom: " . a:w
+        let show_marks = a:w
+    endif
+    if a:flags == "b"
+        echo " Search Hit Top: " . show_marks . " ..."
+    else
+        echo " Search Hit Bottom: " . show_marks . " ..."
     endif
     echohl None
     return
@@ -505,7 +511,13 @@ function! s:SearchAnyMark(...) " SearchAnyMark(flags)
         call SearchWarningMsg(w, flags)
     else
         echohl Question
-        echo " Mark: " . w
+        if strlen(w) > (winwidth("%") + 15)
+            let show_marks = w[0:(winwidth("%") - 15)]
+        else
+            let show_marks = w
+        endif
+        echo " Mark: " . show_marks . " ..."
+
         echohl None
         let s:state.end = 0
     endif
