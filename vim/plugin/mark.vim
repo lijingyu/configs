@@ -469,8 +469,8 @@ endfunction
 function! SearchWarningMsg(w, flags)
     echohl Todo
 
-    if strlen(a:w) > (winwidth("%") + 26) 
-        let show_marks = a:w[0:(winwidth("%") - 26)] . " ..."
+    if strlen(a:w) > (&columns + 26)
+        let show_marks = a:w[0:(&columns - 26)] . " ..."
     else
         let show_marks = a:w
     endif
@@ -511,8 +511,8 @@ function! s:SearchAnyMark(...) " SearchAnyMark(flags)
         call SearchWarningMsg(w, flags)
     else
         echohl Question
-        if strlen(w) > (winwidth("%") + 15)
-            let show_marks = w[0:(winwidth("%") - 15)] . " ..."
+        if strlen(w) > (&columns + 15)
+            let show_marks = w[0:(&columns - 15)] . " ..."
         else
             let show_marks = w
         endif
