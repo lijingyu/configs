@@ -469,16 +469,17 @@ endfunction
 function! SearchWarningMsg(w, flags)
     echohl Todo
 
-    if strlen(a:w) > (&columns + 26)
-        let show_marks = a:w[0:(&columns - 26)] . " ..."
-    else
-        let show_marks = a:w
-    endif
     if a:flags == "b"
-        echo " Search Hit Top: " . show_marks
+        let show_marks = " Search Hit Top: " . a:w
     else
-        echo " Search Hit Bottom: " . show_marks
+        let show_marks = " Search Hit Bottom: " . a:w
     endif
+
+    if strlen(show_marks) >= &columns
+        let show_marks = show_marks[0:(&columns - 6)] . " ..."
+    endif
+    echo show_marks
+
     echohl None
     return
 endfunction
@@ -511,12 +512,12 @@ function! s:SearchAnyMark(...) " SearchAnyMark(flags)
         call SearchWarningMsg(w, flags)
     else
         echohl Question
-        if strlen(w) > (&columns + 15)
-            let show_marks = w[0:(&columns - 15)] . " ..."
-        else
-            let show_marks = w
+
+        let show_marks = " Mark: " . w
+        if strlen(show_marks) >= &columns
+            let show_marks = show_marks[0:(&columns - 6)] . " ..."
         endif
-        echo " Mark: " . show_marks
+        echo show_marks
 
         echohl None
         let s:state.end = 0
