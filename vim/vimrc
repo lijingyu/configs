@@ -193,7 +193,7 @@ inoremap { {<ESC>:call CompleteCurlyBrackets()<CR>
 
 function! CompleteCurlyBrackets()
     let column = col('.')
-    if (getline('.')[column:] =~"^\s*$") 
+    if (getline('.')[column:] =~'^\s*$')
         put = 'x'
         put = '}'
         normal =%j
