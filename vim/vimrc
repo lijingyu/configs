@@ -199,8 +199,9 @@ function! CompleteCurlyBrackets()
         exe "s/x//"
         startinsert!
     else
-        exe "s/\\%" . col('.') . "c{/{}/"
-        call cursor('.', col('.')+1)
+        let l:col = col('.')
+        exe "s/\\%" . l:col . "c{/{}/"
+        call cursor('.', l:col + 1)
         startinsert
     endif
 endfunction
