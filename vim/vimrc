@@ -180,8 +180,31 @@ nmap <Space>] g<C-]>
 nmap <Space><RightMouse> :MarkClear<CR>
 nmap <Space><LeftMouse> <LeftMouse><leader>m
 nmap <Space>l :LjyatShowBookMarks<CR>
+
 vnoremap <Space>R <ESC>:call LjyatVSearchStringCurrentBuffer()<CR>
 vnoremap <Space>r <ESC>:call LjyatVSearchStringInFiles()<CR>
+
+inoremap ' ''<ESC>i
+inoremap " ""<ESC>i
+inoremap ( ()<ESC>i
+inoremap [ []<ESC>i
+inoremap < <><ESC>i
+inoremap { {<ESC>:call CompleteCurlyBrackets()<CR>
+
+function! CompleteCurlyBrackets()
+    let column = col('.')
+    if (getline('.')[column:] =~"^\s*$") 
+        put = 'x'
+        put = '}'
+        normal =%j
+        exe "s/x//"
+        startinsert!
+    else
+        exe "s/\\%" . column . "c{/{}/"
+        call cursor('.', column+1)
+        startinsert
+    endif
+endfunction
 
 function! LjyatNERDTreeOpenBufDir()
     call LjyatSkipSpecWindow()
