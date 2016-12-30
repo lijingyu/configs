@@ -192,16 +192,15 @@ inoremap < <><ESC>i
 inoremap { {<ESC>:call CompleteCurlyBrackets()<CR>
 
 function! CompleteCurlyBrackets()
-    let column = col('.')
-    if (getline('.')[column:] =~'^\s*$')
+    if (getline('.')[col('.'):] =~'^\s*$')
         put = 'x'
         put = '}'
         normal =%j
         exe "s/x//"
         startinsert!
     else
-        exe "s/\\%" . column . "c{/{}/"
-        call cursor('.', column+1)
+        exe "s/\\%" . col('.') . "c{/{}/"
+        call cursor('.', col('.')+1)
         startinsert
     endif
 endfunction
