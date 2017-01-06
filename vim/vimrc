@@ -599,21 +599,35 @@ endfunction
 
 function! IncreaseFontSize()
     if has("gui_running")
-        let oldft=&guifont
-        let font_name=substitute(oldft, ' \d\+$', "", "")
-        let font_size=substitute(oldft, '.\+ ', "", "")
-        let font_size += 1
-        let &guifont=font_name . " " . font_size
+        if has("win32")
+            let oldft=&guifont
+            let font_size=matchstr(oldft, ':h\zs.*\ze:')
+            let font_size += 1
+            let &guifont = substitute(oldft, ':h\zs.*\ze:', font_size, '')
+        else
+            let oldft=&guifont
+            let font_name=substitute(oldft, ' \d\+$', "", "")
+            let font_size=substitute(oldft, '.\+ ', "", "")
+            let font_size += 1
+            let &guifont=font_name . " " . font_size
+        endif
     endif
 endfunction
 
 function! DecreaseFontSize()
     if has("gui_running")
-        let oldft=&guifont
-        let font_name=substitute(oldft, ' \d\+$', "", "")
-        let font_size=substitute(oldft, '.\+ ', "", "")
-        let font_size -= 1
-        let &guifont=font_name . " " . font_size
+        if has("win32")
+            let oldft=&guifont
+            let font_size=matchstr(oldft, ':h\zs.*\ze:')
+            let font_size -= 1
+            let &guifont = substitute(oldft, ':h\zs.*\ze:', font_size, '')
+        else
+            let oldft=&guifont
+            let font_name=substitute(oldft, ' \d\+$', "", "")
+            let font_size=substitute(oldft, '.\+ ', "", "")
+            let font_size -= 1
+            let &guifont=font_name . " " . font_size
+        endif
     endif
 endfunction
 
