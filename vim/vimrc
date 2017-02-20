@@ -15,9 +15,14 @@ if has("gui_running")
     if has("win32")
         set guifont=Courier_New:h13:cANSI
         set fileencodings=
+        nmap <F7> :AcpDisable<CR>
+        nmap <F8> :AcpEnable<CR>
     elseif has("mac")
         set guifont=Consolas:h13
     else
+        "set for edit chinese
+        nmap <F7> :set guifont=Microsoft\ Yahei\ Mono\ 15 linespace=6<CR>:AcpDisable<CR>
+        nmap <F8> :set guifont=Consolas\ 15 linespace=3<CR>:AcpEnable<CR>
         set guifont=Consolas\ 15
         set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
         colorscheme ljyat
@@ -26,6 +31,8 @@ else
     set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
     colorscheme mycterm
     set mouse=""	" Disenable mouse in vim
+    nmap <F7> :AcpDisable<CR>
+    nmap <F8> :AcpEnable<CR>
 endif
 
 """"""""Special in Gvim"""""""""""""""""""""""
@@ -95,9 +102,6 @@ nmap k gk
 "set for view kernel code
 nmap <F5> :set noexpandtab tabstop=8 shiftwidth=8<CR>
 nmap <F6> :set expandtab tabstop=4 shiftwidth=4<CR>
-"set for edit chinese
-nmap <F7> :set guifont=Microsoft\ Yahei\ Mono\ 15 linespace=6<CR>:AcpDisable<CR>
-nmap <F8> :set guifont=Consolas\ 15 linespace=3<CR>:AcpEnable<CR>
 map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-h> <C-w>h
