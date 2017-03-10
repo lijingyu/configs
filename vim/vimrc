@@ -605,9 +605,9 @@ function! IncreaseFontSize()
     if has("gui_running")
         let oldft=&guifont
         if has("win32")
-            let font_size=matchstr(oldft, ':h\zs.*\ze:')
+            let font_size=matchstr(oldft, ':h\zs\d\+')
             let font_size += 1
-            let &guifont = substitute(oldft, ':h\zs.*\ze:', font_size, '')
+            let &guifont = substitute(oldft, ':h\zs\d\+', font_size, '')
         else
             let font_size = matchstr(oldft, '\d\+$')
             let font_size += 1
@@ -620,9 +620,9 @@ function! DecreaseFontSize()
     if has("gui_running")
         let oldft=&guifont
         if has("win32")
-            let font_size=matchstr(oldft, ':h\zs.*\ze:')
+            let font_size=matchstr(oldft, ':h\zs\d\+')
             let font_size -= 1
-            let &guifont = substitute(oldft, ':h\zs.*\ze:', font_size, '')
+            let &guifont = substitute(oldft, ':h\zs\d\+', font_size, '')
         else
             let font_size = matchstr(oldft, '\d\+$')
             let font_size -= 1
