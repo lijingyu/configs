@@ -188,12 +188,12 @@ nmap <Space>l :LjyatShowBookMarks<CR>
 vnoremap <Space>R <ESC>:call LjyatVSearchStringCurrentBuffer()<CR>
 vnoremap <Space>r <ESC>:call LjyatVSearchStringInFiles()<CR>
 
-inoremap ' ''<ESC>i
-inoremap " ""<ESC>i
-inoremap ( ()<ESC>i
-inoremap [ []<ESC>i
-inoremap < <><ESC>i
-inoremap { {<ESC>:call CompleteCurlyBrackets()<CR>
+"inoremap ' ''<ESC>i
+"inoremap " ""<ESC>i
+"inoremap ( ()<ESC>i
+"inoremap [ []<ESC>i
+"inoremap < <><ESC>i
+"inoremap { {<ESC>:call CompleteCurlyBrackets()<CR>
 
 function! CompleteCurlyBrackets()
     if (getline('.')[col('.'):] =~'^\s*$')
