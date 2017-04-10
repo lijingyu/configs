@@ -28,7 +28,7 @@ function create_tags()
 {
     echo_msg "create tags"
     if [ -s "cscope.files" ]; then
-        ctags --c-kinds=-m --c++-kinds=-m --fields=+iaS --extra=+q  -L cscope.files
+        ctags --c-kinds=-m --c++-kinds=-m --python-kinds=-i --fields=+iaS --extra=+q  -L cscope.files
     else
         echo_msg "need cscope.files"
     fi
