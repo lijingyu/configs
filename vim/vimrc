@@ -90,7 +90,8 @@ let html_wrong_comments = 1
 "config for taglist
 let Tlist_Inc_Winwidth = 0
 let NERDTreeWinPos = "right"
-let g:TagbarList = ['cpp','java', 'python']
+let g:UseTagBar = ['cpp','java', 'python']
+let g:UseTagList = ['c']
 
 if !exists("g:tmpcscope_files")
     let g:tmpcscope_files = 'cscope.files'
@@ -577,7 +578,7 @@ function! LjyatVSearchStringInFiles()
 endfunction
 
 function! ToggleTlistTagbar()
-    if match(g:TagbarList, &ft) >= 0
+    if match(g:UseTagBar, &ft) >= 0
         TagbarToggle
     else
         Tlist
@@ -588,7 +589,7 @@ function! AutoToggleTlistTagbar()
     let tagbarwinnr = bufwinnr("__Tagbar__")
     let tlistwinnr = bufwinnr(g:TagList_title)
 
-    if &ft == 'c'
+    if match(g:UseTagList, &ft) >= 0
         if tagbarwinnr != -1
             TagbarToggle
             if tlistwinnr == -1
@@ -598,7 +599,7 @@ function! AutoToggleTlistTagbar()
         return
     endif
 
-    if match(g:TagbarList, &ft) >= 0
+    if match(g:UseTagBar, &ft) >= 0
         if tlistwinnr != -1
             Tlist
             if tagbarwinnr == -1
@@ -712,8 +713,8 @@ augroup LjyatAutoCmds
     autocmd FileType c,cpp,java,cs set omnifunc=ccomplete#Complete
     autocmd FileType make set iskeyword+=-
 
-    autocmd BufEnter *.h,*.c,*.cpp,*.java,*.py call AutoToggleTlistTagbar()
-    autocmd VimEnter *  call ToggleTlistTagbar()
+    autocmd BufEnter *.c,*.cpp,*.java,*.py call AutoToggleTlistTagbar()
+    autocmd VimEnter * call ToggleTlistTagbar()
     autocmd VimLeave * call CleanTmpCscopeFiles()
     autocmd BufNewFile,BufRead *.aidl setf java
 augroup end
