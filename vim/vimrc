@@ -82,6 +82,7 @@ endif
 
 let c_syntax_for_h = 1
 let Tlist_WinWidth = 40
+let Tlist_Auto_Open = 0
 let g:tagbar_left = 1
 let g:tagbar_sort = 0
 let g:tagbar_indent = 4
