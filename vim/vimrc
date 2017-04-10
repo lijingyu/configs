@@ -595,6 +595,7 @@ function! AutoToggleTlistTagbar()
                 Tlist
             endif
         endif
+        return
     endif
 
     if match(g:TagbarList, &ft) >= 0
@@ -604,6 +605,7 @@ function! AutoToggleTlistTagbar()
                 TagbarToggle
             endif
         endif
+        return
     endif
 endfunction
 
@@ -711,6 +713,7 @@ augroup LjyatAutoCmds
     autocmd FileType make set iskeyword+=-
 
     autocmd BufEnter *.h,*.c,*.cpp,*.java,*.py call AutoToggleTlistTagbar()
+    autocmd VimEnter *  call ToggleTlistTagbar()
     autocmd VimLeave * call CleanTmpCscopeFiles()
     autocmd BufNewFile,BufRead *.aidl setf java
 augroup end
