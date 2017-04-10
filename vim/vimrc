@@ -67,7 +67,6 @@ set nowrapscan
 set winaltkeys=no
 set diffopt=filler,vertical
 set foldmethod=manual
-set breakindent
 
 "set statusline
 set laststatus=2
@@ -76,6 +75,10 @@ set statusline+=%-f\ %w\
 set statusline+=%{&fenc!=''?&fenc:&enc}\ \ 
 set statusline+=%l/%L\ 
 set statusline+=%-3m 
+
+if exists('&breakindent')
+    set breakindent
+endif
 
 let c_syntax_for_h = 1
 let Tlist_WinWidth = 40
