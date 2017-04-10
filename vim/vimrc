@@ -67,6 +67,7 @@ set nowrapscan
 set winaltkeys=no
 set diffopt=filler,vertical
 set foldmethod=manual
+set breakindent
 
 "set statusline
 set laststatus=2
@@ -631,6 +632,21 @@ function! DecreaseFontSize()
     endif
 endfunction
 
+function! CreateTable(linenum, col)
+	let c=a:col
+	let l = a:linenum
+	let empty_str = " "
+	while c > 0
+		let empty_str = empty_str . " "
+		let c = c - 1
+	endwhile
+
+	while l > 0
+		put =empty_str
+		let l = l - 1
+	endwhile
+endfunction
+
 let s:mark_index = 0
 let s:mark_list=[]
 function! LjyatAddBookMark()
@@ -673,6 +689,7 @@ command! LjyatSearchStringCurrentBuffer call LjyatSearchStringCurrentBuffer()
 command! LjyatAddBookMark call LjyatAddBookMark()
 command! LjyatShowBookMarks call LjyatShowBookMarks()
 command! LjyatBookMarkClear call LjyatBookMarkClear()
+command! -nargs=+ CreateTable call CreateTable(<f-args>)
 
 " => Set OminComplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
