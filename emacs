@@ -47,7 +47,7 @@
 	     (define-key gtags-mode-map "\C-b" 'scroll-down)
 	     (define-key gtags-mode-map "\M-]" 'gtags-find-tag)
 	     (define-key gtags-mode-map "\M-[" 'gtags-find-rtag)
-	     (define-key gtags-mode-map "\M-\" 'gtags-find-symbol)
+	     (define-key gtags-mode-map "\M-\\" 'gtags-find-symbol)
 	     (define-key gtags-mode-map "\M-/" 'gtags-find-pattern)
 	     (define-key gtags-mode-map "\M-f" 'gtags-find-file)
 	     ))
