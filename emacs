@@ -7,8 +7,6 @@
 (load-file "~/.emacs.d/color-theme/themes/monokai-theme.el")
 (color-theme-monokai)
 
-(require 'setnu)
-(setnu-mode t)
 (show-paren-mode t)
 (set-default-font "-microsoft-Consolas-normal-normal-normal-*-19-*-*-*-m-0-iso10646-1")
 
@@ -43,8 +41,8 @@
 
 (add-hook 'gtags-mode-hook
 	  '(lambda ()
-	     (define-key gtags-mode-map "\C-f" 'scroll-up)
-	     (define-key gtags-mode-map "\C-b" 'scroll-down)
+	     (define-key gtags-mode-map "\C-t" 'gtags-pop-stack)
+	     (define-key gtags-mode-map "\M-s" 'gtags-find-with-grep)		
 	     (define-key gtags-mode-map "\M-]" 'gtags-find-tag)
 	     (define-key gtags-mode-map "\M-[" 'gtags-find-rtag)
 	     (define-key gtags-mode-map "\M-\\" 'gtags-find-symbol)
