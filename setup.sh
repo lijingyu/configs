@@ -1,6 +1,12 @@
 #!/bin/bash
 function creat_cscope()
 {
+    echo_msg "create cscope"
+    cscope -bki cscope.files
+}
+
+function creat_cscopefiles()
+{
     if [ -e "cscope.files" ]; then
         rm -rf cscope.files
     fi
@@ -19,9 +25,6 @@ function creat_cscope()
                 echo "Darwin";;
         esac
     done
-
-    echo_msg "create cscope"
-    cscope -bki cscope.files
 }
 
 function create_tags()
@@ -57,10 +60,25 @@ function csset()
     fi
 
     csclean
-    creat_cscope $@
+
+    creat_cscopefiles $@
+    creat_cscope
 
     create_tags
     create_dict
+    echo_msg "create  success"
+}
+function cssetg()
+{
+    if [ $# -eq 0 ];then
+        echo_msg "need dirname"
+        return
+    fi
+
+
+    creat_cscopefiles $@
+
+    gtags -f cscope.files
     echo_msg "create  success"
 }
 
@@ -94,7 +112,8 @@ function csseta()
     fi
 
     csclean
-    creat_cscope $@
+    creat_cscopefiles $@
+    creat_cscope
 
     rm  -rf cscope.files tags TAGS
 
@@ -127,7 +146,7 @@ function delete_cscope_tags()
    if [ -d $@ ];then
        cur_dir=`pwd`
        cd $@
-       rm  -rf cscope* tags TAGS ncscope* dict
+       rm  -rf cscope* tags TAGS ncscope* dict GPATH GRTAGS  GTAGS
        cd $cur_dir
    else
        echo_msg "$@ is not directory!!"
@@ -137,7 +156,7 @@ function delete_cscope_tags()
 function csclean()
 {
     if [ $# -eq 0 ];then
-        rm  -rf cscope* tags TAGS ncscope* dict
+        rm  -rf cscope* tags TAGS ncscope* dict GPATH GRTAGS  GTAGS
     else
         for arg in $@
         do
