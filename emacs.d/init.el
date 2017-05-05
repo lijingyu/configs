@@ -8,7 +8,7 @@
 (color-theme-monokai)
 
 (show-paren-mode t)
-(set-default-font "-microsoft-Consolas-normal-normal-normal-*-19-*-*-*-m-0-iso10646-1")
+(set-frame-font "-microsoft-Consolas-normal-normal-normal-*-19-*-*-*-m-0-iso10646-1" t t)
 
 (require 'xcscope)
 
