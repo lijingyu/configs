@@ -92,7 +92,9 @@ let Tlist_Inc_Winwidth = 0
 let NERDTreeWinPos = "right"
 let g:UseTagBar = ['cpp','java', 'python']
 let g:UseTagList = ['c']
+let s:searchhistory = 30
 let s:StrPattern = ''
+let s:SearchList = []
 
 if !exists("g:tmpcscope_files")
     let g:tmpcscope_files = 'cscope.files'
@@ -528,11 +530,35 @@ function! LjyatSearchStringCurrentBuffer()
     endif
 
     echohl Question
-    if match(s:StrPattern, "\|")  == -1
-        let s:StrPattern = input("  Search cur-str: ", expand("<cword>"))
+
+    if len(s:SearchList) == 0
+        if match(s:StrPattern, "\|")  == -1
+            let s:StrPattern = input("  Search cur-str: ", expand("<cword>"))
+        else
+            let s:StrPattern = input("  Search cur-str: ", s:StrPattern)
+        endif
+       call insert(s:SearchList, s:StrPattern)
     else
-        let s:StrPattern = input("  Search cur-str: ", s:StrPattern)
+        let idx = 0
+        let outputlist = []
+        for item in s:SearchList
+            let outputitem = idx . '. ' . item
+            call add(outputlist, outputitem)
+            let idx += 1
+        endfor
+
+        let l:sel_idx = inputlist(outputlist)
+        let s:StrPattern = input("  Search cur-str: ", s:SearchList[l:sel_idx])
+        if s:StrPattern != ''
+            call insert(s:SearchList, s:StrPattern)
+            let s:SearchList = uniq(s:SearchList)
+            if len(s:SearchList) > s:searchhistory
+                call remove(s:SearchList, -1)
+            endif
+        endif
     endif
+
+
     echohl None
 
     if s:StrPattern == ""
