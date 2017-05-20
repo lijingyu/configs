@@ -92,6 +92,7 @@ let Tlist_Inc_Winwidth = 0
 let NERDTreeWinPos = "right"
 let g:UseTagBar = ['cpp','java', 'python']
 let g:UseTagList = ['c']
+let s:StrPattern = ''
 
 if !exists("g:tmpcscope_files")
     let g:tmpcscope_files = 'cscope.files'
@@ -527,17 +528,21 @@ function! LjyatSearchStringCurrentBuffer()
     endif
 
     echohl Question
-    let pattern = input("  Search cur-str: ", expand("<cword>"))
+    if match(s:StrPattern, "\|")  == -1
+        let s:StrPattern = input("  Search cur-str: ", expand("<cword>"))
+    else
+        let s:StrPattern = input("  Search cur-str: ", s:StrPattern)
+    endif
     echohl None
 
-    if pattern == ""
+    if s:StrPattern == ""
         return
     endif
 
-    "execute "silent! MarkClear|Mark " . pattern
+    "execute "silent! MarkClear|Mark " . s:StrPattern
 
-    let pattern = "/" . pattern . "/"
-    let real_cmd = "lvimgrep " . pattern . " %"
+    let l:pattern = "/" . s:StrPattern . "/"
+    let real_cmd = "lvimgrep " . l:pattern . " %"
     echomsg "Searching cur-str..."
     execute "silent! " . real_cmd
     lopen
