@@ -554,7 +554,7 @@ function! LjyatSearchStringCurrentBuffer()
         endif
         if match(s:StrPattern, "\|")  != -1
             call insert(s:SearchList, s:StrPattern)
-            let s:SearchList = uniq(s:SearchList)
+            let s:SearchList = uniq(copy(s:SearchList))
             if len(s:SearchList) > s:searchhistory
                 call remove(s:SearchList, -1)
             endif
