@@ -532,15 +532,14 @@ function! LjyatSearchStringCurrentBuffer()
     echohl Question
 
     if len(s:SearchList) == 0
-        if match(s:StrPattern, "\|")  == -1
-            let s:StrPattern = input("  Search cur-str: ", expand("<cword>"))
-        else
-            let s:StrPattern = input("  Search cur-str: ", s:StrPattern)
+        let s:StrPattern = input("  Search cur-str: ", expand("<cword>"))
+        if match(s:StrPattern, "\|")  != -1
+            call insert(s:SearchList, s:StrPattern)
         endif
-       call insert(s:SearchList, s:StrPattern)
     else
-        let idx = 0
         let outputlist = []
+        call add(outputlist, '0. ' . expand("<cword>"))
+        let idx = 1
         for item in s:SearchList
             let outputitem = idx . '. ' . item
             call add(outputlist, outputitem)
@@ -548,8 +547,12 @@ function! LjyatSearchStringCurrentBuffer()
         endfor
 
         let l:sel_idx = inputlist(outputlist)
-        let s:StrPattern = input("  Search cur-str: ", s:SearchList[l:sel_idx])
-        if s:StrPattern != ''
+        if l:sel_idx == 0
+            let s:StrPattern = input("  Search cur-str: ", expand("<cword>"))
+        else
+            let s:StrPattern = input("  Search cur-str: ", s:SearchList[l:sel_idx - 1])
+        endif
+        if match(s:StrPattern, "\|")  != -1
             call insert(s:SearchList, s:StrPattern)
             let s:SearchList = uniq(s:SearchList)
             if len(s:SearchList) > s:searchhistory
