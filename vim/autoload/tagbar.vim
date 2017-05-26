@@ -254,9 +254,9 @@ function! s:InitTypes() abort
         \ {'short' : 'c', 'long' : 'classes',     'fold' : 0, 'stl' : 1},
         \ {'short' : 's', 'long' : 'structs',     'fold' : 0, 'stl' : 1},
         \ {'short' : 'u', 'long' : 'unions',      'fold' : 0, 'stl' : 1},
+        \ {'short' : 'v', 'long' : 'variables',   'fold' : 0, 'stl' : 0},
         \ {'short' : 'f', 'long' : 'functions',   'fold' : 0, 'stl' : 1},
-        \ {'short' : 'm', 'long' : 'members',     'fold' : 0, 'stl' : 0},
-        \ {'short' : 'v', 'long' : 'variables',   'fold' : 0, 'stl' : 0}
+        \ {'short' : 'm', 'long' : 'members',     'fold' : 0, 'stl' : 0}
     \ ]
     let type_cpp.sro        = '::'
     let type_cpp.kind2scope = {
@@ -590,11 +590,11 @@ function! s:InitTypes() abort
     let type_python = s:TypeInfo.New()
     let type_python.ctagstype = 'python'
     let type_python.kinds     = [
-        \ {'short' : 'i', 'long' : 'imports',   'fold' : 1, 'stl' : 0},
+        \ {'short' : 'i', 'long' : 'imports',   'fold' : 0, 'stl' : 0},
+        \ {'short' : 'v', 'long' : 'variables', 'fold' : 0, 'stl' : 0},
         \ {'short' : 'c', 'long' : 'classes',   'fold' : 0, 'stl' : 1},
         \ {'short' : 'f', 'long' : 'functions', 'fold' : 0, 'stl' : 1},
-        \ {'short' : 'm', 'long' : 'members',   'fold' : 0, 'stl' : 1},
-        \ {'short' : 'v', 'long' : 'variables', 'fold' : 0, 'stl' : 0}
+        \ {'short' : 'm', 'long' : 'members',   'fold' : 0, 'stl' : 1}
     \ ]
     let type_python.sro        = '.'
     let type_python.kind2scope = {
