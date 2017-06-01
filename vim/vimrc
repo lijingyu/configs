@@ -22,8 +22,8 @@ if has("gui_running")
     else
         "set for edit chinese
         nmap <F7> :set guifont=Microsoft\ Yahei\ Mono\ 15 linespace=6<CR>:AcpDisable<CR>
-        nmap <F8> :set guifont=Consolas\ 14 linespace=3<CR>:AcpEnable<CR>
-        set guifont=Consolas\ 14
+        nmap <F8> :set guifont=Consolas\ 13 linespace=3<CR>:AcpEnable<CR>
+        set guifont=Consolas\ 13
         set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
         colorscheme ljyat
     endif
