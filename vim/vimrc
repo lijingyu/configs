@@ -13,7 +13,7 @@ if has("gui_running")
     set mouse=a		"Enable mouse in gui
 
     if has("win32")
-        set guifont=Courier_New:h13:cANSI
+        set guifont=Courier_New:h13:cANSI:qDRAFT linespace=0
         set fileencodings=
         nmap <F7> :AcpDisable<CR>
         nmap <F8> :AcpEnable<CR>
