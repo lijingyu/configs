@@ -10,7 +10,7 @@ if has("gui_running")
     set guioptions-=m
     set guioptions-=T
     set guioptions-=L
-    set mouse=a		"Enable mouse in gui
+    set mouse=a        "Enable mouse in gui
 
     if has("win32")
         set guifont=Courier_New:h13:cANSI:qDRAFT linespace=0
@@ -30,7 +30,7 @@ if has("gui_running")
 else
     set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
     colorscheme mycterm
-    set mouse=""	" Disenable mouse in vim
+    set mouse=""    " Disenable mouse in vim
     nmap <F7> :AcpDisable<CR>
     nmap <F8> :AcpEnable<CR>
 endif
@@ -41,9 +41,9 @@ endif
 "set vb t_vb=
 """"""""""""""""""""""""""""""""""""""""""""""
 set t_Co=256
-set showmatch		" Show matching brackets.
-set incsearch		" Incremental search
-set autowrite		" Automatically save before commands like :next and :make
+set showmatch        " Show matching brackets.
+set incsearch        " Incremental search
+set autowrite        " Automatically save before commands like :next and :make
 set hidden             " Hide buffers when they are abandoned
 set history=700
 set scrolloff=0
@@ -674,18 +674,18 @@ function! DecreaseFontSize()
 endfunction
 
 function! CreateTable(linenum, col)
-	let c=a:col
-	let l = a:linenum
-	let empty_str = " "
-	while c > 0
-		let empty_str = empty_str . " "
-		let c = c - 1
-	endwhile
+    let c=a:col
+    let l = a:linenum
+    let empty_str = " "
+    while c > 0
+        let empty_str = empty_str . " "
+        let c = c - 1
+    endwhile
 
-	while l > 0
-		put =empty_str
-		let l = l - 1
-	endwhile
+    while l > 0
+        put =empty_str
+        let l = l - 1
+    endwhile
 endfunction
 
 let s:mark_index = 0
