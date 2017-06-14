@@ -111,6 +111,7 @@ nmap k gk
 "set for view kernel code
 nmap <F5> :set noexpandtab tabstop=8 shiftwidth=8<CR>
 nmap <F6> :set expandtab tabstop=4 shiftwidth=4<CR>
+nmap <F9> :call LjyatFoldToggle()<CR>
 map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-h> <C-w>h
@@ -169,7 +170,7 @@ nmap B :LjyatAddBookMark<CR>
 
 "grep -E
 nmap <M-s> :LjyatSearchStringInFiles<CR>
-nmap <F9> :edit ++ff=dos<CR>
+nmap <F10> :edit ++ff=dos<CR>
 
 "vim nmap
 nmap <Space>s :LjyatSearchStringInFiles<CR>
@@ -715,6 +716,18 @@ function! LjyatBookMarkClear()
     let s:mark_index = 0
     let s:mark_list=[]
     execute "cclose"
+endfunction
+
+function! LjyatFoldToggle()
+    if &foldcolumn == 0
+        let &foldcolumn = 4
+        let &foldmethod = 'syntax'
+        let &foldlevel = 2
+    else
+        let &foldcolumn = 0
+        let &foldmethod = 'manual'
+        let &foldlevel = 99
+    endif
 endfunction
 
 command! -nargs=1 Argfind call Argfind(<f-args>)
