@@ -122,11 +122,11 @@ nnoremap <F4> :LjyatSearchStringCurrentBuffer<CR>
 nnoremap <C-s> :LjyatSearchStringCurrentBuffer<CR>
 
 "color set
-nnoremap / <leader>r
-nnoremap n <leader>/
-nnoremap N <leader>?
-nnoremap M :MarkClear<CR><leader>m
-nnoremap <leader>] <C-w>g}
+nmap / <leader>r
+nmap n <leader>/
+nmap N <leader>?
+nmap M :MarkClear<CR><leader>m
+nmap <leader>] <C-w>g}
 nnoremap <Space> <Nop>
 
 "gui_running
@@ -158,12 +158,12 @@ nnoremap <C-v> "+p
 nnoremap <M-e> g_
 nnoremap <M-a> 0
 nnoremap <silent> <M-1> :pc<CR>:lclose<CR>:cclose<CR>
-nnoremap <M-m> <leader>m
+nmap <M-m> <leader>m
 nnoremap <M-]> g<C-]>
-nnoremap <M-LeftMouse> <LeftMouse><leader>m
+nmap <M-LeftMouse> <LeftMouse><leader>m
 nnoremap <RightMouse> <C-o>
-nnoremap <S-LeftMouse> <LeftMouse>:MarkClear<CR><leader>m
-nnoremap <M-RightMouse> :MarkClear<CR>
+nmap <S-LeftMouse> <LeftMouse>:MarkClear<CR><leader>m
+nmap <M-RightMouse> :MarkClear<CR>
 nnoremap <M-l> :LjyatShowBookMarks<CR>
 nnoremap C :LjyatBookMarkClear<CR>
 nnoremap B :LjyatAddBookMark<CR>
@@ -175,7 +175,7 @@ nnoremap <F10> :edit ++ff=dos<CR>
 "vim nnoremap
 nnoremap <Space>s :LjyatSearchStringInFiles<CR>
 nnoremap <Space>] g<C-]>
-nnoremap <Space>m <leader>m
+nmap <Space>m <leader>m
 nnoremap <silent> <Space>1 :pc<CR>:lclose<CR>:cclose<CR>
 nnoremap <Space>a 0
 nnoremap <Space>e g_
@@ -191,8 +191,8 @@ nnoremap <Space>\ :cs find s <C-R>=expand("<cword>")<CR><CR>
 nnoremap <Space>[ :cs find c <C-R>=expand("<cword>")<CR><CR>
 nnoremap <Space>f :LjyatSearchFileInFileList<CR>
 nnoremap <Space>] g<C-]>
-nnoremap <Space><RightMouse> :MarkClear<CR>
-nnoremap <Space><LeftMouse> <LeftMouse><leader>m
+nmap <Space><RightMouse> :MarkClear<CR>
+nmap <Space><LeftMouse> <LeftMouse><leader>m
 nnoremap <Space>l :LjyatShowBookMarks<CR>
 
 vnoremap <Space>R <ESC>:call LjyatVSearchStringCurrentBuffer()<CR>
