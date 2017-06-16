@@ -66,6 +66,7 @@ set nowrapscan
 set winaltkeys=no
 set diffopt=filler,vertical
 set foldmethod=manual
+set winwidth=60
 
 "set statusline
 set laststatus=2
@@ -126,7 +127,7 @@ nmap / <leader>r
 nmap n <leader>/
 nmap N <leader>?
 nmap M :MarkClear<CR><leader>m
-nmap <leader>] <C-w>g}
+nmap <leader>] :vertical botright pedit<CR><C-w>g}
 nnoremap <Space> <Nop>
 
 "gui_running
