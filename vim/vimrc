@@ -210,7 +210,7 @@ endif
 
 function! LjyatShowPreviewTag()
     let word = '\<' . expand("<cword>") . '\>'
-    silent! exe " wincmd g}"
+    exe " wincmd g}"
     let win_cur = winnr()
     let win_count = winnr('$') "loop back to this window again
 
