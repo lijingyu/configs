@@ -51,7 +51,7 @@ set autoread
 set ffs=unix,dos,mac
 set noswapfile
 set updatetime=200
-set previewheight=10
+set previewheight=13
 set autoindent
 set smartindent
 set nocindent
@@ -66,7 +66,6 @@ set nowrapscan
 set winaltkeys=no
 set diffopt=filler,vertical
 set foldmethod=manual
-set winwidth=60
 
 "set statusline
 set laststatus=2
@@ -127,7 +126,8 @@ nmap / <leader>r
 nmap n <leader>/
 nmap N <leader>?
 nmap M :MarkClear<CR><leader>m
-nmap <leader>] :vertical botright pedit<CR><C-w>g}
+nmap <leader>] :call LjyatShowPreviewTag()<CR>
+
 nnoremap <Space> <Nop>
 
 "gui_running
@@ -199,12 +199,34 @@ nnoremap <Space>l :LjyatShowBookMarks<CR>
 vnoremap <Space>R <ESC>:call LjyatVSearchStringCurrentBuffer()<CR>
 vnoremap <Space>r <ESC>:call LjyatVSearchStringInFiles()<CR>
 
-"inoremap ' ''<ESC>i
-"inoremap " ""<ESC>i
-"inoremap ( ()<ESC>i
-"inoremap [ []<ESC>i
-"inoremap < <><ESC>i
-"inoremap { {<ESC>:call CompleteCurlyBrackets()<CR>
+"============= show preview tag config ===========
+hi PreviewTagGroup ctermbg=30 ctermfg=11 guifg=Yellow guibg=#2F4F4F gui=NONE
+let s:PreviewTagID = 0
+if !exists("s:PreviewTagID")
+    let s:PreviewTagID = 0
+else
+    silent! call matchdelete(s:PreviewTagID)
+endif
+
+function! LjyatShowPreviewTag()
+    let word = '\<' . expand("<cword>") . '\>'
+    silent! exe " wincmd g}"
+    let win_cur = winnr()
+    let win_count = winnr('$') "loop back to this window again
+
+    while win_count >= 1
+        if &previewwindow
+            silent! call matchdelete(s:PreviewTagID)
+            let s:PreviewTagID = matchadd('PreviewTagGroup', word)
+            break
+        endif
+        wincmd w
+        let win_count -= 1
+    endwhile
+
+    exe win_cur . "wincmd w"
+endfunction
+"============= show preview tag config end ===========
 
 function! CompleteCurlyBrackets()
     if (getline('.')[col('.'):] =~'^\s*$')
