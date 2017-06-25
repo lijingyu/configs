@@ -200,7 +200,7 @@ vnoremap <Space>R <ESC>:call LjyatVSearchStringCurrentBuffer()<CR>
 vnoremap <Space>r <ESC>:call LjyatVSearchStringInFiles()<CR>
 
 "============= show preview tag config ===========
-hi PreviewTagGroup ctermbg=30 ctermfg=11 guifg=Yellow guibg=#2F4F4F gui=NONE
+hi PreviewTagGroup ctermbg=30 ctermfg=11 guifg=Black guibg=Yellow gui=NONE
 let s:PreviewTagID = 0
 if !exists("s:PreviewTagID")
     let s:PreviewTagID = 0
