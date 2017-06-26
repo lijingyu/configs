@@ -408,30 +408,13 @@ function! Arggrep(pattern_arg)
     redraw
 endfunction
 
-function! LjyatSearchFunctionCaller(pattern_arg)
-    if !filereadable(g:tmpcscope_files)
-        echohl Todo
-        echo "   cscope.files not exist"
-        echohl None
-        return
-    endif
-
-    echohl Question
-    if a:pattern_arg != ''
-        let pattern = input("  Search caller-str: ", a:pattern_arg)
-    else
-        let pattern = input("  Search caller-str: ", escape(expand("<cword>"), '#'))
-    endif
-    echohl None
-
+function! LjyatSearchFunctionCaller()
+    let pattern = expand("<cword>")
     if pattern == ""
         return
     endif
 
-    "silent execute "MarkClear|Mark " . pattern
-    redraw
-
-    let pattern = '=\s*' . pattern . '|' . pattern . '\s*\('
+    let pattern = '=\s*\<' . pattern . '\>|\<' . pattern . '\>\s*\('
     let pattern = "'" . pattern . "'"
     let real_cmd = 'cat '. g:tmpcscope_files . '|xargs grep -n -E ' . pattern
     echomsg "Searching caller-str..."
@@ -805,7 +788,7 @@ command! LjyatNERDTreeOpenBufDir call LjyatNERDTreeOpenBufDir ()
 command! LjyatSearchTags call LjyatSearchTags()
 command! -nargs=1 Arggrep call Arggrep(<f-args>)
 command! LjyatSearchStringInFiles call LjyatSearchStringInFiles('')
-command! LjyatSearchFunctionCaller call LjyatSearchFunctionCaller('')
+command! LjyatSearchFunctionCaller call LjyatSearchFunctionCaller()
 command! LjyatSearchFileInFileList call LjyatSearchFileInFileList()
 command! LjyatVSearchStringCurrentBuffer call LjyatVSearchStringCurrentBuffer()
 command! LjyatSearchStringCurrentBuffer call LjyatSearchStringCurrentBuffer()
