@@ -89,8 +89,6 @@ let html_wrong_comments = 1
 "config for taglist
 let Tlist_Inc_Winwidth = 0
 let NERDTreeWinPos = "right"
-let g:UseTagBar = ['cpp','java', 'python']
-let g:UseTagList = ['c']
 let s:searchhistory = 30
 let s:StrPattern = ''
 let s:SearchList = []
@@ -104,7 +102,7 @@ if &dict == ''
 endif
 "=> key maps
 "gui_running and only vim
-nnoremap <F2> :call ToggleTlistTagbar()<CR>
+nnoremap <F2> :call SwitchTlistTagbar()<CR>
 nnoremap <F3> :LjyatNERDTreeOpenBufDir<CR>
 nnoremap j gj
 nnoremap k gk
@@ -662,36 +660,22 @@ function! LjyatVSearchStringInFiles()
     redraw!
 endfunction
 
-function! ToggleTlistTagbar()
-    if match(g:UseTagBar, &ft) >= 0
-        TagbarToggle
-    else
-        Tlist
-    endif
-endfunction
-
-function! AutoToggleTlistTagbar()
+function! SwitchTlistTagbar()
     let tagbarwinnr = bufwinnr("__Tagbar__")
     let tlistwinnr = bufwinnr(g:TagList_title)
 
-    if match(g:UseTagList, &ft) >= 0
-        if tagbarwinnr != -1
-            TagbarToggle
-            if tlistwinnr == -1
-                Tlist
-            endif
-        endif
-        return
-    endif
-
-    if match(g:UseTagBar, &ft) >= 0
-        if tlistwinnr != -1
+    if tagbarwinnr != -1
+        TagbarToggle
+        if tlistwinnr == -1
             Tlist
-            if tagbarwinnr == -1
-                TagbarToggle
-            endif
         endif
-        return
+    elseif tlistwinnr != -1
+        Tlist
+        if tagbarwinnr == -1
+            TagbarToggle
+        endif
+    else
+        Tlist
     endif
 endfunction
 
@@ -811,8 +795,6 @@ augroup LjyatAutoCmds
     autocmd FileType c,cpp,java,cs set omnifunc=ccomplete#Complete
     autocmd FileType make set iskeyword+=-
 
-    autocmd BufEnter *.c,*.cpp,*.java,*.py call AutoToggleTlistTagbar()
-    autocmd VimEnter * call ToggleTlistTagbar()
     autocmd VimLeave * call CleanTmpCscopeFiles()
     autocmd BufNewFile,BufRead *.aidl setf java
 augroup end
