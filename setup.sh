@@ -1,4 +1,9 @@
 #!/bin/bash
+
+INCLUD_DIRS=
+EXINCLUDE_DIRS='xxxxxx'
+EX_START=0
+
 function creat_cscope()
 {
     echo_msg "create cscope"
@@ -19,7 +24,7 @@ function creat_cscopefiles()
                 find  ${arg}  -type f -regextype posix-egrep \
                     -iregex '.*\/(makefile|Kconfig)' -prune -o \
                     -regex '.*\.(c|h|m|s|S|java|sh|cpp|vim|hp|aidl|rc|py|cc|def|xml|mk|el|lisp)'\
-                    |sed  -e '/ /d' -e 's:^\./::' >> cscope.files;;
+                    |sed  -e '/ /d' -e 's:^\./::' |grep -v "$EXINCLUDE_DIRS" >> cscope.files;;
 
             "Darwin")
                 echo "Darwin";;
@@ -52,7 +57,29 @@ function echo_msg()
     echo $@
 }
 
-function csset()
+function parse_param()
+{
+    INCLUD_DIRS=
+    EXINCLUDE_DIRS='xxxxxx'
+    EX_START=0
+
+    for arg in $@
+    do
+        if [ $arg == "-" ]; then
+            EX_START=1
+            continue
+        fi
+        if [ $EX_START -eq 1 ];then
+            EXINCLUDE_DIRS="$EXINCLUDE_DIRS\|$arg"
+        else
+            INCLUD_DIRS="$INCLUD_DIRS $arg"
+        fi
+    done
+}
+
+# create tags, cscope in current dir
+# prarmeter is dirs
+function exe_process()
 {
     if [ $# -eq 0 ];then
         echo_msg "need dirname"
@@ -67,6 +94,17 @@ function csset()
     create_tags
     create_dict
     echo_msg "create  success"
+}
+
+function csset()
+{
+    if [ $# -eq 0 ];then
+        echo_msg "need dirname"
+        return
+    fi
+
+    parse_param $@
+    exe_process $INCLUD_DIRS
 }
 function cssetg()
 {
@@ -89,13 +127,14 @@ function cssetl()
         return
     fi
 
+    parse_param $@
     cur_dir=`pwd`
-    for arg in $@
+    for arg in $INCLUD_DIRS
     do
         if [ -d "$arg" ]; then
             echo_msg "---- $arg ----"
             cd $arg
-            csset .
+            exe_process .
             cd $cur_dir
         else
             echo_msg "===ERROR! $arg is not dir====" 
