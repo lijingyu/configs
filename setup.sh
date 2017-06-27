@@ -4,13 +4,13 @@ INCLUD_DIRS=
 EXINCLUDE_DIRS='xxxxxx'
 EX_START=0
 
-function creat_cscope()
+function create_cscope()
 {
     echo_msg "create cscope"
     cscope -bki cscope.files
 }
 
-function creat_cscopefiles()
+function create_cscopefiles()
 {
     if [ -e "cscope.files" ]; then
         rm -rf cscope.files
@@ -77,6 +77,19 @@ function parse_param()
     done
 }
 
+# create tags cscope in current dir
+function me()
+{
+    if [ -e "cscope.files" ]; then
+        create_cscope
+        create_tags
+        create_dict
+        echo_msg "create  success"
+    else
+        echo_msg "no cscope.files"
+    fi
+}
+
 # create tags, cscope in current dir
 # prarmeter is dirs
 function exe_process()
@@ -88,9 +101,8 @@ function exe_process()
 
     csclean
 
-    creat_cscopefiles $@
-    creat_cscope
-
+    create_cscopefiles $@
+    create_cscope
     create_tags
     create_dict
     echo_msg "create  success"
@@ -113,8 +125,7 @@ function cssetg()
         return
     fi
 
-
-    creat_cscopefiles $@
+    create_cscopefiles $@
 
     gtags -f cscope.files
     echo_msg "create  success"
@@ -137,7 +148,7 @@ function cssetl()
             exe_process .
             cd $cur_dir
         else
-            echo_msg "===ERROR! $arg is not dir====" 
+            echo_msg "===ERROR! $arg is not dir===="
             return
         fi
     done
@@ -151,8 +162,8 @@ function csseta()
     fi
 
     csclean
-    creat_cscopefiles $@
-    creat_cscope
+    create_cscopefiles $@
+    create_cscope
 
     rm  -rf cscope.files tags TAGS
 
