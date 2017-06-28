@@ -92,6 +92,7 @@ let NERDTreeWinPos = "right"
 let s:searchhistory = 30
 let s:StrPattern = ''
 let s:SearchList = []
+let g:SearchLimit = 5000
 
 if !exists("g:tmpcscope_files")
     let g:tmpcscope_files = 'cscope.files'
@@ -206,7 +207,15 @@ else
     silent! call matchdelete(s:PreviewTagID)
 endif
 
-function! LjyatShowPreviewTag()
+function! s:EchoMsg(msg)
+    redraw
+    echohl Todo
+    echo a:msg
+    echohl None
+    return
+endfunction
+
+function! s:LjyatShowPreviewTag()
     let word = '\<' . expand("<cword>") . '\>'
     exe " wincmd g}"
     let win_cur = winnr()
@@ -288,18 +297,15 @@ function! ResetTagsAndCscope()
     if filereadable('cscope.out')
         silent! exe "cscope add cscope.out"
     endif
-    echohl Todo
-    echo "   ResetTagsAndCscope"
-    echohl None
+
+    call s:EchoMsg("   ResetTagsAndCscope")
     return
     redraw!
 endfunction
 
 function! AddCscopeAndTags(predirs)
     if a:predirs == ''
-        echohl Todo
-        echo "   prepath is empty"
-        echohl None
+        call s:EchoMsg("   prepath is empty")
         return
     endif
 
@@ -333,9 +339,7 @@ function! AddCscopeAndTags(predirs)
             endif
             silent! exe "cscope add " . new_cscope_path . " " . dir
         else
-            echohl Todo
-            echo "   No needed file in: " . dir
-            echohl None
+            call s:EchoMsg("   No needed file in: " . dir)
             return
         endif
     endfor
@@ -357,16 +361,12 @@ endfunction
 
 function! Arggrep(pattern_arg)
     if !filereadable(g:tmpcscope_files)
-        echohl Todo
-        echo "   cscope.files not exist"
-        echohl None
+        call s:EchoMsg("   cscope.files not exist")
         return
     endif
 
     if a:pattern_arg == ''
-        echohl Todo
-        echo "   pattern is null"
-        echohl None
+        call s:EchoMsg("   pattern is null")
         return
     endif
 
@@ -378,10 +378,7 @@ function! Arggrep(pattern_arg)
 
     let match_string = system(real_cmd)
     if match_string == ""
-        redraw
-        echohl Todo
-        echo "   No match string: " . pattern_arg
-        echohl None
+        call s:EchoMsg("   No match string: " . pattern_arg)
         return
     endif
 
@@ -400,10 +397,12 @@ function! Arggrep(pattern_arg)
     let ef = &errorformat
     set efm=%f:%l:%m
 
-    execute "lexpr match_string"
+    let matchlist = split(match_string, '\n')
+    let matchlen = len(matchlist)
+    execute "lexpr matchlist"
     lopen
     let &errorformat=ef
-    redraw
+    call s:EchoMsg(" ". matchlen . " matches for " . pattern_arg )
 endfunction
 
 function! LjyatSearchFunctionCaller()
@@ -418,10 +417,7 @@ function! LjyatSearchFunctionCaller()
     echomsg "Searching caller-str..."
     let match_string = system(real_cmd, "\n")
     if match_string == ""
-        redraw
-        echohl Todo
-        echo "   No match string: " . pattern
-        echohl None
+        call s:EchoMsg("   No match string: " . pattern)
         return
     endif
 
@@ -436,9 +432,7 @@ endfunction
 
 function! LjyatSearchStringInFiles(pattern_arg)
     if !filereadable(g:tmpcscope_files)
-        echohl Todo
-        echo "   cscope.files not exist"
-        echohl None
+        call s:EchoMsg("   cscope.files not exist")
         return
     endif
 
@@ -462,10 +456,14 @@ function! LjyatSearchStringInFiles(pattern_arg)
     echomsg "Searching all-str..."
     let match_string = system(real_cmd, "\n")
     if match_string == ""
-        redraw
-        echohl Todo
-        echo "   No match string: " . pattern
-        echohl None
+        call s:EchoMsg("   No match string: " . pattern)
+        return
+    endif
+
+    let matchlist = split(match_string, '\n')
+    let matchlen = len(matchlist)
+    if matchlen > g:SearchLimit
+        call s:EchoMsg("   match " . matchlen . " > " . g:SearchLimit . " items, change pattern please ")
         return
     endif
 
@@ -475,14 +473,12 @@ function! LjyatSearchStringInFiles(pattern_arg)
     execute "lexpr match_string"
     lopen
     let &errorformat=ef
-    redraw
+    call s:EchoMsg(" ". matchlen . " matches for " . pattern )
 endfunction
 
 function! Argfind(pattern)
     if !filereadable(g:tmpcscope_files)
-        echohl Todo
-        echo "   cscope.files not exist"
-        echohl None
+        call s:EchoMsg("   cscope.files not exist")
         return
     endif
 
@@ -496,10 +492,7 @@ function! Argfind(pattern)
     echomsg "Searching file..."
     let match_files = system(real_cmd, " ")
     if match_files == ""
-        redraw
-        echohl Todo
-        echo "   No match file: " . pattern
-        echohl None
+        call s:EchoMsg("   No match file: " . pattern)
         return
     endif
 
@@ -511,17 +504,17 @@ function! Argfind(pattern)
     let ef = &errorformat
     set efm=%f
 
-    execute "lexpr match_files"
+    let matchlist = split(match_files, '\n')
+    let matchlen = len(matchlist)
+    execute "lexpr matchlist"
     lopen
     let &errorformat=ef
-    redraw
+    call s:EchoMsg(" ". matchlen . " matches for " . pattern)
 endfunction
 
 function! LjyatSearchFileInFileList()
     if !filereadable(g:tmpcscope_files)
-        echohl Todo
-        echo "   cscope.files not exist"
-        echohl None
+        call s:EchoMsg("   cscope.files not exist")
         return
     endif
 
@@ -539,10 +532,14 @@ function! LjyatSearchFileInFileList()
 
     let match_files = system(real_cmd)
     if match_files == ""
-        redraw
-        echohl Todo
-        echo "   No match files: " . pattern
-        echohl None
+        call s:EchoMsg("   No match files: " . pattern)
+        return
+    endif
+
+    let matchlist = split(match_files, '\n')
+    let matchlen = len(matchlist)
+    if matchlen > g:SearchLimit
+        call s:EchoMsg("   match " . matchlen . " > " . g:SearchLimit . " items, change pattern please ")
         return
     endif
 
@@ -554,6 +551,7 @@ function! LjyatSearchFileInFileList()
     lopen
     let &errorformat = ef
     redraw!
+    call s:EchoMsg(" ". matchlen . " matches for " . pattern )
 endfunction
 
 function! LjyatSkipSpecWindow()
@@ -572,9 +570,7 @@ function! LjyatSearchStringCurrentBuffer()
     call LjyatSkipSpecWindow()
     let curfilename = expand("%")
     if curfilename == ""
-        echohl Todo
-        echo "   buffer name is NULL"
-        echohl None
+        call s:EchoMsg("   buffer name is NULL")
         return
     endif
 
@@ -630,9 +626,7 @@ endfunction
 function! LjyatVSearchStringCurrentBuffer()
     let curfilename = expand("%")
     if curfilename == ""
-        echohl Todo
-        echo "   buffer name is NULL"
-        echohl None
+        call s:EchoMsg("   buffer name is NULL")
         return
     endif
 
@@ -734,9 +728,7 @@ endfunction
 
 function! LjyatShowBookMarks()
     if s:mark_index == 0
-        echohl Todo
-        echo " No marks "
-        echohl None
+        call s:EchoMsg(" No marks ")
         return
     endif
 
