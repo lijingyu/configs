@@ -215,7 +215,7 @@ function! s:EchoMsg(msg)
     return
 endfunction
 
-function! s:LjyatShowPreviewTag()
+function! LjyatShowPreviewTag()
     let word = '\<' . expand("<cword>") . '\>'
     exe " wincmd g}"
     let win_cur = winnr()
