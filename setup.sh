@@ -3,6 +3,9 @@
 INCLUD_DIRS=
 EXINCLUDE_DIRS='xxxxxx'
 EX_START=0
+CTAGS_PARAM_DEF=" --c-kinds=-m --c++-kinds=-m --python-kinds=-i --fields=+iaS --extra=+q -L cscope.files"
+CTAGS_PARAM_CPP=" --python-kinds=-i --fields=+iaS --extra=+q -L cscope.files"
+CTAGS_PARAM=$CTAGS_PARAM_DEF
 
 function create_cscope()
 {
@@ -36,7 +39,7 @@ function create_tags()
 {
     echo_msg "create tags"
     if [ -s "cscope.files" ]; then
-        ctags --c-kinds=-m --c++-kinds=-m --python-kinds=-i --fields=+iaS --extra=+q  -L cscope.files
+        ctags $CTAGS_PARAM
     else
         echo_msg "need cscope.files"
     fi
@@ -62,11 +65,16 @@ function parse_param()
     INCLUD_DIRS=
     EXINCLUDE_DIRS='xxxxxx'
     EX_START=0
+    CTAGS_PARAM=$CTAGS_PARAM_DEF
 
     for arg in $@
     do
         if [ $arg == "-" ]; then
             EX_START=1
+            continue
+        fi
+        if [ $arg == "++" ]; then
+            CTAGS_PARAM=$CTAGS_PARAM_CPP
             continue
         fi
         if [ $EX_START -eq 1 ];then
@@ -118,6 +126,7 @@ function csset()
     parse_param $@
     exe_process $INCLUD_DIRS
 }
+
 function cssetg()
 {
     if [ $# -eq 0 ];then
