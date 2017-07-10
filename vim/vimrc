@@ -617,7 +617,6 @@ function! LjyatSearchStringCurrentBuffer()
 
     let l:pattern = "/" . s:StrPattern . "/"
     let real_cmd = "lvimgrep " . l:pattern . " %"
-    redraw
     call s:EchoMsg("Searching cur-str...")
     execute "silent! " . real_cmd
     lopen
