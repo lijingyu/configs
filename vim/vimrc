@@ -374,7 +374,7 @@ function! Arggrep(pattern_arg)
 
     let pattern_arg = "'" . a:pattern_arg . "'"
     let real_cmd = 'cat ' . g:tmpcscope_files .' |xargs grep -n -E ' . pattern_arg
-    echomsg "Searching all-str..."
+    call s:EchoMsg("Searching all-str...")
 
     let match_string = system(real_cmd)
     if match_string == ""
@@ -414,7 +414,7 @@ function! LjyatSearchFunctionCaller()
     let pattern = '=\s*\<' . pattern . '\>|\<' . pattern . '\>\s*\('
     let pattern = "'" . pattern . "'"
     let real_cmd = 'cat '. g:tmpcscope_files . '|xargs grep -n -E ' . pattern
-    echomsg "Searching caller-str..."
+    call s:EchoMsg("Searching caller-str...")
     let match_string = system(real_cmd, "\n")
     if match_string == ""
         call s:EchoMsg("   No match string: " . pattern)
@@ -453,7 +453,7 @@ function! LjyatSearchStringInFiles(pattern_arg)
 
     let pattern = "'" . pattern . "'"
     let real_cmd = 'cat '. g:tmpcscope_files . '|xargs grep -n -E ' . pattern
-    echomsg "Searching all-str..."
+    call s:EchoMsg("Searching all-str...")
     let match_string = system(real_cmd, "\n")
     if match_string == ""
         call s:EchoMsg("   No match string: " . pattern)
@@ -489,7 +489,7 @@ function! Argfind(pattern)
 
     let pattern = "'" . a:pattern . "'"
     let real_cmd = 'grep  -i -E ' . pattern . ' ' . g:tmpcscope_files
-    echomsg "Searching file..."
+    call s:EchoMsg("Searching file...")
     let match_files = system(real_cmd, " ")
     if match_files == ""
         call s:EchoMsg("   No match file: " . pattern)
@@ -528,7 +528,7 @@ function! LjyatSearchFileInFileList()
 
     let pattern = "'" . pattern . "'"
     let real_cmd = 'grep  -i -E ' . pattern . ' ' . g:tmpcscope_files
-    echomsg "Searching file..."
+    call s:EchoMsg("Searching file...")
 
     let match_files = system(real_cmd)
     if match_files == ""
@@ -617,7 +617,8 @@ function! LjyatSearchStringCurrentBuffer()
 
     let l:pattern = "/" . s:StrPattern . "/"
     let real_cmd = "lvimgrep " . l:pattern . " %"
-    echomsg "Searching cur-str..."
+    redraw
+    call s:EchoMsg("Searching cur-str...")
     execute "silent! " . real_cmd
     lopen
     redraw!
