@@ -14,7 +14,8 @@ let g:colors_name="ljyat"
 hi Pmenu     guibg=DarkGreen	 guifg=white
 hi PmenuSel  guibg=DarkBlue 	 guifg=white
 hi Boolean         guifg=gold4
-hi Comment    	   term=bold ctermfg=5 gui=italic guifg=#999999
+"hi Comment        term=bold ctermfg=5 gui=italic guifg=#999999
+hi Comment    	   term=bold ctermfg=5 gui=italic guifg=DeepSkyBlue
 hi Number          guifg=#F94C87
 hi Folded          guifg=white guibg=#403D3D 
 hi FoldColumn      guifg=white guibg=#403D3D 
