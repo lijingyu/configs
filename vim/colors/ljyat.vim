@@ -35,7 +35,6 @@ hi LineNr          guifg=#606060 guibg=#222222
 hi NonText         guifg=#BCBCBC guibg=#232526
 hi StatusLine      guifg=black   guibg=#C2BFA5 gui=bold
 hi Search          gui=bold guifg=black guibg=#00AF5F
-hi Identifier      guibg=NONE guifg=cyan
 hi String     guifg=#FF80FF         
 hi DefinedName    guifg=#FFCC00
 hi clear Constant
@@ -53,6 +52,7 @@ hi! def link cStatement     Statement
 hi! def link TagListFileName StatusLine 
 hi! def link EnumerationValue  DefinedName 
 
+hi! def link Identifier      Normal
 hi! def link Question  Type
 "for java
 hi! def link Method     Function
