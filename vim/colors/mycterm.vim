@@ -9,8 +9,8 @@ if exists("syntax_on")
 endif
 
 let colors_name="mycterm"
-hi Normal ctermfg=255 ctermbg=236
-hi Comment ctermfg=244
+hi Normal ctermfg=255 ctermbg=235
+hi Comment ctermfg=45
 hi LineNr ctermfg=242 ctermbg=235
 hi Constant ctermfg=5
 hi PreProc ctermfg=171
