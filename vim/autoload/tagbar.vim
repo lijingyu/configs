@@ -996,7 +996,7 @@ function! s:MapKeys() abort
 
     let maps = [
         \ ['jump',          'JumpToTag(0)'],
-        \ ['preview',       'JumpToTag(1)'],
+        \ ['preview',       'JumpToTag(0)'],
         \ ['previewwin',    'ShowInPreviewWin()'],
         \ ['nexttag',       'GotoNextToplevelTag(1)'],
         \ ['prevtag',       'GotoNextToplevelTag(-1)'],
@@ -3918,15 +3918,14 @@ function! s:GetFileWinnr(fileinfo) abort
     let filewinnr = 0
     let prevwinnr = winnr("#")
 
-    if winbufnr(prevwinnr) == a:fileinfo.bufnr &&
-     \ !getwinvar(prevwinnr, '&previewwindow')
+    if winbufnr(prevwinnr) == a:fileinfo.bufnr
         let filewinnr = prevwinnr
     else
         " Search for the first real window that has the correct buffer loaded
         " in it. Similar to bufwinnr() but skips the previewwindow.
         for i in range(1, winnr('$'))
             call s:goto_win(i, 1)
-            if bufnr('%') == a:fileinfo.bufnr && !&previewwindow
+            if bufnr('%') == a:fileinfo.bufnr
                 let filewinnr = winnr()
                 break
             endif
@@ -3951,7 +3950,7 @@ function! s:GotoFileWindow(fileinfo, ...) abort
     if filewinnr == 0
         for i in range(1, winnr('$'))
             call s:goto_win(i, 1)
-            if &buftype == '' && !&previewwindow
+            if &buftype == ''
                 execute 'buffer ' . a:fileinfo.bufnr
                 break
             endif
@@ -4049,11 +4048,6 @@ function! s:IsValidFile(fname, ftype) abort
     let winnr = bufwinnr(a:fname)
     if winnr != -1 && getwinvar(winnr, '&diff')
         call s:debug('Window is in diff mode')
-        return 0
-    endif
-
-    if &previewwindow
-        call s:debug('In preview window')
         return 0
     endif
 
@@ -4238,11 +4232,6 @@ function! s:HasOpenFileWindows() abort
 
         " skip temporary buffers with buftype set
         if getbufvar(buf, '&buftype') != ''
-            continue
-        endif
-
-        " skip the preview window
-        if getwinvar(i, '&previewwindow')
             continue
         endif
 
