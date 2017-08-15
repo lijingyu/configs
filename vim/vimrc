@@ -66,7 +66,7 @@ set nowrapscan
 set winaltkeys=no
 set diffopt=filler,vertical
 set foldmethod=manual
-set shell=/bin/sh
+set shell=/bin/bash
 
 "set statusline
 set laststatus=2
