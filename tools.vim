@@ -14,6 +14,7 @@ function! MdFuncParam()
 endfunction
 
 function! Replace()
+    " remain #ifdef ... #else, delete #else ... #endif
     let start_pos = search('^#ifdef\s\+CFW_MULTI_SIM')
     while start_pos > 0
         normal %
@@ -38,6 +39,7 @@ function! Replace()
 endfunction
 
 function! Replace_ndef()
+    " remain #else ... #endif, delete #ifdef ... #else
     let start_pos = search('^#if\s\+0')
     while start_pos > 0
         normal %
