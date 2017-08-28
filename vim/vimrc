@@ -216,6 +216,10 @@ function! s:EchoMsg(msg)
     return
 endfunction
 
+function! Trace(prefix)
+    put =a:prefix . \"# [\" . expand('%:t') . ': ' . (line('.') + 1) . ']\"' .\");\"
+endfunction
+
 function! LjyatShowPreviewTag()
     let word = '\<' . expand("<cword>") . '\>'
     exe " wincmd g}"
