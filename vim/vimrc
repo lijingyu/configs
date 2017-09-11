@@ -112,6 +112,8 @@ nnoremap k gk
 nnoremap <F5> :set noexpandtab tabstop=8 shiftwidth=8<CR>
 nnoremap <F6> :set expandtab tabstop=4 shiftwidth=4<CR>
 nnoremap <F9> :call LjyatFoldToggle()<CR>
+nnoremap <C-F9> :let &foldlevel=&foldlevel-1<CR>
+nnoremap <C-F10> :let &foldlevel=&foldlevel+1<CR>
 map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-h> <C-w>h
