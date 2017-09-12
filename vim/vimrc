@@ -757,10 +757,12 @@ function! LjyatFoldToggle()
         let &foldcolumn = 4
         let &foldmethod = 'syntax'
         let &foldlevel = 2
+        set foldenable
     else
         let &foldcolumn = 0
         let &foldmethod = 'manual'
         let &foldlevel = 99
+        set nofoldenable
     endif
 endfunction
 
