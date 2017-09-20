@@ -1,10 +1,10 @@
 (setq inhibit-startup-message t)
 
-(add-to-list 'load-path "~/.emacs.d/color-theme")
-(add-to-list 'load-path "~/.emacs.d")
+(add-to-list 'load-path "~/.emacs.d/lisp/color-theme")
+(add-to-list 'load-path "~/.emacs.d/lisp")
 (require 'color-theme)
 (color-theme-initialize)
-(load-file "~/.emacs.d/color-theme/themes/monokai-theme.el")
+(load-file "~/.emacs.d/lisp/color-theme/themes/monokai-theme.el")
 (color-theme-monokai)
 
 (show-paren-mode t)
@@ -22,7 +22,8 @@
       '(lambda ()
 	 (setq gtags-path-style 'relative)))
 
-(add-to-list 'load-path "~/.emacs.d/elpa/company-0.9.3")
+(add-to-list 'load-path "~/.emacs.d/lisp/elpa/company-0.9.3")
+(load-file "~/.emacs.d/lisp/elpa/company-0.9.3/company.el")
 (autoload 'company-mode "company" nil t)
 (add-hook 'after-init-hook 'global-company-mode)
 (global-set-key (kbd "\t") 'company-complete)
