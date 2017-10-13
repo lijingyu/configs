@@ -794,6 +794,7 @@ augroup LjyatAutoCmds
     autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
     autocmd FileType php set omnifunc=phpcomplete#CompletePHP
     autocmd FileType c,cpp,java,cs set omnifunc=ccomplete#Complete
+    autocmd FileType qf setlocal nowrap
 
     autocmd VimLeave * call CleanTmpCscopeFiles()
     autocmd BufNewFile,BufRead *.aidl setf java

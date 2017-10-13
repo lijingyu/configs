@@ -26,7 +26,7 @@ function create_cscopefiles()
             "Linux")
                 find  ${arg}  -type f -regextype posix-egrep \
                     -iregex '.*\/(makefile|Kconfig)' -prune -o \
-                    -regex '.*\.(c|h|m|s|S|java|sh|cpp|vim|hp|aidl|rc|py|cc|def|xml|mk|el|lisp|dtsi|dts|ss|y|lex)'\
+                    -regex '.*\.(c|h|m|s|S|java|sh|cpp|vim|hp|aidl|rc|py|cc|def|xml|mk|el|lisp|dtsi|dts|ss|y|lex|gperf)'\
                     |sed  -e '/ /d' -e 's:^\./::' |grep -v "$EXINCLUDE_DIRS" >> cscope.files;;
 
             "Darwin")
