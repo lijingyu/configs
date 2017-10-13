@@ -332,23 +332,23 @@ function! AddCscopeAndTags(predirs)
         let new_cscope_path=dir . "/cscope.out"
         let new_cscope_files=dir . "/cscope.files"
 
+        if !filereadable(new_tag_path) || !filereadable(new_cscope_path)
+            call s:EchoMsg("   No needed file in: " . dir)
+            return
+        endif
+
         if filereadable(new_cscope_files)
             silent exe "!cat " . new_cscope_files . "|sed 's:^:" . dir . "/:' >> " . g:tmpcscope_files
         endif
 
-        if filereadable(new_tag_path) && filereadable(new_cscope_path)
-            let &tags = &tags . "," . new_tag_path
-            let &dict = &dict . "," . new_dict_path
+        let &tags = &tags . "," . new_tag_path
+        let &dict = &dict . "," . new_dict_path
 
-            "cscope prepath always need a '/'
-            if stridx(dir, "/") == -1
-                let dir = substitute(dir, '^', './','')
-            endif
-            silent! exe "cscope add " . new_cscope_path . " " . dir
-        else
-            call s:EchoMsg("   No needed file in: " . dir)
-            return
+        "cscope prepath always need a '/'
+        if stridx(dir, "/") == -1
+            let dir = substitute(dir, '^', './','')
         endif
+        silent! exe "cscope add " . new_cscope_path . " " . dir
     endfor
     redraw!
 endfunction
