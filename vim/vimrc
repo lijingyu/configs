@@ -97,6 +97,7 @@ let g:SearchLimit = 5000
 
 if !exists("g:tmpcscope_files")
     let g:tmpcscope_files = 'cscope.files'
+    let g:cscope_tag_dir_list = []
 endif
 
 if &dict == ''
@@ -288,7 +289,7 @@ endif
 function! CleanTmpCscopeFiles()
     if g:tmpcscope_files == "cscope.files"
         return
-    else
+    elseif filereadable('g:tmpcscope_files')
         execute "silent! !rm -rf " . g:tmpcscope_files
     endif
     redraw!
@@ -300,14 +301,35 @@ function! ResetTagsAndCscope()
     let &tags="./tags,./TAGS,tags,TAGS"
     let &dict="dict"
     let g:tmpcscope_files = 'cscope.files'
-
+    let g:cscope_tag_dir_list = []
     if filereadable('cscope.out')
         silent! exe "cscope add cscope.out"
     endif
+endfunction
 
-    call s:EchoMsg("   ResetTagsAndCscope")
-    return
-    redraw!
+function! RemoveTagsAndCscope(rmdirs)
+    if a:rmdirs == ''
+        call ResetTagsAndCscope()
+        return
+    endif
+
+    for dir in split(a:rmdirs, ",")
+        let dir = split(dir, "\"")[0]
+        let dir = expand(dir)
+        let dir = substitute(dir, '/$', '','')
+        let rm_tag_path=dir . "/tags"
+        let rm_dict_path=dir . "/dict"
+        let rm_cscope_path=dir . "/cscope.out"
+        let rm_cscope_files=dir . "/cscope.files"
+
+        if !filereadable(rm_tag_path) || !filereadable(rm_cscope_path)
+            call s:EchoMsg("   empty dir: " . dir)
+            return
+        endif
+        let new_list = filter(g:cscope_tag_dir_list, 'v:val != dir')
+    endfor
+    call ResetTagsAndCscope()
+    call AddCscopeAndTags(join(new_list, ','))
 endfunction
 
 function! AddCscopeAndTags(predirs)
@@ -343,6 +365,7 @@ function! AddCscopeAndTags(predirs)
 
         let &tags = &tags . "," . new_tag_path
         let &dict = &dict . "," . new_dict_path
+        call add(g:cscope_tag_dir_list, dir)
 
         "cscope prepath always need a '/'
         if stridx(dir, "/") == -1
@@ -768,7 +791,7 @@ endfunction
 
 command! -nargs=1 Argfind call Argfind(<f-args>)
 command! -nargs=+ -complete=dir A call AddCscopeAndTags('<f-args>')
-command! -nargs=0 R call ResetTagsAndCscope()
+command! -nargs=* -complete=dir R call RemoveTagsAndCscope('<f-args>')
 command! LjyatNERDTreeOpenBufDir call LjyatNERDTreeOpenBufDir ()
 command! LjyatSearchTags call LjyatSearchTags()
 command! -nargs=1 Arggrep call Arggrep(<f-args>)
