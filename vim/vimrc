@@ -74,7 +74,7 @@ set statusline=
 set statusline+=%-f\ %w\ 
 set statusline+=%{&fenc!=''?&fenc:&enc}\ \ 
 set statusline+=%l/%L\ 
-set statusline+=%-3m\ %{TagsAndCscopeShow()}
+set statusline+=%-3m\ %{TagsAndCscope()}%<
 
 if exists('&breakindent')
     set breakindent
@@ -294,8 +294,7 @@ function! CleanTmpCscopeFiles()
     endif
 endfunction
 
-function! TagsAndCscopeShow()
-    echo g:cscope_tag_dir_list
+function! TagsAndCscope()
     let dirs = join(g:cscope_tag_dir_list, ",")
     if dirs == ''
         return ''
@@ -319,7 +318,6 @@ endfunction
 function! RemoveTagsAndCscope(rmdirs)
     if a:rmdirs == ''
         call ResetTagsAndCscope()
-        call TagsAndCscopeShow()
         return
     endif
 
@@ -383,7 +381,6 @@ function! AddCscopeAndTags(predirs)
         endif
         silent! exe "cscope add " . new_cscope_path . " " . dir
     endfor
-    call TagsAndCscopeShow()
 endfunction
 
 function! LjyatSearchTags()
@@ -802,7 +799,7 @@ endfunction
 command! -nargs=1 Argfind call Argfind(<f-args>)
 command! -nargs=+ -complete=dir A call AddCscopeAndTags('<f-args>')
 command! -nargs=* -complete=dir R call RemoveTagsAndCscope('<f-args>')
-command! -nargs=0  S call TagsAndCscopeShow()
+command! -nargs=0  S echo TagsAndCscope()
 command! LjyatNERDTreeOpenBufDir call LjyatNERDTreeOpenBufDir ()
 command! LjyatSearchTags call LjyatSearchTags()
 command! -nargs=1 Arggrep call Arggrep(<f-args>)
