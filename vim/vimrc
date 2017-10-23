@@ -74,7 +74,7 @@ set statusline=
 set statusline+=%-f\ %w\ 
 set statusline+=%{&fenc!=''?&fenc:&enc}\ \ 
 set statusline+=%l/%L\ 
-set statusline+=%-3m 
+set statusline+=%-3m\ [%{TagsAndCscopeShow()}]
 
 if exists('&breakindent')
     set breakindent
@@ -296,6 +296,7 @@ endfunction
 
 function! TagsAndCscopeShow()
     echo g:cscope_tag_dir_list
+    return join(g:cscope_tag_dir_list, ",")
 endfunction
 
 function! ResetTagsAndCscope()
