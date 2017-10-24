@@ -286,7 +286,7 @@ if has("cscope")
     endif
 endif
 
-function! CleanTmpCscopeFiles()
+function! CleanTmpListFile()
     if g:tmpcscope_files == "cscope.files"
         return
     elseif filereadable(g:tmpcscope_files)
@@ -305,7 +305,7 @@ endfunction
 
 function! ResetTagsAndCscope()
     silent exe "cs kill -1"
-    call CleanTmpCscopeFiles()
+    call CleanTmpListFile()
     let &tags="./tags,./TAGS,tags,TAGS"
     let &dict="dict"
     let g:tmpcscope_files = 'cscope.files'
@@ -315,16 +315,15 @@ function! ResetTagsAndCscope()
     endif
 endfunction
 
-function! RemoveTagsAndCscope(rmdirs)
+function! RemoveTagDirs(rmdirs)
     if a:rmdirs == ''
         call ResetTagsAndCscope()
         return
     endif
 
+    let newlist = copy(g:cscope_tag_dir_list)
     for dir in split(a:rmdirs, ",")
-        let dir = split(dir, "\"")[0]
-        let dir = expand(dir)
-        let dir = substitute(dir, '/$', '','')
+        let dir = substitute(expand(split(dir, "\"")[0]),'/$', '','')
         let rm_tag_path=dir . "/tags"
         let rm_dict_path=dir . "/dict"
         let rm_cscope_path=dir . "/cscope.out"
@@ -334,16 +333,41 @@ function! RemoveTagsAndCscope(rmdirs)
             call s:EchoMsg("   empty dir: " . dir)
             return
         endif
-        let new_list = filter(g:cscope_tag_dir_list, 'v:val != dir')
+        call filter(newlist, 'v:val != dir')
     endfor
     call ResetTagsAndCscope()
-    call AddCscopeAndTags(join(new_list, ','))
+    if len(newlist) != 0
+        call AddTagDirs(join(newlist, ','))
+    endif
 endfunction
 
-function! AddCscopeAndTags(predirs)
+function! AnyOneInTagDirList(dirlist)
+    let filelist = copy(g:cscope_tag_dir_list)
+    for dir in a:dirlist
+        if g:cscope_tag_dir_list != filter(filelist, 'v:val != dir')
+            return 1
+        endif
+    endfor
+    return 0
+endfunction
+
+function! AddTagDirs(predirs)
     if a:predirs == ''
-        call s:EchoMsg("   prepath is empty")
+        call s:EchoMsg("   need tag dir")
         return
+    endif
+
+    let arglist = []
+    for dir in split(a:predirs, ",")
+        call add(arglist, substitute(expand(split(dir, "\"")[0]),'/$', '',''))
+    endfor
+    call uniq(sort(arglist))
+
+    if AnyOneInTagDirList(arglist)
+        let addedlist = uniq(sort(arglist + g:cscope_tag_dir_list))
+        call ResetTagsAndCscope()
+    else
+        let addedlist = arglist
     endif
 
     if g:tmpcscope_files == 'cscope.files'
@@ -353,10 +377,8 @@ function! AddCscopeAndTags(predirs)
         endif
     endif
 
-    for dir in split(a:predirs, ",")
-        let dir = split(dir, "\"")[0]
-        let dir = expand(dir)
-        let dir = substitute(dir, '/$', '','')
+    for dir in addedlist
+        let dir = substitute(expand(split(dir, "\"")[0]),'/$', '','')
         let new_tag_path=dir . "/tags"
         let new_dict_path=dir . "/dict"
         let new_cscope_path=dir . "/cscope.out"
@@ -797,8 +819,8 @@ function! LjyatFoldToggle()
 endfunction
 
 command! -nargs=1 Argfind call Argfind(<f-args>)
-command! -nargs=+ -complete=dir A call AddCscopeAndTags('<f-args>')
-command! -nargs=* -complete=dir R call RemoveTagsAndCscope('<f-args>')
+command! -nargs=+ -complete=dir A call AddTagDirs('<f-args>')
+command! -nargs=* -complete=dir R call RemoveTagDirs('<f-args>')
 command! -nargs=0  S echo TagsAndCscope()
 command! LjyatNERDTreeOpenBufDir call LjyatNERDTreeOpenBufDir ()
 command! LjyatSearchTags call LjyatSearchTags()
@@ -827,7 +849,7 @@ augroup LjyatAutoCmds
     autocmd FileType c,cpp,java,cs set omnifunc=ccomplete#Complete
     autocmd FileType qf setlocal nowrap
 
-    autocmd VimLeave * call CleanTmpCscopeFiles()
+    autocmd VimLeave * call CleanTmpListFile()
     autocmd BufNewFile,BufRead *.aidl setf java
 augroup end
 " => Set OminComplete
