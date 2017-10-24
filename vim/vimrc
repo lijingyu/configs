@@ -74,7 +74,7 @@ set statusline=
 set statusline+=%-f\ %w\ 
 set statusline+=%{&fenc!=''?&fenc:&enc}\ \ 
 set statusline+=%l/%L\ 
-set statusline+=%-3m\ %{TagsAndCscope()}%<
+set statusline+=%-3m\ %{TagDirs()}%<
 
 if exists('&breakindent')
     set breakindent
@@ -294,7 +294,7 @@ function! CleanTmpListFile()
     endif
 endfunction
 
-function! TagsAndCscope()
+function! TagDirs()
     let dirs = join(g:cscope_tag_dir_list, ",")
     if dirs == ''
         return ''
@@ -303,7 +303,7 @@ function! TagsAndCscope()
     endif
 endfunction
 
-function! ResetTagsAndCscope()
+function! InitTagDirs()
     silent exe "cs kill -1"
     call CleanTmpListFile()
     let &tags="./tags,./TAGS,tags,TAGS"
@@ -317,7 +317,7 @@ endfunction
 
 function! RemoveTagDirs(rmdirs)
     if a:rmdirs == ''
-        call ResetTagsAndCscope()
+        call InitTagDirs()
         return
     endif
 
@@ -335,7 +335,7 @@ function! RemoveTagDirs(rmdirs)
         endif
         call filter(newlist, 'v:val != dir')
     endfor
-    call ResetTagsAndCscope()
+    call InitTagDirs()
     if len(newlist) != 0
         call AddTagDirs(join(newlist, ','))
     endif
@@ -365,7 +365,7 @@ function! AddTagDirs(predirs)
 
     if AnyOneInTagDirList(arglist)
         let addedlist = uniq(sort(arglist + g:cscope_tag_dir_list))
-        call ResetTagsAndCscope()
+        call InitTagDirs()
     else
         let addedlist = arglist
     endif
@@ -821,7 +821,7 @@ endfunction
 command! -nargs=1 Argfind call Argfind(<f-args>)
 command! -nargs=+ -complete=dir A call AddTagDirs('<f-args>')
 command! -nargs=* -complete=dir R call RemoveTagDirs('<f-args>')
-command! -nargs=0  S echo TagsAndCscope()
+command! -nargs=0  S echo TagDirs()
 command! LjyatNERDTreeOpenBufDir call LjyatNERDTreeOpenBufDir ()
 command! LjyatSearchTags call LjyatSearchTags()
 command! -nargs=1 Arggrep call Arggrep(<f-args>)
