@@ -379,10 +379,10 @@ function! AddTagDirs(predirs)
 
     for dir in addedlist
         let dir = substitute(expand(split(dir, "\"")[0]),'/$', '','')
-        let new_tag_path=dir . "/tags"
-        let new_dict_path=dir . "/dict"
-        let new_cscope_path=dir . "/cscope.out"
-        let new_cscope_files=dir . "/cscope.files"
+        let new_tag_path = dir . "/tags"
+        let new_dict_path = dir . "/dict"
+        let new_cscope_path = dir . "/cscope.out"
+        let new_cscope_files = dir . "/cscope.files"
 
         if !filereadable(new_tag_path) || !filereadable(new_cscope_path)
             call s:EchoMsg("   No needed file in: " . dir)
