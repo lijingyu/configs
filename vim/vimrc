@@ -70,7 +70,7 @@ set shell=/bin/bash
 
 "set statusline
 set laststatus=2
-set statusline=%-f\ %m\ %w\ %{&fenc!=''?&fenc:&enc}\ \ %l/%L\ %{TagDirs()}%<
+set statusline=%!StatusLine()
 
 if exists('&breakindent')
     set breakindent
@@ -215,6 +215,21 @@ function! s:EchoMsg(msg)
     return
 endfunction
 
+function! StatusLine()
+    let m = ''
+    let w = ''
+
+    if &modified
+        let m = '  %m'
+    endif
+
+    if &previewwindow
+        let w = '  %w'
+    endif
+
+    return "%-f". m . w ."  %{&fenc!=''?&fenc:&enc}  %l/%L  %{TagDirs()}%<"
+endfunction
+
 function! Trace(prefix)
     put =a:prefix . \"# [\" . expand('%:t') . ': ' . (line('.') + 1) . ']\"' .\");\"
 endfunction
@@ -314,19 +329,19 @@ endfunction
 function! RemoveTagDirs(rmdirs)
     if a:rmdirs == ''
         call InitTagDirs()
+        redraw!
         return
     endif
 
     let newlist = copy(g:cscope_tag_dir_list)
     for dir in split(a:rmdirs, ",")
         let dir = substitute(expand(split(dir, "\"")[0]),'/$', '','')
-        let rm_tag_path=dir . "/tags"
-        let rm_dict_path=dir . "/dict"
-        let rm_cscope_path=dir . "/cscope.out"
-        let rm_cscope_files=dir . "/cscope.files"
+        let rm_tag          = dir . "/tags"
+        let rm_cscope       = dir . "/cscope.out"
 
-        if !filereadable(rm_tag_path) || !filereadable(rm_cscope_path)
+        if !filereadable(rm_tag) || !filereadable(rm_cscope)
             call s:EchoMsg("   empty dir: " . dir)
+            redraw!
             return
         endif
         call filter(newlist, 'v:val != dir')
@@ -334,6 +349,8 @@ function! RemoveTagDirs(rmdirs)
     call InitTagDirs()
     if len(newlist) != 0
         call AddTagDirs(join(newlist, ','))
+    else
+        redraw!
     endif
 endfunction
 
@@ -399,6 +416,7 @@ function! AddTagDirs(predirs)
         endif
         silent! exe "cscope add " . new_cscope_path . " " . dir
     endfor
+    redraw!
 endfunction
 
 function! LjyatSearchTags()
