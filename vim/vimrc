@@ -182,7 +182,7 @@ nnoremap <Space>q <C-q>
 nnoremap <Space>c :MarkClear<CR>
 nnoremap <Space>k 3<C-y>
 nnoremap <Space>j 3<C-e>
-nnoremap <Space>/ :LjyatSearchTags<CR>
+nnoremap <Space>/ :call LjyatSearchTags()<CR>
 nnoremap <Space>3 <C-w>v
 nnoremap <Space>2 <C-w>c
 nnoremap <Space>t :cs f t
@@ -448,8 +448,11 @@ function! LjyatSearchTags()
         return
     endif
 
-    execute "tj /" . pattern
-    redraw!
+    try
+        execute "tj /" . pattern
+    catch /^Vim\%((\a\+)\)\=:E/
+        call s:EchoMsg(" not found tag: " . pattern)
+    endtry
 endfunction
 
 function! Arggrep(pattern_arg)
@@ -857,7 +860,6 @@ command! -nargs=+ -complete=dir A call AddTagDirs('<f-args>')
 command! -nargs=* -complete=dir R call RemoveTagDirs('<f-args>')
 command! -nargs=0  S echo TagDirs()
 command! LjyatNERDTreeOpenBufDir call LjyatNERDTreeOpenBufDir ()
-command! LjyatSearchTags call LjyatSearchTags()
 command! -nargs=1 Arggrep call Arggrep(<f-args>)
 command! LjyatSearchStringInFiles call LjyatSearchStringInFiles('')
 command! LjyatSearchFunctionCaller call LjyatSearchFunctionCaller()
