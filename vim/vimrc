@@ -232,7 +232,7 @@ function! Trace(prefix)
     put =a:prefix . \"# [\" . expand('%:t') . ': ' . (line('.') + 1) . ']\"' .\");\"
 endfunction
 
-function! LjyatCscopeShowTags(tag)
+function! LjyatShowCscopeTags(tag)
     try
         exe "cs f g " . a:tag
     catch /^Vim\%((\a\+)\)\=:E/
@@ -248,7 +248,7 @@ endfunction
 function! LjyatShowTags()
     let word = expand("<cword>")
     if empty(taglist('\<'. word . '\>'))
-        call LjyatCscopeShowTags(word)
+        call LjyatShowCscopeTags(word)
         return
     endif
     exe "tjump " . word
@@ -257,7 +257,7 @@ endfunction
 function! LjyatShowPreviewTags()
     let word = expand("<cword>")
     if empty(taglist('\<' . word . '\>'))
-        call LjyatCscopeShowTags(word)
+        call LjyatShowCscopeTags(word)
         return
     endif
 
