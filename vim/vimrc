@@ -232,27 +232,32 @@ function! Trace(prefix)
     put =a:prefix . \"# [\" . expand('%:t') . ': ' . (line('.') + 1) . ']\"' .\");\"
 endfunction
 
+function! LjyatCscopeShowTags(tag)
+    try
+        exe "cs f g " . a:tag
+    catch /^Vim\%((\a\+)\)\=:E/
+        if v:exception =~ "E259"
+            call s:EchoMsg(" not found tag: " . a:tag)
+        elseif v:exception =~ "E567"
+            call s:EchoMsg(" no cscope connection !!!")
+        endif
+    endtry
+    return
+endfunction
+
 function! LjyatShowTags()
     let word = expand("<cword>")
     if empty(taglist('\<'. word . '\>'))
-        try
-            exe "cs f g " . word
-        catch /^Vim\%((\a\+)\)\=:E259/
-            call s:EchoMsg(" not found tag: " . word)
-        endtry
+        call LjyatCscopeShowTags(word)
         return
     endif
     exe "tjump " . word
 endfunction
 
 function! LjyatShowPreviewTags()
-    let word = '\<' . expand("<cword>") . '\>'
-    if empty(taglist(word))
-        try
-            exe "cs f g " . expand("<cword>")
-        catch /^Vim\%((\a\+)\)\=:E259/
-            call s:EchoMsg(" not found tag: " . word)
-        endtry
+    let word = expand("<cword>")
+    if empty(taglist('\<' . word . '\>'))
+        call LjyatCscopeShowTags(word)
         return
     endif
 
@@ -263,7 +268,7 @@ function! LjyatShowPreviewTags()
     while win_count >= 1
         if &previewwindow
             silent! call matchdelete(s:PreviewTagID)
-            let s:PreviewTagID = matchadd('PreviewTagGroup', word)
+            let s:PreviewTagID = matchadd('PreviewTagGroup', '\<' . word . '\>')
             break
         endif
         wincmd w
