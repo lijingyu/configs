@@ -200,7 +200,6 @@ vnoremap <Space>r <ESC>:call LjyatVSearchStringInFiles()<CR>
 
 "============= show preview tag config ===========
 hi PreviewTagGroup ctermbg=30 ctermfg=11 guifg=Black guibg=Yellow gui=NONE
-let s:PreviewTagID = 0
 if !exists("s:PreviewTagID")
     let s:PreviewTagID = 0
 else
@@ -236,7 +235,7 @@ endfunction
 
 function! LjyatShowPreviewTag()
     let word = '\<' . expand("<cword>") . '\>'
-    exe " wincmd g}"
+    silent! exe " wincmd g}"
     let win_cur = winnr()
     let win_count = winnr('$') "loop back to this window again
 
