@@ -235,7 +235,12 @@ endfunction
 
 function! LjyatShowPreviewTag()
     let word = '\<' . expand("<cword>") . '\>'
-    silent! exe " wincmd g}"
+    if empty(taglist(word))
+        call s:EchoMsg(" not found tag: " . word)
+        return
+    endif
+
+    exe " wincmd g}"
     let win_cur = winnr()
     let win_count = winnr('$') "loop back to this window again
 
