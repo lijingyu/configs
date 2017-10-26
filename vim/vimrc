@@ -141,7 +141,7 @@ nnoremap <M-t> :cs f t
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <M-2> <C-w>c
 nnoremap <M-3> <C-w>v
-nnoremap <M-/> :LjyatSearchTags<CR>
+nnoremap <M-/> :call LjyatSearchTags()<CR>
 "=> switch windows end
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "=> normal set
