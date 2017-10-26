@@ -125,7 +125,7 @@ nmap / <leader>r
 nmap n <leader>/
 nmap N <leader>?
 nmap M :MarkClear<CR><leader>m
-nmap <leader>] :call LjyatShowPreviewTag()<CR>
+nmap <leader>] :call LjyatShowPreviewTags()<CR>
 
 nnoremap <Space> <Nop>
 
@@ -159,7 +159,7 @@ nnoremap <M-e> g_
 nnoremap <M-a> 0
 nnoremap <silent> <M-1> :pc<CR>:lclose<CR>:cclose<CR>
 nmap <M-m> <leader>m
-nnoremap <M-]> g<C-]>
+nnoremap <M-]> :call LjyatShowTags()<CR>
 nmap <M-LeftMouse> <LeftMouse><leader>m
 nnoremap <RightMouse> <C-o>
 nmap <S-LeftMouse> <LeftMouse>:MarkClear<CR><leader>m
@@ -174,7 +174,6 @@ nnoremap <F10> :edit ++ff=dos<CR>
 
 "vim nnoremap
 nnoremap <Space>s :LjyatSearchStringInFiles<CR>
-nnoremap <Space>] g<C-]>
 nmap <Space>m <leader>m
 nnoremap <silent> <Space>1 :pc<CR>:lclose<CR>:cclose<CR>
 nnoremap <Space>a 0
@@ -190,7 +189,7 @@ nnoremap <Space>t :cs f t
 nnoremap <Space>\ :cs find s <C-R>=expand("<cword>")<CR><CR>
 nnoremap <Space>[ :cs find c <C-R>=expand("<cword>")<CR><CR>
 nnoremap <Space>f :LjyatSearchFileInFileList<CR>
-nnoremap <Space>] g<C-]>
+nnoremap <Space>] :call LjyatShowTags()<CR>
 nmap <Space><RightMouse> :MarkClear<CR>
 nmap <Space><LeftMouse> <LeftMouse><leader>m
 nnoremap <Space>l :LjyatShowBookMarks<CR>
@@ -233,10 +232,27 @@ function! Trace(prefix)
     put =a:prefix . \"# [\" . expand('%:t') . ': ' . (line('.') + 1) . ']\"' .\");\"
 endfunction
 
-function! LjyatShowPreviewTag()
+function! LjyatShowTags()
+    let word = expand("<cword>")
+    if empty(taglist('\<'. word . '\>'))
+        try
+            exe "cs f g " . word
+        catch /^Vim\%((\a\+)\)\=:E259/
+            call s:EchoMsg(" not found tag: " . word)
+        endtry
+        return
+    endif
+    exe "tjump " . word
+endfunction
+
+function! LjyatShowPreviewTags()
     let word = '\<' . expand("<cword>") . '\>'
     if empty(taglist(word))
-        call s:EchoMsg(" not found tag: " . word)
+        try
+            exe "cs f g " . expand("<cword>")
+        catch /^Vim\%((\a\+)\)\=:E259/
+            call s:EchoMsg(" not found tag: " . word)
+        endtry
         return
     endif
 
