@@ -232,6 +232,10 @@ function! Trace(prefix)
     put =a:prefix . \"# [\" . expand('%:t') . ': ' . (line('.') + 1) . ']\"' .\");\"
 endfunction
 
+function! LjyatClearCmd()
+    echo ''
+endfunction
+
 function! LjyatShowCscopeTags(tag)
     try
         exe "cs f g " . a:tag
@@ -246,6 +250,7 @@ function! LjyatShowCscopeTags(tag)
 endfunction
 
 function! LjyatShowTags(word)
+    call LjyatClearCmd()
     let word = a:word
     if empty(taglist('\<'. word . '\>'))
         call LjyatShowCscopeTags(word)
@@ -255,6 +260,7 @@ function! LjyatShowTags(word)
 endfunction
 
 function! LjyatShowPreviewTags(word)
+    call LjyatClearCmd()
     let word = a:word
     if empty(taglist('\<' . word . '\>'))
         call LjyatShowCscopeTags(word)
