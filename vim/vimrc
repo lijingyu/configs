@@ -206,11 +206,14 @@ else
 endif
 
 function! s:EchoMoreMsg(msg)
+    redraw
     echohl MoreMsg
     echo "   " . a:msg
     echohl None
 endfunction
+
 function! s:EchoWarningMsg(msg)
+    redraw
     echohl WarningMsg
     echo "   " . a:msg
     echohl None
