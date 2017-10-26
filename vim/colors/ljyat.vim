@@ -14,7 +14,6 @@ let g:colors_name="ljyat"
 hi Pmenu     guibg=DarkGreen	 guifg=white
 hi PmenuSel  guibg=DarkBlue 	 guifg=white
 hi Boolean         guifg=gold4
-"hi Comment        term=bold ctermfg=5 gui=italic guifg=#999999
 hi Comment    	   term=bold ctermfg=5 gui=italic guifg=DeepSkyBlue
 hi Number          guifg=#F94C87
 hi Folded          guifg=white guibg=#403D3D 
@@ -35,8 +34,9 @@ hi LineNr          guifg=#606060 guibg=#222222
 hi NonText         guifg=#BCBCBC guibg=#232526
 hi StatusLine      guifg=black   guibg=#C2BFA5 gui=bold
 hi Search          gui=bold guifg=black guibg=#00AF5F
-hi String     guifg=#FF80FF         
-hi DefinedName    guifg=#FFCC00
+hi String          guifg=#FF80FF
+hi DefinedName     guifg=#FFCC00
+hi WarningMsg      term=standout ctermfg=0 ctermbg=11 guifg=Blue guibg=Yellow
 hi clear Constant
 
 hi! def link Directory   Function
@@ -54,6 +54,7 @@ hi! def link EnumerationValue  DefinedName
 
 hi! def link Identifier      Normal
 hi! def link Question  Type
+hi! def link MoreMsg   Title
 "for java
 hi! def link Method     Function
 hi  Class           guifg=#00E000 gui=NONE
