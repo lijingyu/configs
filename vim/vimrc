@@ -125,7 +125,7 @@ nmap / <leader>r
 nmap n <leader>/
 nmap N <leader>?
 nmap M :MarkClear<CR><leader>m
-nmap <leader>] :call LjyatShowPreviewTags()<CR>
+nmap <leader>] :call LjyatShowPreviewTags(expand("<cword>"))<CR>
 
 nnoremap <Space> <Nop>
 
@@ -159,7 +159,7 @@ nnoremap <M-e> g_
 nnoremap <M-a> 0
 nnoremap <silent> <M-1> :pc<CR>:lclose<CR>:cclose<CR>
 nmap <M-m> <leader>m
-nnoremap <M-]> :call LjyatShowTags()<CR>
+nnoremap <M-]> :call LjyatShowTags(expand("<cword>"))<CR>
 nmap <M-LeftMouse> <LeftMouse><leader>m
 nnoremap <RightMouse> <C-o>
 nmap <S-LeftMouse> <LeftMouse>:MarkClear<CR><leader>m
@@ -189,7 +189,7 @@ nnoremap <Space>t :cs f t
 nnoremap <Space>\ :cs find s <C-R>=expand("<cword>")<CR><CR>
 nnoremap <Space>[ :cs find c <C-R>=expand("<cword>")<CR><CR>
 nnoremap <Space>f :LjyatSearchFileInFileList<CR>
-nnoremap <Space>] :call LjyatShowTags()<CR>
+nnoremap <Space>] :call LjyatShowTags(expand("<cword>"))<CR>
 nmap <Space><RightMouse> :MarkClear<CR>
 nmap <Space><LeftMouse> <LeftMouse><leader>m
 nnoremap <Space>l :LjyatShowBookMarks<CR>
@@ -245,8 +245,8 @@ function! LjyatShowCscopeTags(tag)
     return
 endfunction
 
-function! LjyatShowTags()
-    let word = expand("<cword>")
+function! LjyatShowTags(word)
+    let word = a:word
     if empty(taglist('\<'. word . '\>'))
         call LjyatShowCscopeTags(word)
         return
@@ -254,8 +254,8 @@ function! LjyatShowTags()
     exe "tjump " . word
 endfunction
 
-function! LjyatShowPreviewTags()
-    let word = expand("<cword>")
+function! LjyatShowPreviewTags(word)
+    let word = a:word
     if empty(taglist('\<' . word . '\>'))
         call LjyatShowCscopeTags(word)
         return
@@ -871,6 +871,7 @@ command! LjyatSearchFunctionCaller call LjyatSearchFunctionCaller()
 command! LjyatSearchFileInFileList call LjyatSearchFileInFileList()
 command! LjyatVSearchStringCurrentBuffer call LjyatVSearchStringCurrentBuffer()
 command! LjyatSearchStringCurrentBuffer call LjyatSearchStringCurrentBuffer()
+command! LjyatAddBookMark call LjyatAddBookMark()
 command! LjyatAddBookMark call LjyatAddBookMark()
 command! LjyatShowBookMarks call LjyatShowBookMarks()
 command! LjyatBookMarkClear call LjyatBookMarkClear()
