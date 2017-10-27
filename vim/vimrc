@@ -125,7 +125,7 @@ nmap / <leader>r
 nmap n <leader>/
 nmap N <leader>?
 nmap M :MarkClear<CR><leader>m
-nmap <leader>] :call LjyatShowPreviewTags(expand("<cword>"))<CR>
+nmap <leader>] :call LjyatShowTagInPreview(expand("<cword>"))<CR>
 
 nnoremap <Space> <Nop>
 
@@ -199,10 +199,10 @@ vnoremap <Space>r <ESC>:call LjyatVSearchStringInFiles()<CR>
 
 "============= show preview tag config ===========
 hi PreviewTagGroup ctermbg=30 ctermfg=11 guifg=Black guibg=Yellow gui=NONE
-if !exists("s:PreviewTagID")
-    let s:PreviewTagID = 0
-else
+if exists("s:PreviewTagID")
     silent! call matchdelete(s:PreviewTagID)
+else
+    let s:PreviewTagID = -1
 endif
 
 function! s:EchoMoreMsg(msg)
@@ -262,7 +262,7 @@ function! LjyatShowTags(word)
     exe "tjump " . word
 endfunction
 
-function! LjyatShowPreviewTags(word)
+function! LjyatShowTagInPreview(word)
     let word = a:word
     call s:EchoMoreMsg(word)
 
@@ -271,7 +271,7 @@ function! LjyatShowPreviewTags(word)
         return
     endif
 
-    exe " wincmd g}"
+    exe "ptjump " . expand("<cword>")
     let win_cur = winnr()
     let win_count = winnr('$') "loop back to this window again
 
