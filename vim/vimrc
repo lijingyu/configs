@@ -873,7 +873,7 @@ endfunction
 
 function! AlignPattern()
     let input = input("  Align: ", '=')
-    let str = escape(input, '.=')
+    let str = escape(input, '.')
     let line_s = line("'<") 
     let line_e = line("'>") 
     let max = 0 
