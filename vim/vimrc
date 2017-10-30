@@ -880,6 +880,11 @@ function! AlignPattern()
     let arr = {} 
     let l = line_s 
     while l <= line_e 
+        let line = getline(l)
+        if matchstr(line, str) == ''
+            let l += 1
+            continue
+        endif
         let arr[l] = matchlist(getline(l), '\(^.*\)' . str . '\(.*\)')
         let len = strlen(arr[l][1]) 
         let max = (len > max ? len : max) 
@@ -887,11 +892,9 @@ function! AlignPattern()
     endwhile 
 
     let strSpace = CreateSpaces(max) 
-    let l = line_s 
-    while l <= line_e 
-        call setline(l, arr[l][1].strpart(strSpace, 0, max-strlen(arr[l][1])) . input . arr[l][2]) 
-        let l += 1 
-    endwhile 
+    for [key, value] in items(arr)
+        call setline(key, value[1].strpart(strSpace, 0, max-strlen(value[1])) . input . value[2])
+    endfor
 endfunction 
    
 function! CreateSpaces(n) 
