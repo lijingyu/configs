@@ -885,7 +885,7 @@ function! AlignPattern()
         let max = (len > max ? len : max) 
         let l += 1 
     endwhile 
-    let max += 1
+
     let strSpace = CreateSpaces(max) 
     let l = line_s 
     while l <= line_e 
