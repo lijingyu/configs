@@ -196,6 +196,7 @@ nnoremap <Space>l :LjyatShowBookMarks<CR>
 
 vnoremap <Space>R <ESC>:call LjyatVSearchStringCurrentBuffer()<CR>
 vnoremap <Space>r <ESC>:call LjyatVSearchStringInFiles()<CR>
+vnoremap <M-=> :<C-U> call AlignPattern()<CR> 
 
 "============= show preview tag config ===========
 hi PreviewTagGroup ctermbg=30 ctermfg=11 guifg=Black guibg=Yellow gui=NONE
@@ -869,6 +870,37 @@ function! LjyatFoldToggle()
         set nofoldenable
     endif
 endfunction
+
+function! AlignPattern()
+    let input = input("  Align: ", '=')
+    let str = escape(input, '.=')
+    let line_s = line("'<") 
+    let line_e = line("'>") 
+    let max = 0 
+    let arr = {} 
+    let l = line_s 
+    while l <= line_e 
+        let arr[l] = matchlist(getline(l), '\(^.*\)' . str . '\(.*\)')
+        let len = strlen(arr[l][1]) 
+        let max = (len > max ? len : max) 
+        let l += 1 
+    endwhile 
+    let max += 1
+    let strSpace = CreateSpaces(max) 
+    let l = line_s 
+    while l <= line_e 
+        call setline(l, arr[l][1].strpart(strSpace, 0, max-strlen(arr[l][1])) . input . arr[l][2]) 
+        let l += 1 
+    endwhile 
+endfunction 
+   
+function! CreateSpaces(n) 
+    let s = '' 
+    for i in range(a:n) 
+        let s .= ' '  
+    endfor 
+    return s 
+endfunction  
 
 command! -nargs=1 Argfind call Argfind(<f-args>)
 command! -nargs=+ -complete=dir A call AddTagDirs('<f-args>')
