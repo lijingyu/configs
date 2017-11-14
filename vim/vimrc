@@ -18,7 +18,8 @@ if has("gui_running")
         nnoremap <F7> :AcpDisable<CR>
         nnoremap <F8> :AcpEnable<CR>
     elseif has("mac")
-        set guifont=Consolas:h13
+        set guifont=Monaco:h13
+        colorscheme ljyat
     else
         "set for edit chinese
         nnoremap <F7> :set guifont=YaHei\ Consolas\ Hybrid\ 13 linespace=0<CR>:AcpDisable<CR>
