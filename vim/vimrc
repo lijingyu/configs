@@ -935,6 +935,7 @@ augroup LjyatAutoCmds
     autocmd FileType php set omnifunc=phpcomplete#CompletePHP
     autocmd FileType c,cpp,java,cs set omnifunc=ccomplete#Complete
     autocmd FileType qf setlocal nowrap
+    autocmd VimEnter * call AddTagDirs('.')
 
     autocmd VimLeave * call CleanTmpListFile()
     autocmd BufNewFile,BufRead *.aidl setf java
