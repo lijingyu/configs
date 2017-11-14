@@ -92,7 +92,7 @@ let s:SearchList = []
 let g:SearchLimit = 5000
 
 if !exists("g:tmpcscope_files")
-    let g:tmpcscope_files = 'cscope.files'
+    let g:tmpcscope_files = ''
     let g:cscope_tag_dir_list = []
 endif
 
@@ -334,9 +334,7 @@ if has("cscope")
 endif
 
 function! CleanTmpListFile()
-    if g:tmpcscope_files == "cscope.files"
-        return
-    elseif filereadable(g:tmpcscope_files)
+    if filereadable(g:tmpcscope_files)
         execute "silent! !rm -rf " . g:tmpcscope_files
     endif
 endfunction
@@ -355,11 +353,8 @@ function! InitTagDirs()
     call CleanTmpListFile()
     let &tags="./tags,./TAGS,tags,TAGS"
     let &dict="dict"
-    let g:tmpcscope_files = 'cscope.files'
+    let g:tmpcscope_files = ''
     let g:cscope_tag_dir_list = []
-    if filereadable('cscope.out')
-        silent! exe "cscope add cscope.out"
-    endif
 endfunction
 
 function! RemoveTagDirs(rmdirs)
@@ -419,13 +414,9 @@ function! AddTagDirs(predirs)
         let addedlist = arglist
     endif
 
-    if g:tmpcscope_files == 'cscope.files'
+    if g:tmpcscope_files == ''
         let g:tmpcscope_files = "/tmp/cscope.files." . getpid()
-        if filereadable('cscope.files')
-            silent exe "!cat cscope.files > " . g:tmpcscope_files
-        endif
     endif
-
     for dir in addedlist
         let dir = substitute(expand(split(dir, "\"")[0]),'/$', '','')
         let new_tag_path = dir . "/tags"
