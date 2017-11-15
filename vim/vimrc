@@ -245,6 +245,11 @@ endfunction
 function! LjyatSwitchLanguageMode()
     if s:language_mode == "ENGLIST"
         AcpDisable
+        if !has("gui_running")
+            call s:EchoWarningMsg("Chinese Mode")
+            return
+        endif
+
         if has("win32")
             call s:EchoWarningMsg("Chinese Mode")
             return
@@ -256,6 +261,10 @@ function! LjyatSwitchLanguageMode()
         call s:EchoWarningMsg("Chinese Mode")
     else
         AcpEnable
+        if !has("gui_running")
+            call s:EchoWarningMsg("Englist Mode")
+            return
+        endif
         if has("win32")
             call s:EchoWarningMsg("Englist Mode")
             return
