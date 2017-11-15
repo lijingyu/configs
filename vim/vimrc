@@ -97,6 +97,9 @@ endif
 if !exists("s:language_mode")
     let s:language_mode = "EN"
 endif
+if !exists("s:kernel_mode")
+    let s:kernel_mode = "FALSE"
+endif
 
 if exists("s:PreviewTagID")
     silent! call matchdelete(s:PreviewTagID)
@@ -114,8 +117,7 @@ nnoremap <F3> :LjyatNERDTreeOpenBufDir<CR>
 nnoremap j gj
 nnoremap k gk
 "set for view kernel code
-nnoremap <F5> :set noexpandtab tabstop=8 shiftwidth=8<CR>
-nnoremap <F6> :set expandtab tabstop=4 shiftwidth=4<CR>
+nnoremap <F5> :call LjyatSwitchKernelCodeMode()<CR>
 nnoremap <F8> :call LjyatSwitchLanguageMode()<CR>
 nnoremap <F9> :call LjyatFoldToggle()<CR>
 nnoremap <C-F9> :let &foldlevel=&foldlevel-1<CR>
@@ -241,6 +243,18 @@ endfunction
 
 function! Trace(prefix)
     put =a:prefix . \"# [\" . expand('%:t') . ': ' . (line('.') + 1) . ']\"' .\");\"
+endfunction
+
+function! LjyatSwitchKernelCodeMode()
+    if s:kernel_mode == "TRUE"
+        set expandtab tabstop=4 shiftwidth=4
+        let s:kernel_mode = "FALSE"
+        call s:EchoWarningMsg("Normal Code Mode")
+    else
+        set noexpandtab tabstop=8 shiftwidth=8
+        let s:kernel_mode = "TRUE"
+        call s:EchoWarningMsg("Kernel Code Mode")
+    endif
 endfunction
 
 function! LjyatSwitchLanguageMode()
