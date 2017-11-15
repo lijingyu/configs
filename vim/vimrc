@@ -15,15 +15,12 @@ if has("gui_running")
     if has("win32")
         set guifont=Courier_New:h13:cANSI:qDRAFT linespace=0
         set fileencodings=
-        nnoremap <F7> :AcpDisable<CR>
-        nnoremap <F8> :AcpEnable<CR>
+        nnoremap <F7> :call LjyatSwitchLanguageMode()<CR>
     elseif has("mac")
         set guifont=Monaco:h13
         colorscheme ljyat
     else
-        "set for edit chinese
-        nnoremap <F7> :set guifont=YaHei\ Consolas\ Hybrid\ 13 linespace=0<CR>:AcpDisable<CR>
-        nnoremap <F8> :set guifont=Consolas\ 13 linespace=3<CR>:AcpEnable<CR>
+        nnoremap <F7> :call LjyatSwitchLanguageMode()<CR>
         set guifont=Consolas\ 13 linespace=3
         set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
         colorscheme ljyat
@@ -73,10 +70,6 @@ set shell=/bin/bash
 set laststatus=2
 set statusline=%!StatusLine()
 
-if exists('&breakindent')
-    set breakindent
-endif
-
 let c_syntax_for_h = 1
 let Tlist_WinWidth = 40
 let Tlist_Auto_Open = 0
@@ -92,9 +85,23 @@ let s:StrPattern = ''
 let s:SearchList = []
 let g:SearchLimit = 5000
 
-if !exists("g:tmpcscope_files")
-    let g:tmpcscope_files = ''
-    let g:cscope_tag_dir_list = []
+if exists('&breakindent')
+    set breakindent
+endif
+
+if !exists("s:tmpcscope_files")
+    let s:tmpcscope_files = ''
+    let s:cscope_tag_dir_list = []
+endif
+
+if !exists("s:language_mode")
+    let s:language_mode = "ENGLIST"
+endif
+
+if exists("s:PreviewTagID")
+    silent! call matchdelete(s:PreviewTagID)
+else
+    let s:PreviewTagID = -1
 endif
 
 if &dict == ''
@@ -197,15 +204,10 @@ nnoremap <Space>l :LjyatShowBookMarks<CR>
 
 vnoremap <Space>R <ESC>:call LjyatVSearchStringCurrentBuffer()<CR>
 vnoremap <Space>r <ESC>:call LjyatVSearchStringInFiles()<CR>
-vnoremap <M-=> :<C-U> call AlignPattern()<CR> 
+vnoremap <M-=> :<C-U> call AlignPattern()<CR>
 
 "============= show preview tag config ===========
 hi PreviewTagGroup ctermbg=30 ctermfg=11 guifg=Black guibg=Yellow gui=NONE
-if exists("s:PreviewTagID")
-    silent! call matchdelete(s:PreviewTagID)
-else
-    let s:PreviewTagID = -1
-endif
 
 function! s:EchoMoreMsg(msg)
     redraw
@@ -238,6 +240,31 @@ endfunction
 
 function! Trace(prefix)
     put =a:prefix . \"# [\" . expand('%:t') . ': ' . (line('.') + 1) . ']\"' .\");\"
+endfunction
+
+function! LjyatSwitchLanguageMode()
+    if s:language_mode == "ENGLIST"
+        AcpDisable
+        if has("win32")
+            call s:EchoWarningMsg("Chinese Mode")
+            return
+        endif
+
+        set guifont=YaHei\ Consolas\ Hybrid\ 13
+        set linespace=0
+        let s:language_mode = "CHINESE"
+        call s:EchoWarningMsg("Chinese Mode")
+    else
+        AcpEnable
+        if has("win32")
+            call s:EchoWarningMsg("Englist Mode")
+            return
+        endif
+        set guifont=Consolas\ 13
+        set linespace=3
+        let s:language_mode = "ENGLIST"
+        call s:EchoWarningMsg("Englist Mode")
+    endif
 endfunction
 
 function! LjyatShowCscopeTags(tag)
@@ -335,13 +362,13 @@ if has("cscope")
 endif
 
 function! CleanTmpListFile()
-    if filereadable(g:tmpcscope_files)
-        execute "silent! !rm -rf " . g:tmpcscope_files
+    if filereadable(s:tmpcscope_files)
+        execute "silent! !rm -rf " . s:tmpcscope_files
     endif
 endfunction
 
 function! TagDirs()
-    let dirs = join(g:cscope_tag_dir_list, ",")
+    let dirs = join(s:cscope_tag_dir_list, ",")
     if dirs == ''
         return ''
     else
@@ -354,8 +381,8 @@ function! InitTagDirs()
     call CleanTmpListFile()
     let &tags="./tags,./TAGS,tags,TAGS"
     let &dict="dict"
-    let g:tmpcscope_files = ''
-    let g:cscope_tag_dir_list = []
+    let s:tmpcscope_files = ''
+    let s:cscope_tag_dir_list = []
 endfunction
 
 function! RemoveTagDirs(rmdirs)
@@ -365,7 +392,7 @@ function! RemoveTagDirs(rmdirs)
         return
     endif
 
-    let newlist = copy(g:cscope_tag_dir_list)
+    let newlist = copy(s:cscope_tag_dir_list)
     for dir in split(a:rmdirs, ",")
         let dir = substitute(expand(split(dir, "\"")[0]),'/$', '','')
         let rm_tag          = dir . "/tags"
@@ -387,9 +414,9 @@ function! RemoveTagDirs(rmdirs)
 endfunction
 
 function! AnyOneInTagDirList(dirlist)
-    let filelist = copy(g:cscope_tag_dir_list)
+    let filelist = copy(s:cscope_tag_dir_list)
     for dir in a:dirlist
-        if g:cscope_tag_dir_list != filter(filelist, 'v:val != dir')
+        if s:cscope_tag_dir_list != filter(filelist, 'v:val != dir')
             return 1
         endif
     endfor
@@ -409,14 +436,14 @@ function! AddTagDirs(predirs)
     call uniq(sort(arglist))
 
     if AnyOneInTagDirList(arglist)
-        let addedlist = uniq(sort(arglist + g:cscope_tag_dir_list))
+        let addedlist = uniq(sort(arglist + s:cscope_tag_dir_list))
         call InitTagDirs()
     else
         let addedlist = arglist
     endif
 
-    if g:tmpcscope_files == ''
-        let g:tmpcscope_files = "/tmp/cscope.files." . getpid()
+    if s:tmpcscope_files == ''
+        let s:tmpcscope_files = "/tmp/cscope.files." . getpid()
     endif
     for dir in addedlist
         let dir = substitute(expand(split(dir, "\"")[0]),'/$', '','')
@@ -431,12 +458,12 @@ function! AddTagDirs(predirs)
         endif
 
         if filereadable(new_cscope_files)
-            silent exe "!cat " . new_cscope_files . "|sed 's:^:" . dir . "/:' >> " . g:tmpcscope_files
+            silent exe "!cat " . new_cscope_files . "|sed 's:^:" . dir . "/:' >> " . s:tmpcscope_files
         endif
 
         let &tags = &tags . "," . new_tag_path
         let &dict = &dict . "," . new_dict_path
-        call add(g:cscope_tag_dir_list, dir)
+        call add(s:cscope_tag_dir_list, dir)
 
         "cscope prepath always need a '/'
         if stridx(dir, "/") == -1
@@ -464,7 +491,7 @@ function! LjyatSearchTags()
 endfunction
 
 function! Arggrep(pattern_arg)
-    if !filereadable(g:tmpcscope_files)
+    if !filereadable(s:tmpcscope_files)
         call s:EchoWarningMsg("cscope.files not exist")
         return
     endif
@@ -477,7 +504,7 @@ function! Arggrep(pattern_arg)
     execute "silent! MarkClear|silent! Mark " . a:pattern_arg
 
     let pattern_arg = "'" . a:pattern_arg . "'"
-    let real_cmd = 'cat ' . g:tmpcscope_files .' |xargs grep -n -E ' . pattern_arg
+    let real_cmd = 'cat ' . s:tmpcscope_files .' |xargs grep -n -E ' . pattern_arg
     call s:EchoMoreMsg("Searching all-str ...")
 
     let match_string = system(real_cmd)
@@ -517,7 +544,7 @@ function! LjyatSearchFunctionCaller()
 
     let pattern = '=\s*\<' . pattern . '\>|\<' . pattern . '\>\s*\('
     let pattern = "'" . pattern . "'"
-    let real_cmd = 'cat '. g:tmpcscope_files . '|xargs grep -n -E ' . pattern
+    let real_cmd = 'cat '. s:tmpcscope_files . '|xargs grep -n -E ' . pattern
     call s:EchoMoreMsg("Searching caller-str...")
     let match_string = system(real_cmd, "\n")
     if match_string == ""
@@ -535,7 +562,7 @@ function! LjyatSearchFunctionCaller()
 endfunction
 
 function! LjyatSearchStringInFiles(pattern_arg)
-    if !filereadable(g:tmpcscope_files)
+    if !filereadable(s:tmpcscope_files)
         call s:EchoWarningMsg("cscope.files not exist")
         return
     endif
@@ -556,7 +583,7 @@ function! LjyatSearchStringInFiles(pattern_arg)
     redraw
 
     let pattern = "'" . pattern . "'"
-    let real_cmd = 'cat '. g:tmpcscope_files . '|xargs grep -n -E ' . pattern
+    let real_cmd = 'cat '. s:tmpcscope_files . '|xargs grep -n -E ' . pattern
     call s:EchoMoreMsg("Searching all-str...")
     let match_string = system(real_cmd, "\n")
     if match_string == ""
@@ -581,7 +608,7 @@ function! LjyatSearchStringInFiles(pattern_arg)
 endfunction
 
 function! Argfind(pattern)
-    if !filereadable(g:tmpcscope_files)
+    if !filereadable(s:tmpcscope_files)
         call s:EchoWarningMsg("cscope.files not exist")
         return
     endif
@@ -592,7 +619,7 @@ function! Argfind(pattern)
     endif
 
     let pattern = "'" . a:pattern . "'"
-    let real_cmd = 'grep  -i -E ' . pattern . ' ' . g:tmpcscope_files
+    let real_cmd = 'grep  -i -E ' . pattern . ' ' . s:tmpcscope_files
     call s:EchoMoreMsg("Searching file...")
     let match_files = system(real_cmd, " ")
     if match_files == ""
@@ -617,7 +644,7 @@ function! Argfind(pattern)
 endfunction
 
 function! LjyatSearchFileInFileList()
-    if !filereadable(g:tmpcscope_files)
+    if !filereadable(s:tmpcscope_files)
         call s:EchoWarningMsg("cscope.files not exist")
         return
     endif
@@ -631,7 +658,7 @@ function! LjyatSearchFileInFileList()
     endif
 
     let pattern = "'" . pattern . "'"
-    let real_cmd = 'grep  -i -E ' . pattern . ' ' . g:tmpcscope_files
+    let real_cmd = 'grep  -i -E ' . pattern . ' ' . s:tmpcscope_files
     call s:EchoMoreMsg("Searching file...")
 
     let match_files = system(real_cmd)
@@ -866,36 +893,36 @@ endfunction
 function! AlignPattern()
     let input = input("  Align: ", '=')
     let str = escape(input, '.')
-    let line_s = line("'<") 
-    let line_e = line("'>") 
-    let max = 0 
-    let arr = {} 
-    let l = line_s 
-    while l <= line_e 
+    let line_s = line("'<")
+    let line_e = line("'>")
+    let max = 0
+    let arr = {}
+    let l = line_s
+    while l <= line_e
         let line = getline(l)
         if matchstr(line, str) == ''
             let l += 1
             continue
         endif
         let arr[l] = matchlist(getline(l), '\(^.*\)' . str . '\(.*\)')
-        let len = strlen(arr[l][1]) 
-        let max = (len > max ? len : max) 
-        let l += 1 
-    endwhile 
+        let len = strlen(arr[l][1])
+        let max = (len > max ? len : max)
+        let l += 1
+    endwhile
 
-    let strSpace = CreateSpaces(max) 
+    let strSpace = CreateSpaces(max)
     for [key, value] in items(arr)
         call setline(key, value[1].strpart(strSpace, 0, max-strlen(value[1])) . input . value[2])
     endfor
-endfunction 
-   
-function! CreateSpaces(n) 
-    let s = '' 
-    for i in range(a:n) 
-        let s .= ' '  
-    endfor 
-    return s 
-endfunction  
+endfunction
+
+function! CreateSpaces(n)
+    let s = ''
+    for i in range(a:n)
+        let s .= ' '
+    endfor
+    return s
+endfunction
 
 command! -nargs=1 Argfind call Argfind(<f-args>)
 command! -nargs=+ -complete=dir A call AddTagDirs('<f-args>')
