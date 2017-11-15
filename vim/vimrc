@@ -6,6 +6,16 @@ endif
 
 filetype plugin indent on
 
+if has("unix")
+    " this is default set for terminal,
+    " change option if needed in gui
+    set shell=/bin/bash
+    set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
+    colorscheme mycterm
+    set mouse=""
+    nnoremap <F7> :call LjyatSwitchLanguageMode()<CR>
+endif
+
 if has("gui_running")
     set guioptions-=m
     set guioptions-=T
@@ -15,21 +25,14 @@ if has("gui_running")
     if has("win32")
         set guifont=Courier_New:h13:cANSI:qDRAFT linespace=0
         set fileencodings=
-        nnoremap <F7> :call LjyatSwitchLanguageMode()<CR>
     elseif has("mac")
         set guifont=Monaco:h13
         colorscheme ljyat
     else
-        nnoremap <F7> :call LjyatSwitchLanguageMode()<CR>
         set guifont=Consolas\ 13 linespace=3
         set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
         colorscheme ljyat
     endif
-else
-    set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
-    colorscheme mycterm
-    set mouse=""    " Disenable mouse in vim
-    nnoremap <F7> :call LjyatSwitchLanguageMode()<CR>
 endif
 
 """"""""Special in Gvim"""""""""""""""""""""""
@@ -63,7 +66,6 @@ set nowrapscan
 set winaltkeys=no
 set diffopt=filler,vertical
 set foldmethod=manual
-set shell=/bin/bash
 
 "set statusline
 set laststatus=2
