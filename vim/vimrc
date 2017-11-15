@@ -29,8 +29,7 @@ else
     set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
     colorscheme mycterm
     set mouse=""    " Disenable mouse in vim
-    nnoremap <F7> :AcpDisable<CR>
-    nnoremap <F8> :AcpEnable<CR>
+    nnoremap <F7> :call LjyatSwitchLanguageMode()<CR>
 endif
 
 """"""""Special in Gvim"""""""""""""""""""""""
@@ -95,7 +94,7 @@ if !exists("s:tmpcscope_files")
 endif
 
 if !exists("s:language_mode")
-    let s:language_mode = "ENGLIST"
+    let s:language_mode = "EN"
 endif
 
 if exists("s:PreviewTagID")
@@ -243,8 +242,9 @@ function! Trace(prefix)
 endfunction
 
 function! LjyatSwitchLanguageMode()
-    if s:language_mode == "ENGLIST"
+    if s:language_mode == "EN"
         AcpDisable
+        let s:language_mode = "CH"
         if !has("gui_running")
             call s:EchoWarningMsg("Chinese Mode")
             return
@@ -257,10 +257,11 @@ function! LjyatSwitchLanguageMode()
 
         set guifont=YaHei\ Consolas\ Hybrid\ 13
         set linespace=0
-        let s:language_mode = "CHINESE"
         call s:EchoWarningMsg("Chinese Mode")
     else
         AcpEnable
+        let s:language_mode = "EN"
+
         if !has("gui_running")
             call s:EchoWarningMsg("Englist Mode")
             return
@@ -271,7 +272,6 @@ function! LjyatSwitchLanguageMode()
         endif
         set guifont=Consolas\ 13
         set linespace=3
-        let s:language_mode = "ENGLIST"
         call s:EchoWarningMsg("Englist Mode")
     endif
 endfunction
