@@ -13,7 +13,6 @@ if has("unix")
     set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
     colorscheme mycterm
     set mouse=""
-    nnoremap <F7> :call LjyatSwitchLanguageMode()<CR>
 endif
 
 if has("gui_running")
@@ -117,6 +116,7 @@ nnoremap k gk
 "set for view kernel code
 nnoremap <F5> :set noexpandtab tabstop=8 shiftwidth=8<CR>
 nnoremap <F6> :set expandtab tabstop=4 shiftwidth=4<CR>
+nnoremap <F8> :call LjyatSwitchLanguageMode()<CR>
 nnoremap <F9> :call LjyatFoldToggle()<CR>
 nnoremap <C-F9> :let &foldlevel=&foldlevel-1<CR>
 nnoremap <C-F10> :let &foldlevel=&foldlevel+1<CR>
