@@ -111,12 +111,10 @@ if &dict == ''
     let &dict = 'dict'
 endif
 "=> key maps
-"gui_running and only vim
-nnoremap <F2> :call SwitchTlistTagbar()<CR>
-nnoremap <F3> :LjyatNERDTreeOpenBufDir<CR>
 nnoremap j gj
 nnoremap k gk
-"set for view kernel code
+nnoremap <F2> :call SwitchTlistTagbar()<CR>
+nnoremap <F3> :LjyatNERDTreeOpenBufDir<CR>
 nnoremap <F5> :call LjyatSwitchKernelCodeMode()<CR>
 nnoremap <F8> :call LjyatSwitchLanguageMode()<CR>
 nnoremap <F9> :call LjyatFoldToggle()<CR>
@@ -139,8 +137,6 @@ nmap M :MarkClear<CR><leader>m
 nmap <leader>] :call LjyatShowTagInPreview(expand("<cword>"))<CR>
 
 nnoremap <Space> <Nop>
-
-"gui_running
 nnoremap <M-f> :LjyatSearchFileInFileList<CR>
 vnoremap <M-r> <ESC>:call LjyatVSearchStringInFiles()<CR>
 vnoremap <M-R> <ESC>:call LjyatVSearchStringCurrentBuffer()<CR>
@@ -271,8 +267,7 @@ function! LjyatSwitchLanguageMode()
             return
         endif
 
-        set guifont=YaHei\ Consolas\ Hybrid\ 13
-        set linespace=0
+        set guifont=YaHei\ Consolas\ Hybrid\ 13 linespace=0
         call s:EchoWarningMsg("Chinese Mode")
     else
         AcpEnable
@@ -286,8 +281,7 @@ function! LjyatSwitchLanguageMode()
             call s:EchoWarningMsg("Englist Mode")
             return
         endif
-        set guifont=Consolas\ 13
-        set linespace=3
+        set guifont=Consolas\ 13 linespace=3
         call s:EchoWarningMsg("Englist Mode")
     endif
 endfunction
