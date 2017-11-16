@@ -327,6 +327,7 @@ function! LjyatShowTagInPreview(word)
         if &previewwindow
             silent! call matchdelete(s:PreviewTagID)
             let s:PreviewTagID = matchadd('PreviewTagGroup', '\<' . word . '\>')
+            setl nonumber
             break
         endif
         wincmd w
