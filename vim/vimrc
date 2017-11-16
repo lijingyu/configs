@@ -50,7 +50,7 @@ set autoread
 set ffs=unix,dos,mac
 set noswapfile
 set updatetime=200
-set previewheight=13
+set previewheight=15
 set autoindent
 set smartindent
 set nocindent
