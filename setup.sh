@@ -3,9 +3,11 @@
 INCLUD_DIRS=
 EXINCLUDE_DIRS='xxxxxx'
 EX_START=0
-CTAGS_PARAM_DEF=" --c-kinds=-m --c++-kinds=-m --python-kinds=-i --fields=+iaS --extra=+q -L cscope.files"
+
+CTAGS_PARAM_DEF=" --c-kinds=-m --c++-kinds=-m --python-kinds=-i --fields=+iaS --langmap=c:.c.h --extra=+q -L cscope.files"
+CTAGS_PARAM_H_AS_CPP=" --c-kinds=-m --c++-kinds=-m --python-kinds=-i --fields=+iaS  --extra=+q -L cscope.files"
 CTAGS_PARAM_CPP=" --python-kinds=-i --fields=+iaS --extra=+q -L cscope.files"
-CTAGS_PARAM=$CTAGS_PARAM_DEF
+CTAGS_PARAM=$CTAGS_PARAM_DEF_H_AS_C
 
 function create_cscope()
 {
@@ -74,6 +76,10 @@ function parse_param()
     do
         if [ $arg == "-" ]; then
             EX_START=1
+            continue
+        fi
+        if [ $arg == "+" ]; then
+            CTAGS_PARAM=$CTAGS_PARAM_H_AS_CPP
             continue
         fi
         if [ $arg == "++" ]; then

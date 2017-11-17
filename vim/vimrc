@@ -96,8 +96,13 @@ endif
 if !exists("s:language_mode")
     let s:language_mode = "EN"
 endif
+
 if !exists("s:kernel_mode")
     let s:kernel_mode = "FALSE"
+endif
+
+if !exists("s:ignore_match_tag")
+    let s:ignore_match_tag = "EXPORT_SYMBOL"
 endif
 
 if exists("s:PreviewTagID")
@@ -244,15 +249,11 @@ function! LjyatSwitchKernelCodeMode()
     if s:kernel_mode == "TRUE"
         set expandtab tabstop=4 shiftwidth=4
         let s:kernel_mode = "FALSE"
-        nnoremap <M-]> :call LjyatShowTags(expand("<cword>"))<CR>
-        nnoremap <Space>] :call LjyatShowTags(expand("<cword>"))<CR>
         call s:EchoWarningMsg("Normal Code Mode")
     else
         set noexpandtab tabstop=8 shiftwidth=8
         let s:kernel_mode = "TRUE"
         call s:EchoWarningMsg("Kernel Code Mode")
-        nnoremap <M-]> :call LjyatShowCscopeTags(expand("<cword>"))<CR>
-        nnoremap <Space>] :call LjyatShowCscopeTags(expand("<cword>"))<CR>
     endif
 endfunction
 
@@ -304,13 +305,27 @@ endfunction
 
 function! LjyatShowTags(word)
     let word = a:word
+    let use_cscope = 0
+
     call s:EchoMoreMsg(word)
 
-    if empty(taglist('\<'. word . '\>'))
+    let tlist = taglist('\<'. word . '\>')
+    if empty(tlist)
         call LjyatShowCscopeTags(word)
         return
     endif
-    exe "tjump " . word
+
+    for item in tlist
+        if item['cmd'] =~ s:ignore_match_tag
+            let use_cscope = 1
+        endif
+	endfor
+
+    if use_cscope
+        call LjyatShowCscopeTags(word)
+    else
+        exe "tjump " . word
+    endif
 endfunction
 
 function! LjyatShowTagInPreview(word)
