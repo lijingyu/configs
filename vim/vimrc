@@ -55,7 +55,6 @@ set autoindent
 set smartindent
 set nocindent
 set expandtab tabstop=4 shiftwidth=4
-set number
 set nohlsearch
 set smarttab
 set linebreak
@@ -234,7 +233,7 @@ function! StatusLine()
         let w = '  %w'
     endif
 
-    return "%-f". m . w ."  %{&fenc!=''?&fenc:&enc}  %l/%L  %{TagDirs()}%<"
+    return "%-f". m . w ."  %{&fenc!=''?&fenc:&enc}  %p%% L%l/%L  %{TagDirs()}%<"
 endfunction
 
 function! Trace(prefix)
