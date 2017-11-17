@@ -244,11 +244,15 @@ function! LjyatSwitchKernelCodeMode()
     if s:kernel_mode == "TRUE"
         set expandtab tabstop=4 shiftwidth=4
         let s:kernel_mode = "FALSE"
+        nnoremap <M-]> :call LjyatShowTags(expand("<cword>"))<CR>
+        nnoremap <Space>] :call LjyatShowTags(expand("<cword>"))<CR>
         call s:EchoWarningMsg("Normal Code Mode")
     else
         set noexpandtab tabstop=8 shiftwidth=8
         let s:kernel_mode = "TRUE"
         call s:EchoWarningMsg("Kernel Code Mode")
+        nnoremap <M-]> :call LjyatShowCscopeTags(expand("<cword>"))<CR>
+        nnoremap <Space>] :call LjyatShowCscopeTags(expand("<cword>"))<CR>
     endif
 endfunction
 
