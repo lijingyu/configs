@@ -345,7 +345,11 @@ function! LjyatShowTagInPreview(word)
         if &previewwindow
             silent! call matchdelete(s:PreviewTagID)
             let s:PreviewTagID = matchadd('PreviewTagGroup', '\<' . word . '\>')
-            setl nonumber
+            if getline('.') =~ '^#define \|;'
+                normal zz
+            else
+                normal zt
+            endif
             break
         endif
         wincmd w
