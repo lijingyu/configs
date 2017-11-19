@@ -50,7 +50,7 @@ set autoread
 set ffs=unix,dos,mac
 set noswapfile
 set updatetime=200
-set previewheight=15
+set previewheight=13
 set autoindent
 set smartindent
 set nocindent
@@ -340,12 +340,11 @@ function! LjyatShowTagInPreview(word)
     exe "ptjump " . expand("<cword>")
     let win_cur = winnr()
     let win_count = winnr('$') "loop back to this window again
-
     while win_count >= 1
         if &previewwindow
             silent! call matchdelete(s:PreviewTagID)
             let s:PreviewTagID = matchadd('PreviewTagGroup', '\<' . word . '\>')
-            if getline('.') =~ '^#define \|;'
+            if getline('.') =~ '^#define .\+[^\\]$\|;'
                 normal zz
             else
                 normal zt
