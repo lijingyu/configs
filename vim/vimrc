@@ -228,17 +228,12 @@ endfunction
 
 function! StatusLine()
     let m = ''
-    let w = ''
 
     if &modified
         let m = '  %m'
     endif
 
-    if &previewwindow
-        let w = '  %w'
-    endif
-
-    return "%-f". m . w ."  %{&fenc!=''?&fenc:&enc}  %p%% L%l/%L  %{TagDirs()}%<"
+    return "%-f". m ." %w  %{&fenc!=''?&fenc:&enc}  %p%% L%l/%L  %{TagDirs()}%<"
 endfunction
 
 function! Trace(prefix)
@@ -330,30 +325,37 @@ endfunction
 
 function! LjyatShowTagInPreview(word)
     let word = a:word
+    let use_cscope = 1
     call s:EchoMoreMsg(word)
 
-    if empty(taglist('\<' . word . '\>'))
+    let tlist = taglist('\<'. word . '\>')
+    if empty(tlist)
         call LjyatShowCscopeTags(word)
         return
     endif
 
-    exe "ptjump " . expand("<cword>")
-    let win_cur = winnr()
-    let win_count = winnr('$') "loop back to this window again
-    while win_count >= 1
-        if &previewwindow
-            silent! call matchdelete(s:PreviewTagID)
-            let s:PreviewTagID = matchadd('PreviewTagGroup', '\<' . word . '\>')
-            if getline('.') =~ '^#define .\+[^\\]$\|;'
-                normal zz
-            else
-                normal zt
-            endif
-            break
+    for item in tlist
+        if item['cmd'] =~ s:ignore_match_tag
+            let use_cscope = 1
         endif
-        wincmd w
-        let win_count -= 1
-    endwhile
+	endfor
+
+    let win_cur = winnr()
+    if use_cscope
+        pedit
+        wincmd P
+        call LjyatShowCscopeTags(word)
+    else
+        exe "ptjump " . word
+        wincmd P
+    endif
+    silent! call matchdelete(s:PreviewTagID)
+    let s:PreviewTagID = matchadd('PreviewTagGroup', '\<' . word . '\>')
+    if getline('.') =~ '^#define .\+[^\\]$\|;'
+        normal zz
+    else
+        normal zt
+    endif
 
     exe win_cur . "wincmd w"
 endfunction
