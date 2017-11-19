@@ -325,7 +325,7 @@ endfunction
 
 function! LjyatShowTagInPreview(word)
     let word = a:word
-    let use_cscope = 1
+    let use_cscope = 0
     call s:EchoMoreMsg(word)
 
     let tlist = taglist('\<'. word . '\>')
