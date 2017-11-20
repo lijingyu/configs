@@ -622,9 +622,6 @@ function! LjyatSearchStringInFiles(pattern_arg)
         return
     endif
 
-    "silent execute "MarkClear|Mark " . pattern
-    redraw
-
     let pattern = "'" . pattern . "'"
     let real_cmd = 'cat '. s:tmpcscope_files . '|xargs grep -n -E ' . pattern
     call s:EchoMoreMsg("Searching all-str...")
@@ -740,6 +737,7 @@ function! LjyatSkipSpecWindow()
     endwhile
 endfunction
 
+"<C-s> not work in terminal. so should use <F4>
 function! LjyatSearchStringCurrentBuffer()
     call LjyatSkipSpecWindow()
     let curfilename = expand("%")
@@ -780,14 +778,11 @@ function! LjyatSearchStringCurrentBuffer()
         endif
     endif
 
-
     echohl None
 
     if s:StrPattern == ""
         return
     endif
-
-    "execute "silent! MarkClear|Mark " . s:StrPattern
 
     let l:pattern = "/" . s:StrPattern . "/"
     let real_cmd = "lvimgrep " . l:pattern . " %"
