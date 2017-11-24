@@ -141,7 +141,7 @@ nnoremap <silent> <leader>? :call <sid>SearchAnyMark("b")<cr>
 command! -nargs=? Mark call s:DoMark(<f-args>)
 command! -nargs=0 MarkClear call s:DoMarkClear()
 
-autocmd! BufWinEnter,WinEnter * call s:UpdateMark()
+autocmd! WinEnter * call s:UpdateMark()
 
 " Functions
 
