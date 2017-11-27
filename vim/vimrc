@@ -346,7 +346,14 @@ function! LjyatShowTagInPreview(word)
         wincmd P
         call LjyatShowCscopeTags(word)
     else
-        exe "ptjump " . word
+        " some time don't get tag, but taglist() can get, this maybe a bug
+        try
+            exe "ptjump " . word
+        catch /^Vim\%((\a\+)\)\=:E434/
+            pedit
+            wincmd P
+            call LjyatShowCscopeTags(word)
+        endtry
         wincmd P
     endif
     silent! call matchdelete(s:PreviewTagID)
