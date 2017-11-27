@@ -990,7 +990,7 @@ augroup LjyatAutoCmds
     autocmd FileType css set omnifunc=csscomplete#CompleteCSS
     autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
     autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-    autocmd FileType c,cpp,java,cs set omnifunc=ccomplete#Complete iskeyword+=:
+    autocmd FileType c,cpp,java,cs set omnifunc=ccomplete#Complete
     autocmd FileType qf setlocal nowrap
     autocmd VimEnter * call AddTagDirs('.')
 
