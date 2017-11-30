@@ -294,6 +294,7 @@ function! LjyatShowCscopeTags(tag)
         elseif v:exception =~ "E567"
             call s:EchoWarningMsg("no cscope connection !!!")
         endif
+        return -1
     endtry
     return
 endfunction
@@ -306,20 +307,23 @@ function! LjyatShowTags(word)
 
     let tlist = taglist('\<'. word . '\>')
     if empty(tlist)
-        call LjyatShowCscopeTags(word)
-        return
+        let use_cscope = 1
     endif
 
     for item in tlist
         if item['cmd'] =~ s:ignore_match_tag
-            let use_cscope = 1
         endif
-	endfor
+    endfor
 
     if use_cscope
         call LjyatShowCscopeTags(word)
     else
-        exe "tjump " . word
+        " see LjyatShowTagInPreview()
+        try
+            exe "tjump " . word
+        catch /^Vim\%((\a\+)\)\=:E434/
+            call LjyatShowCscopeTags(word)
+        endtry
     endif
 endfunction
 
@@ -329,11 +333,6 @@ function! LjyatShowTagInPreview(word)
     call s:EchoMoreMsg(word)
 
     let tlist = taglist('\<'. word . '\>')
-    if empty(tlist)
-        call LjyatShowCscopeTags(word)
-        return
-    endif
-
     for item in tlist
         if item['cmd'] =~ s:ignore_match_tag
             let use_cscope = 1
@@ -341,20 +340,28 @@ function! LjyatShowTagInPreview(word)
 	endfor
 
     let win_cur = winnr()
+    pedit
+    wincmd P
     if use_cscope
-        pedit
-        wincmd P
-        call LjyatShowCscopeTags(word)
+        if LjyatShowCscopeTags(word) == -1
+            pclose
+            exe win_cur . "wincmd w"
+            return
+        endif
     else
         " some time don't get tag, but taglist() can get, this maybe a bug
+        " I have know this problem, because pattern with xxx$ in tags file
+        " with dos format, vim can't got it with / or ? , so skip with cscope.
+        " Haha, this maybe is ctags problem, it doesn't matter.
         try
-            exe "ptjump " . word
-        catch /^Vim\%((\a\+)\)\=:E434/
-            pedit
-            wincmd P
-            call LjyatShowCscopeTags(word)
+            exe "tjump " . word
+        catch /^Vim\%((\a\+)\)\=:E/
+            if LjyatShowCscopeTags(word) == -1
+                pclose
+                exe win_cur . "wincmd w"
+                return
+            endif
         endtry
-        wincmd P
     endif
     silent! call matchdelete(s:PreviewTagID)
     let s:PreviewTagID = matchadd('PreviewTagGroup', '\<' . word . '\>')
