@@ -316,15 +316,20 @@ function! LjyatShowTags(word)
     endfor
 
     if use_cscope
-        call LjyatShowCscopeTags(word)
+        if LjyatShowCscopeTags(word) == -1
+            return
+        endif
     else
         " see LjyatShowTagInPreview()
         try
             exe "tjump " . word
         catch /^Vim\%((\a\+)\)\=:E434/
-            call LjyatShowCscopeTags(word)
+            if LjyatShowCscopeTags(word) == -1
+                return
+            endif
         endtry
     endif
+    normal zz
 endfunction
 
 function! LjyatShowTagInPreview(word)
@@ -340,7 +345,7 @@ function! LjyatShowTagInPreview(word)
 	endfor
 
     let win_cur = winnr()
-    pedit
+    pedit!
     wincmd P
     if use_cscope
         if LjyatShowCscopeTags(word) == -1
