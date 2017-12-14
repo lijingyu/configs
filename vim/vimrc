@@ -344,13 +344,23 @@ function! LjyatShowTagInPreview(word)
         endif
 	endfor
 
+    let pw_exist = 0
     let win_cur = winnr()
-    pedit!
+    silent! wincmd P
+    if &previewwindow
+        let pw_exist = 1
+    else
+        pedit!
+        let win_cur = winnr()
+    endif
+
     wincmd P
     if use_cscope
         if LjyatShowCscopeTags(word) == -1
-            pclose
             exe win_cur . "wincmd w"
+            if !pw_exist
+                pclose
+            endif
             return
         endif
     else
@@ -362,8 +372,10 @@ function! LjyatShowTagInPreview(word)
             exe "tjump " . word
         catch /^Vim\%((\a\+)\)\=:E/
             if LjyatShowCscopeTags(word) == -1
-                pclose
                 exe win_cur . "wincmd w"
+                if !pw_exist
+                    pclose
+                endif
                 return
             endif
         endtry
