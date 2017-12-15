@@ -286,6 +286,10 @@ function! LjyatSwitchLanguageMode()
 endfunction
 
 function! LjyatShowCscopeTags(tag)
+    if &ft == "java"
+        return -1
+    endif
+
     try
         exe "cs f g " . a:tag
     catch /^Vim\%((\a\+)\)\=:E/
@@ -296,7 +300,6 @@ function! LjyatShowCscopeTags(tag)
         endif
         return -1
     endtry
-    return
 endfunction
 
 function! LjyatShowTags(word)
