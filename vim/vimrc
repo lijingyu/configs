@@ -353,7 +353,7 @@ function! LjyatShowTagInPreview(word)
     if &previewwindow
         let pw_exist = 1
     else
-        pedit!
+        silent! pedit
         let win_cur = winnr()
     endif
 
