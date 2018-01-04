@@ -315,6 +315,7 @@ function! LjyatShowTags(word)
 
     for item in tlist
         if item['cmd'] =~ s:ignore_match_tag
+            let use_cscope = 1
         endif
     endfor
 
