@@ -46,6 +46,7 @@ def Filter(FileSource, FileObj, TypesPattern):
     ObjFiles = ObjFd.read()
     ObjFd.close()
     
+    delete_count = 0
     while(True):
         line = SourFd.readline()
         if line == '':
@@ -55,12 +56,15 @@ def Filter(FileSource, FileObj, TypesPattern):
             if re.search(line[:(line.rindex('.'))] + '\.', ObjFiles):
                 NewFd.write(line)
             else:
+                delete_count += 1
                 continue
         else:
             NewFd.write(line)
 
     SourFd.close()
+    os.remove(oldFilSource)
     NewFd.close()
+    print("delete uncompile file: " + str(delete_count))
 
 if __name__ == "__main__":
     parseParam(sys.argv[1:])
