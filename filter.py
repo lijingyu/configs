@@ -52,10 +52,9 @@ def Filter(FileSource, FileObj, TypesPattern):
             break
 
         if re.search("\.("+TypesPattern +")", line):
-            if re.search(line[:(line.rindex('.') + 1)], ObjFiles):
+            if re.search(line[:(line.rindex('.'))] + '\.', ObjFiles):
                 NewFd.write(line)
             else:
-                pass
                 continue
         else:
             NewFd.write(line)
