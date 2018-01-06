@@ -32,35 +32,36 @@ def usage():
             -f ObjType (.class,.o)\n\
             ")
 
-
 def Filter(FileSource, FileObj, TypesPattern):
     if os.path.exists(FileSource) and os.path.exists(FileObj):
-        Fs = open(FileSource, 'r')
-        Fo = open(FileObj, 'r')
-        Fout = open("out.files", 'w')
+        oldFilSource = FileSource + '_'
+        os.rename(FileSource, oldFilSource)
+        SourFd = open(oldFilSource, 'r')
+        ObjFd = open(FileObj, 'r')
+        NewFd = open(FileSource, 'w')
     else:
         print('SourceFileList or Objs is not exists')
         return
     
-    ObjFiles = Fo.read()
-    Fo.close()
+    ObjFiles = ObjFd.read()
+    ObjFd.close()
     
     while(True):
-        line = Fs.readline()
+        line = SourFd.readline()
         if line == '':
             break
 
-        if re.search("\."+TypesPattern, line):
-            print(line[:line.rindex('.')+1])
+        if re.search("\.("+TypesPattern +")", line):
             if re.search(line[:(line.rindex('.') + 1)], ObjFiles):
-                Fout.write(line)
+                NewFd.write(line)
             else:
+                print("delete  " + line)
                 continue
-
         else:
-            Fout.write(line)
+            NewFd.write(line)
 
-    Fs.close()
+    SourFd.close()
+    NewFd.close()
 
 if __name__ == "__main__":
     parseParam(sys.argv[1:])

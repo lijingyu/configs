@@ -4,6 +4,8 @@ INCLUD_DIRS=
 EXINCLUDE_DIRS='xxxxxx'
 EX_START=0
 KERNEL_TAGS=0
+SKIP_CREATE_CSCOPE_FILES=0
+ONLY_CREATE_CSCOPE_FILES=0
 
 CTAGS_PARAM_DEF=" --c-kinds=-m --c++-kinds=-m --python-kinds=-i --fields=+iaS --langmap=c:.c.h --extra=+q -L cscope.files"
 CTAGS_PARAM_H_AS_CPP=" --c-kinds=-m --c++-kinds=-m --python-kinds=-i --fields=+iaS  --extra=+q -L cscope.files"
@@ -78,11 +80,22 @@ function parse_param()
     EX_START=0
     KERNEL_TAGS=0
     CTAGS_PARAM=$CTAGS_PARAM_DEF
+    SKIP_CREATE_CSCOPE_FILES=0
+    ONLY_CREATE_CSCOPE_FILES=0
 
     for arg in $@
     do
         if [ $arg == "-" ]; then
             EX_START=1
+            continue
+        fi
+
+        if [ $arg == "-s" ]; then
+            SKIP_CREATE_CSCOPE_FILES=1
+            continue
+        fi
+        if [ $arg == "-o" ]; then
+            ONLY_CREATE_CSCOPE_FILES=1
             continue
         fi
         if [ $arg == "-k" ]; then
@@ -127,9 +140,15 @@ function exe_process()
         return
     fi
 
-    csclean
+    if [ $SKIP_CREATE_CSCOPE_FILES -eq 0 ];then
+        csclean
+        create_cscopefiles $@
+    fi
 
-    create_cscopefiles $@
+    if [ $ONLY_CREATE_CSCOPE_FILES -eq 1 ];then
+        return
+    fi
+
     create_cscope
     create_tags
     create_dict
@@ -180,6 +199,14 @@ function cssetl()
             echo_msg "===ERROR! $arg is not dir===="
             return
         fi
+    done
+}
+
+function create_objfiles()
+{
+    for arg in $@
+    do
+        find ${arg}  -type f | sed 's/\.\///'  >> obj.files
     done
 }
 
