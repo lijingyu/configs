@@ -209,7 +209,7 @@ function create_objfiles()
     do
         if [ -d $arg ];then
             cd $arg
-            find .  -type f | sed -e '/ /d' -e 's:^\./::'  > obj.files
+            find .  -type f  -name "*.o"| sed -e '/ /d' -e 's:^\./::'  > obj.files
             mv -f obj.files $cur_dir
             cd $cur_dir
         else
