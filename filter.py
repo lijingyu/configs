@@ -6,7 +6,7 @@ import re
 
 SourceFileList = ""
 ObjFileList = ""
-ObjType = ""
+ObjType = "c|cpp|s|S"
 
 def parseParam(argv):
     global SourceFileList, ObjFileList, ObjType 
@@ -55,7 +55,7 @@ def Filter(FileSource, FileObj, TypesPattern):
             if re.search(line[:(line.rindex('.') + 1)], ObjFiles):
                 NewFd.write(line)
             else:
-                print("delete  " + line)
+                pass
                 continue
         else:
             NewFd.write(line)

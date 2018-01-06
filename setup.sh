@@ -48,7 +48,7 @@ function create_tags()
     echo_msg "create tags"
     if [ -s "cscope.files" ]; then
         if [ $KERNEL_TAGS -eq 1 ];then
-            echo_msg "  kernel tags"
+            echo_msg "  KERNEL TAGS"
             exuberant "$CTAGS_PARAM"
         else
             ctags $CTAGS_PARAM
@@ -204,9 +204,17 @@ function cssetl()
 
 function create_objfiles()
 {
+    cur_dir=`pwd`
     for arg in $@
     do
-        find ${arg}  -type f | sed 's/\.\///'  >> obj.files
+        if [ -d $arg ];then
+            cd $arg
+            find .  -type f | sed -e '/ /d' -e 's:^\./::'  > obj.files
+            mv -f obj.files $cur_dir
+            cd $cur_dir
+        else
+            echo_msg "$@ is not directory!!"
+        fi
     done
 }
 
