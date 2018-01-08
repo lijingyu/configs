@@ -328,6 +328,9 @@ function! LjyatShowTags(word)
         try
             exe "tjump " . word
         catch /^Vim\%((\a\+)\)\=:E/
+            if v:exception =~ "E432"
+                return
+            endif
             if LjyatShowCscopeTags(word) == -1
                 return
             endif
@@ -375,6 +378,9 @@ function! LjyatShowTagInPreview(word)
         try
             exe "tjump " . word
         catch /^Vim\%((\a\+)\)\=:E/
+            if v:exception =~ "E432"
+                return
+            endif
             if LjyatShowCscopeTags(word) == -1
                 exe win_cur . "wincmd w"
                 if !pw_exist
