@@ -308,7 +308,7 @@ function! LjyatShowTags(word)
 
     call s:EchoMoreMsg(word)
 
-    let tlist = taglist('\<'. word . '\>')
+    silent! let tlist = taglist('\<'. word . '\>')
     if empty(tlist)
         let use_cscope = 1
     endif
@@ -327,7 +327,7 @@ function! LjyatShowTags(word)
         " see LjyatShowTagInPreview()
         try
             exe "tjump " . word
-        catch /^Vim\%((\a\+)\)\=:E434/
+        catch /^Vim\%((\a\+)\)\=:E/
             if LjyatShowCscopeTags(word) == -1
                 return
             endif
@@ -341,7 +341,7 @@ function! LjyatShowTagInPreview(word)
     let use_cscope = 0
     call s:EchoMoreMsg(word)
 
-    let tlist = taglist('\<'. word . '\>')
+    silent! let tlist = taglist('\<'. word . '\>')
     for item in tlist
         if item['cmd'] =~ s:ignore_match_tag
             let use_cscope = 1
