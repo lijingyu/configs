@@ -187,7 +187,7 @@ function cssetl()
     fi
 
     parse_param $@
-    cur_dir=`pwd`
+    local cur_dir=`pwd`
     for arg in $INCLUD_DIRS
     do
         if [ -d "$arg" ]; then
@@ -204,13 +204,19 @@ function cssetl()
 
 function create_objfiles()
 {
-    cur_dir=`pwd`
+    local cur_dir=`pwd`
+    local work_dir=''
+
     for arg in $@
     do
         if [ -d $arg ];then
             cd $arg
+            work_dir=`pwd`
             find .  -type f  -name "*.o"| sed -e '/ /d' -e 's:^\./::'  > obj.files
-            mv -f obj.files $cur_dir
+
+            if [ $work_dir != $cur_dir ]; then
+                mv -f obj.files $cur_dir
+            fi
             cd $cur_dir
         else
             echo_msg "$@ is not directory!!"
