@@ -12,6 +12,18 @@ CTAGS_PARAM_H_AS_CPP=" --c-kinds=-m --c++-kinds=-m --python-kinds=-i --fields=+i
 CTAGS_PARAM_CPP=" --python-kinds=-i --fields=+iaS --extra=+q -L cscope.files"
 CTAGS_PARAM=$CTAGS_PARAM_DEF_H_AS_C
 
+function csset_usage()
+{
+    echo_msg "csset/cssetl:
+                  -o only create cscope.files\n
+                  -s skip create cscope.files\n
+                  -  exinclude dir \n
+                  -k kernel mode, for create tags\n
+                  +  .h file as c++ files, for create tags(default .h as c)\n
+                  ++ do not remove m in kinds used for c++, fot create tags\n
+                  "
+}
+
 function create_cscope()
 {
     echo_msg "create cscope"
@@ -108,6 +120,10 @@ function parse_param()
         fi
         if [ $arg == "++" ]; then
             CTAGS_PARAM=$CTAGS_PARAM_CPP
+            continue
+        fi
+        if [ $arg == "-h" ]; then
+            csset_usage
             continue
         fi
         if [ $EX_START -eq 1 ];then
