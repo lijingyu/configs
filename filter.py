@@ -4,8 +4,8 @@ import sys
 import getopt
 import re
 
-SourceFileList = ""
-ObjFileList = ""
+SourceFileList = "cscope.files"
+ObjFileList = "obj.files"
 ObjType = "c|cpp|s|S"
 
 def parseParam(argv):
