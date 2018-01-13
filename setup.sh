@@ -16,6 +16,7 @@ function csset_usage()
 {
     echo_msg "csset/cssetl:
                   -o only create cscope.files\n
+                     -a append create cscope.files\n
                   -s skip create cscope.files\n
                   -  exinclude dir \n
                   -k kernel mode, for create tags\n
@@ -32,8 +33,10 @@ function create_cscope()
 
 function create_cscopefiles()
 {
-    if [ -e "cscope.files" ]; then
-        rm -rf cscope.files
+    if [ $APPEND_CREATE_CSCOPE_FILES -ne 1 ];then
+        if [ -e "cscope.files" ]; then
+            rm -rf cscope.files
+        fi
     fi
 
     echo_msg "create cscope.files in $@"
@@ -93,6 +96,7 @@ function parse_param()
     KERNEL_TAGS=0
     CTAGS_PARAM=$CTAGS_PARAM_DEF
     SKIP_CREATE_CSCOPE_FILES=0
+    APPEND_CREATE_CSCOPE_FILES=0
     ONLY_CREATE_CSCOPE_FILES=0
 
     for arg in $@
@@ -108,6 +112,10 @@ function parse_param()
         fi
         if [ $arg == "-o" ]; then
             ONLY_CREATE_CSCOPE_FILES=1
+            continue
+        fi
+        if [ $arg == "-a" ]; then
+            APPEND_CREATE_CSCOPE_FILES=1
             continue
         fi
         if [ $arg == "-k" ]; then
@@ -292,7 +300,7 @@ function delete_cscope_tags()
 function csclean()
 {
     if [ $# -eq 0 ];then
-        rm  -rf cscope* tags TAGS ncscope* dict GPATH GRTAGS  GTAGS
+        rm  -rf cscope.out* tags TAGS ncscope* dict GPATH GRTAGS  GTAGS
     else
         for arg in $@
         do
