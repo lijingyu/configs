@@ -241,6 +241,7 @@ function! Trace(prefix)
 endfunction
 
 function! LjyatSwitchKernelCodeMode()
+    let buf_num = bufnr('.')
     if s:kernel_mode == "TRUE"
         bufdo set expandtab tabstop=4 shiftwidth=4
         let s:kernel_mode = "FALSE"
@@ -249,6 +250,9 @@ function! LjyatSwitchKernelCodeMode()
         bufdo set noexpandtab tabstop=8 shiftwidth=8
         let s:kernel_mode = "TRUE"
         call s:EchoWarningMsg("Kernel Code Mode")
+    endif
+    if buf_num != -1
+        exe "b" . buf_num
     endif
 endfunction
 
