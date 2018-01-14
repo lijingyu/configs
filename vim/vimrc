@@ -242,11 +242,11 @@ endfunction
 
 function! LjyatSwitchKernelCodeMode()
     if s:kernel_mode == "TRUE"
-        set expandtab tabstop=4 shiftwidth=4
+        bufdo set expandtab tabstop=4 shiftwidth=4
         let s:kernel_mode = "FALSE"
         call s:EchoWarningMsg("Normal Code Mode")
     else
-        set noexpandtab tabstop=8 shiftwidth=8
+        bufdo set noexpandtab tabstop=8 shiftwidth=8
         let s:kernel_mode = "TRUE"
         call s:EchoWarningMsg("Kernel Code Mode")
     endif
