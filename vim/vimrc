@@ -467,8 +467,8 @@ endfunction
 function! InitTagDirs()
     silent exe "cs kill -1"
     call CleanTmpListFile()
-    let &tags="./tags,./TAGS,tags,TAGS"
-    let &dict="dict"
+    let &tags=
+    let &dict=
     let s:tmpcscope_files = ''
     let s:cscope_tag_dir_list = []
 endfunction
