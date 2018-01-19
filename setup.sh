@@ -165,7 +165,9 @@ function exe_process()
     fi
 
     if [ $SKIP_CREATE_CSCOPE_FILES -eq 0 ];then
-        csclean
+        if [ $APPEND_CREATE_CSCOPE_FILES -eq 0 ];then
+            csclean
+        fi
         create_cscopefiles $@
     fi
 
@@ -236,11 +238,7 @@ function create_objfiles()
         if [ -d $arg ];then
             cd $arg
             work_dir=`pwd`
-            find .  -type f  -name "*.o"| sed -e '/ /d' -e 's:^\./::'  > obj.files
-
-            if [ $work_dir != $cur_dir ]; then
-                mv -f obj.files $cur_dir
-            fi
+            find .  -type f  -name "*.o"| sed -e '/ /d' -e 's:^\./::'  >> $cur_dir/obj.files
             cd $cur_dir
         else
             echo_msg "$@ is not directory!!"
@@ -290,7 +288,7 @@ function delete_cscope_tags()
    if [ -d $@ ];then
        cur_dir=`pwd`
        cd $@
-       rm  -rf cscope* tags TAGS ncscope* dict GPATH GRTAGS  GTAGS
+       rm  -rf cscope* tags TAGS ncscope* dict GPATH GRTAGS  GTAGS obj.files
        cd $cur_dir
    else
        echo_msg "$@ is not directory!!"
@@ -300,7 +298,7 @@ function delete_cscope_tags()
 function csclean()
 {
     if [ $# -eq 0 ];then
-        rm  -rf cscope.out* tags TAGS ncscope* dict GPATH GRTAGS  GTAGS
+        rm  -rf cscope* tags TAGS ncscope* dict GPATH GRTAGS  GTAGS obj.files
     else
         for arg in $@
         do
