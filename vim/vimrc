@@ -241,7 +241,8 @@ function! Trace(prefix)
 endfunction
 
 function! LjyatSwitchKernelCodeMode()
-    let buf_num = bufnr('.')
+    let winview = winsaveview()
+    let buf_num = bufnr('%')
     if s:kernel_mode == "TRUE"
         bufdo set expandtab tabstop=4 shiftwidth=4
         let s:kernel_mode = "FALSE"
@@ -254,6 +255,7 @@ function! LjyatSwitchKernelCodeMode()
     if buf_num != -1
         exe "b" . buf_num
     endif
+    call winrestview(winview)
 endfunction
 
 function! LjyatSwitchLanguageMode()
