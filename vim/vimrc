@@ -537,14 +537,20 @@ function! AddTagDirs(predirs)
     endif
     for dir in addedlist
         "dir suffix with /
-        let dir = substitute(expand(split(dir, "\"")[0]),'/$', '','') . '/'
-        if dir == './'
-            let dir = ''
+        let dir = substitute(expand(split(dir, "\"")[0]),'/$', '','')
+
+        if dir == '.'
+            "cscope prepath always need a '/'
+            let new_tag_path     = "tags"
+            let new_cscope_path  = "cscope.out"
+            let new_dict_path    = "dict"
+            let new_cscope_files = "cscope.files"
+        else
+            let new_cscope_path  = dir . "/cscope.out"
+            let new_tag_path     = dir . "/tags"
+            let new_dict_path    = dir . "/dict"
+            let new_cscope_files = dir . "/cscope.files"
         endif
-        let new_tag_path = dir . "tags"
-        let new_dict_path = dir . "dict"
-        let new_cscope_path = dir . "cscope.out"
-        let new_cscope_files = dir . "cscope.files"
 
         if !filereadable(new_tag_path) || !filereadable(new_cscope_path)
             call s:EchoWarningMsg("No needed file in: " . dir)
@@ -552,18 +558,17 @@ function! AddTagDirs(predirs)
         endif
 
         if filereadable(new_cscope_files)
-            silent exe "!cat " . new_cscope_files . "|sed 's:^:" . dir . ":' >> " . s:tmpcscope_files
+            silent exe "!cat " . new_cscope_files . "|sed 's:^:" . dir . "/:' >> " . s:tmpcscope_files
         endif
 
         let &tags = &tags . "," . new_tag_path
         let &dict = &dict . "," . new_dict_path
         call add(s:cscope_tag_dir_list, dir)
 
-        "cscope prepath always need a '/'
-        if stridx(dir[:-2], "/") == -1
+        if stridx(dir, "/") == -1
             let dir = substitute(dir, '^', './','')
         endif
-        silent! exe "cscope add " . new_cscope_path . " " . dir[:-2]
+        silent! exe "cscope add " . new_cscope_path . " " . dir
     endfor
     redraw!
 endfunction
