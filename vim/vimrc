@@ -536,11 +536,14 @@ function! AddTagDirs(predirs)
         let s:tmpcscope_files = "/tmp/cscope.files." . getpid()
     endif
     for dir in addedlist
-        let dir = substitute(expand(split(dir, "\"")[0]),'/$', '','')
-        let new_tag_path = dir . "/tags"
-        let new_dict_path = dir . "/dict"
-        let new_cscope_path = dir . "/cscope.out"
-        let new_cscope_files = dir . "/cscope.files"
+        let dir = substitute(expand(split(dir, "\"")[0]),'/$', '','') . '/'
+        if dir == './'
+            let dir = ''
+        endif
+        let new_tag_path = dir . "tags"
+        let new_dict_path = dir . "dict"
+        let new_cscope_path = dir . "cscope.out"
+        let new_cscope_files = dir . "cscope.files"
 
         if !filereadable(new_tag_path) || !filereadable(new_cscope_path)
             call s:EchoWarningMsg("No needed file in: " . dir)
