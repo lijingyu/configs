@@ -563,7 +563,7 @@ function! AddTagDirs(predirs)
         if stridx(dir, "/") == -1
             let dir = substitute(dir, '^', './','')
         endif
-        silent! exe "cscope add " . new_cscope_path . " " . dir
+        silent! exe "cscope add " . new_cscope_path . " " . dir[:-2]
     endfor
     redraw!
 endfunction
