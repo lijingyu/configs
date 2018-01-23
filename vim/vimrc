@@ -558,16 +558,22 @@ function! AddTagDirs(predirs)
         endif
 
         if filereadable(new_cscope_files)
-            silent exe "!cat " . new_cscope_files . "|sed 's:^:" . dir . "/:' >> " . s:tmpcscope_files
+            if dir == '.'
+                silent exe "!cat " . new_cscope_files . ' >> ' . s:tmpcscope_files
+            else
+                silent exe "!cat " . new_cscope_files . "|sed 's:^:" . dir . "/:' >> " . s:tmpcscope_files
+            endif
         endif
 
-        let &tags = &tags . "," . new_tag_path
-        let &dict = &dict . "," . new_dict_path
+        if len(s:cscope_tag_dir_list) == 0
+            let &tags = new_tag_path
+            let &dict = new_dict_path
+        else
+            let &tags = &tags . "," . new_tag_path
+            let &dict = &dict . "," . new_dict_path
+        endif
         call add(s:cscope_tag_dir_list, dir)
 
-        if stridx(dir, "/") == -1
-            let dir = substitute(dir, '^', './','')
-        endif
         silent! exe "cscope add " . new_cscope_path . " " . dir
     endfor
     redraw!
