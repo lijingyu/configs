@@ -536,11 +536,8 @@ function! AddTagDirs(predirs)
         let s:tmpcscope_files = "/tmp/cscope.files." . getpid()
     endif
     for dir in addedlist
-        "dir suffix with /
         let dir = substitute(expand(split(dir, "\"")[0]),'/$', '','')
-
         if dir == '.'
-            "cscope prepath always need a '/'
             let new_tag_path     = "tags"
             let new_cscope_path  = "cscope.out"
             let new_dict_path    = "dict"
@@ -574,6 +571,10 @@ function! AddTagDirs(predirs)
         endif
         call add(s:cscope_tag_dir_list, dir)
 
+        "cscope prepath always need a '/'
+        if stridx(dir, "/") == -1
+            let dir = substitute(dir, '^', './','')
+        endif
         silent! exe "cscope add " . new_cscope_path . " " . dir
     endfor
     redraw!
