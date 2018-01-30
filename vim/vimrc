@@ -237,10 +237,6 @@ function! StatusLine()
     return "%-f". m ." %w  %{&fenc!=''?&fenc:&enc}  %p%% L%l/%L  %{TagDirs()}%<"
 endfunction
 
-function! QuickFixStatusLine()
-    return "match abc"
-endfunction
-
 function! Trace(prefix)
     put =a:prefix . \"# [\" . expand('%:t') . ': ' . (line('.') + 1) . ']\"' .\");\"
 endfunction
