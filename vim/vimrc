@@ -461,7 +461,7 @@ function! SavePattern(pattern)
 endfunction
 
 function! GetPattern()
-    return line('$') . " match for " . s:MatchInfo
+    return line('$') . " match for " . s:MatchInfo . " %<"
 endfunction
 
 function! CleanTmpListFile()
