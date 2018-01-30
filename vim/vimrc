@@ -83,6 +83,7 @@ let s:searchhistory = 5
 let s:StrPattern = ''
 let s:SearchList = []
 let g:SearchLimit = 5000
+let s:MatchInfo = ''
 
 if exists('&breakindent')
     set breakindent
@@ -234,6 +235,10 @@ function! StatusLine()
     endif
 
     return "%-f". m ." %w  %{&fenc!=''?&fenc:&enc}  %p%% L%l/%L  %{TagDirs()}%<"
+endfunction
+
+function! QuickFixStatusLine()
+    return "match abc"
 endfunction
 
 function! Trace(prefix)
@@ -451,6 +456,14 @@ if has("cscope")
     endif
 endif
 
+function! SavePattern(pattern)
+    let s:MatchInfo = a:pattern
+endfunction
+
+function! GetPattern()
+    return line('$') . " match for " . s:MatchInfo
+endfunction
+
 function! CleanTmpListFile()
     if filereadable(s:tmpcscope_files)
         execute "silent! !rm -rf " . s:tmpcscope_files
@@ -636,6 +649,7 @@ function! Arggrep(pattern_arg)
 
     let matchlist = split(match_string, '\n')
     let matchlen = len(matchlist)
+    call SavePattern(pattern_arg)
     execute "lexpr matchlist"
     lopen
     let &errorformat=ef
@@ -661,6 +675,7 @@ function! LjyatSearchFunctionCaller()
     let ef = &errorformat
     set efm=%f:%l:%m
 
+    call SavePattern(pattern)
     execute "lexpr match_string"
     lopen
     let &errorformat=ef
@@ -704,6 +719,7 @@ function! LjyatSearchStringInFiles(pattern_arg)
     let ef = &errorformat
     set efm=%f:%l:%m
 
+    call SavePattern(pattern)
     execute "lexpr match_string"
     lopen
     let &errorformat=ef
@@ -740,6 +756,8 @@ function! Argfind(pattern)
 
     let matchlist = split(match_files, '\n')
     let matchlen = len(matchlist)
+
+    call SavePattern(pattern)
     execute "lexpr matchlist"
     lopen
     let &errorformat=ef
@@ -780,6 +798,7 @@ function! LjyatSearchFileInFileList()
     let ef = &errorformat
     set efm=%f
 
+    call SavePattern(pattern)
     execute "silent! lexpr match_files"
 
     lopen
@@ -850,6 +869,7 @@ function! LjyatSearchStringCurrentBuffer()
     let l:pattern = "/" . s:StrPattern . "/"
     let real_cmd = "lvimgrep " . l:pattern . " %"
     call s:EchoMoreMsg("Searching cur-str...")
+    call SavePattern(s:StrPattern)
     execute "silent! " . real_cmd
     lopen
     redraw!
@@ -871,6 +891,7 @@ function! LjyatVSearchStringCurrentBuffer()
 
     let pattern = "/" . pattern . "/"
     let real_cmd = "lvimgrep " . pattern . " %"
+    call SavePattern(pattern)
     execute "silent! " . real_cmd
 
     lopen
@@ -1055,7 +1076,7 @@ augroup LjyatAutoCmds
     autocmd FileType php set omnifunc=phpcomplete#CompletePHP
     autocmd FileType c,cpp,java,cs set omnifunc=ccomplete#Complete
     autocmd FileType make setlocal iskeyword+=-
-    autocmd FileType qf setlocal nowrap nu
+    autocmd FileType qf setlocal nowrap nu statusline=%!GetPattern()
     autocmd VimEnter * call AddTagDirs('.')
 
     autocmd VimLeave * call CleanTmpListFile()
