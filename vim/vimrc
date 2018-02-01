@@ -80,10 +80,9 @@ let html_wrong_comments = 1
 let Tlist_Inc_Winwidth = 0
 let NERDTreeWinPos = "right"
 let s:searchhistory = 5
-let s:StrPattern = ''
 let s:SearchList = []
 let g:SearchLimit = 5000
-let s:MatchInfo = ''
+let g:SearchPattern = ''
 
 if exists('&breakindent')
     set breakindent
@@ -610,13 +609,13 @@ function! Arggrep(pattern_arg)
 
     execute "silent! MarkClear|silent! Mark " . a:pattern_arg
 
-    let pattern_arg = "'" . a:pattern_arg . "'"
-    let real_cmd = 'cat ' . s:tmpcscope_files .' |xargs grep -n -E ' . pattern_arg
+    let pattern = "'" . a:pattern_arg . "'"
+    let real_cmd = 'cat ' . s:tmpcscope_files .' |xargs grep -n -E ' . pattern
     call s:EchoMoreMsg("Searching all-str ...")
 
     let match_string = system(real_cmd)
     if match_string == ""
-        call s:EchoWarningMsg("No match string: " . pattern_arg)
+        call s:EchoWarningMsg("No match string: " . pattern)
         return
     endif
 
@@ -637,10 +636,11 @@ function! Arggrep(pattern_arg)
 
     let matchlist = split(match_string, '\n')
     let matchlen = len(matchlist)
+    let g:SearchPattern = pattern
     execute "lexpr matchlist"
     lopen
     let &errorformat=ef
-    call s:EchoMoreMsg(matchlen . " matches for " . pattern_arg )
+    call s:EchoMoreMsg(matchlen . " matches for " . pattern )
 endfunction
 
 function! LjyatSearchFunctionCaller()
@@ -662,6 +662,7 @@ function! LjyatSearchFunctionCaller()
     let ef = &errorformat
     set efm=%f:%l:%m
 
+    let g:SearchPattern = pattern
     execute "lexpr match_string"
     lopen
     let &errorformat=ef
@@ -705,6 +706,7 @@ function! LjyatSearchStringInFiles(pattern_arg)
     let ef = &errorformat
     set efm=%f:%l:%m
 
+    let g:SearchPattern = pattern
     execute "lexpr match_string"
     lopen
     let &errorformat=ef
@@ -742,6 +744,7 @@ function! Argfind(pattern)
     let matchlist = split(match_files, '\n')
     let matchlen = len(matchlist)
 
+    let g:SearchPattern = pattern
     execute "lexpr matchlist"
     lopen
     let &errorformat=ef
@@ -782,8 +785,8 @@ function! LjyatSearchFileInFileList()
     let ef = &errorformat
     set efm=%f
 
+    let g:SearchPattern = pattern
     execute "silent! lexpr match_files"
-
     lopen
     let &errorformat = ef
     redraw!
@@ -814,9 +817,9 @@ function! LjyatSearchStringCurrentBuffer()
     echohl Question
 
     if len(s:SearchList) == 0
-        let s:StrPattern = input("  Search cur-str: ", expand("<cword>"))
-        if match(s:StrPattern, "\|")  != -1
-            call insert(s:SearchList, s:StrPattern)
+        let pattern = input("  Search cur-str: ", expand("<cword>"))
+        if match(pattern, "\|")  != -1
+            call insert(s:SearchList, pattern)
         endif
     else
         let outputlist = []
@@ -830,12 +833,12 @@ function! LjyatSearchStringCurrentBuffer()
 
         let l:sel_idx = inputlist(outputlist)
         if l:sel_idx == 0
-            let s:StrPattern = input("  Search cur-str: ", expand("<cword>"))
+            let pattern = input("  Search cur-str: ", expand("<cword>"))
         else
-            let s:StrPattern = input("  Search cur-str: ", s:SearchList[l:sel_idx - 1])
+            let pattern = input("  Search cur-str: ", s:SearchList[l:sel_idx - 1])
         endif
-        if match(s:StrPattern, "\|")  != -1
-            call insert(s:SearchList, s:StrPattern)
+        if match(pattern, "\|")  != -1
+            call insert(s:SearchList, pattern)
             let s:SearchList = uniq(copy(s:SearchList))
             if len(s:SearchList) > s:searchhistory
                 call remove(s:SearchList, -1)
@@ -845,13 +848,15 @@ function! LjyatSearchStringCurrentBuffer()
 
     echohl None
 
-    if s:StrPattern == ""
+    if pattern == ""
         return
     endif
 
-    let l:pattern = "/" . s:StrPattern . "/"
-    let real_cmd = "lvimgrep " . l:pattern . " %"
+    let pattern = "/" . pattern . "/"
+    let real_cmd = "lvimgrep " . pattern . " %"
     call s:EchoMoreMsg("Searching cur-str...")
+
+    let g:SearchPattern = pattern
     execute "silent! " . real_cmd
     lopen
     redraw!
@@ -873,8 +878,9 @@ function! LjyatVSearchStringCurrentBuffer()
 
     let pattern = "/" . pattern . "/"
     let real_cmd = "lvimgrep " . pattern . " %"
-    execute "silent! " . real_cmd
 
+    let g:SearchPattern = pattern
+    execute "silent! " . real_cmd
     lopen
     redraw!
 endfunction

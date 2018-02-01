@@ -39,6 +39,7 @@ hi DefinedName     guifg=#FFCC00
 hi WarningMsg      term=standout ctermfg=0 ctermbg=11 guifg=Blue guibg=Yellow
 hi clear Constant
 
+hi! def link User1 Search
 hi! def link Directory   Function
 hi! def link CursorLine  Search
 hi! def link ModeMsg     Directory
