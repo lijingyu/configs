@@ -571,9 +571,13 @@ function! AddTagDirs(predirs)
         endif
         call add(s:cscope_tag_dir_list, dir)
 
-        "cscope prepath always need a '/'
-        if stridx(dir, "/") == -1
-            let dir = substitute(dir, '^', './','')
+        if dir == '.'
+            let dir = ''
+        else
+            "cscope prepath always need a '/'
+            if stridx(dir, "/") == -1
+                let dir = substitute(dir, '^', './','')
+            endif
         endif
         silent! exe "cscope add " . new_cscope_path . " " . dir
     endfor
