@@ -615,7 +615,7 @@ function! Arggrep(pattern_arg)
 
     let pattern = "'" . a:pattern_arg . "'"
     let real_cmd = 'cat ' . s:tmpcscope_files .' |xargs grep -n -E ' . pattern
-    call s:EchoMoreMsg("Searching all-str ...")
+    call s:EchoMoreMsg("Searching String ". pattern . ' ...")
 
     let match_string = system(real_cmd)
     if match_string == ""
@@ -644,7 +644,6 @@ function! Arggrep(pattern_arg)
     execute "lexpr matchlist"
     lopen
     let &errorformat=ef
-    call s:EchoMoreMsg(matchlen . " matches for " . pattern )
 endfunction
 
 function! LjyatSearchFunctionCaller()
@@ -656,7 +655,7 @@ function! LjyatSearchFunctionCaller()
     let pattern = '=\s*\<' . pattern . '\>|\<' . pattern . '\>\s*\('
     let pattern = "'" . pattern . "'"
     let real_cmd = 'cat '. s:tmpcscope_files . '|xargs grep -n -E ' . pattern
-    call s:EchoMoreMsg("Searching caller-str...")
+    call s:EchoMoreMsg("Searching called " . pattern . " ...")
     let match_string = system(real_cmd, "\n")
     if match_string == ""
         call s:EchoWarningMsg("No match string: " . pattern)
@@ -693,7 +692,7 @@ function! LjyatSearchStringInFiles(pattern_arg)
 
     let pattern = "'" . pattern . "'"
     let real_cmd = 'cat '. s:tmpcscope_files . '|xargs grep -n -E ' . pattern
-    call s:EchoMoreMsg("Searching all-str...")
+    call s:EchoMoreMsg("Searching String " . pattern . " ...")
     let match_string = system(real_cmd, "\n")
     if match_string == ""
         call s:EchoWarningMsg("No match string: " . pattern)
@@ -714,7 +713,6 @@ function! LjyatSearchStringInFiles(pattern_arg)
     execute "lexpr match_string"
     lopen
     let &errorformat=ef
-    call s:EchoMoreMsg(matchlen . " matches for " . pattern )
 endfunction
 
 function! Argfind(pattern)
@@ -730,7 +728,7 @@ function! Argfind(pattern)
 
     let pattern = "'" . a:pattern . "'"
     let real_cmd = 'grep  -i -E ' . pattern . ' ' . s:tmpcscope_files
-    call s:EchoMoreMsg("Searching file...")
+    call s:EchoMoreMsg("Searching file " . pattern . " ...")
     let match_files = system(real_cmd, " ")
     if match_files == ""
         call s:EchoWarningMsg("No match file: " . pattern)
@@ -752,7 +750,6 @@ function! Argfind(pattern)
     execute "lexpr matchlist"
     lopen
     let &errorformat=ef
-    call s:EchoMoreMsg(matchlen . " matches for " . pattern)
 endfunction
 
 function! LjyatSearchFileInFileList()
@@ -771,7 +768,7 @@ function! LjyatSearchFileInFileList()
 
     let pattern = "'" . pattern . "'"
     let real_cmd = 'grep  -i -E ' . pattern . ' ' . s:tmpcscope_files
-    call s:EchoMoreMsg("Searching file...")
+    call s:EchoMoreMsg("Searching file " . pattern . " ...")
 
     let match_files = system(real_cmd)
     if match_files == ""
@@ -794,7 +791,6 @@ function! LjyatSearchFileInFileList()
     lopen
     let &errorformat = ef
     redraw!
-    call s:EchoMoreMsg(matchlen . " matches for " . pattern )
 endfunction
 
 function! LjyatSkipSpecWindow()
@@ -858,7 +854,7 @@ function! LjyatSearchStringCurrentBuffer()
 
     let pattern = "/" . pattern . "/"
     let real_cmd = "lvimgrep " . pattern . " %"
-    call s:EchoMoreMsg("Searching cur-str...")
+    call s:EchoMoreMsg("Searching cur-str " . pattern . " ...")
 
     let g:SearchPattern = pattern
     execute "silent! " . real_cmd
