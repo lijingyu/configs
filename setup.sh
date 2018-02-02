@@ -288,7 +288,7 @@ function delete_cscope_tags()
    if [ -d $@ ];then
        cur_dir=`pwd`
        cd $@
-       rm  -rf cscope* tags TAGS ncscope* dict GPATH GRTAGS  GTAGS obj.files
+       rm  -rf cscope* tags TAGS ncscope* dict GPATH GRTAGS  GTAGS
        cd $cur_dir
    else
        echo_msg "$@ is not directory!!"
@@ -298,7 +298,7 @@ function delete_cscope_tags()
 function csclean()
 {
     if [ $# -eq 0 ];then
-        rm  -rf cscope* tags TAGS ncscope* dict GPATH GRTAGS  GTAGS obj.files
+        rm  -rf cscope* tags TAGS ncscope* dict GPATH GRTAGS  GTAGS
     else
         for arg in $@
         do
