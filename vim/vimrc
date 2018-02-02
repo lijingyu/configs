@@ -641,9 +641,10 @@ function! Arggrep(pattern_arg)
     let matchlist = split(match_string, '\n')
     let matchlen = len(matchlist)
     let g:SearchPattern = pattern
-    execute "lexpr matchlist"
+    execute "silent! lexpr matchlist"
     lopen
     let &errorformat=ef
+    redraw!
 endfunction
 
 function! LjyatSearchFunctionCaller()
@@ -666,7 +667,7 @@ function! LjyatSearchFunctionCaller()
     set efm=%f:%l:%m
 
     let g:SearchPattern = pattern
-    execute "lexpr match_string"
+    execute "silent! lexpr match_string"
     lopen
     let &errorformat=ef
     redraw
@@ -710,9 +711,10 @@ function! LjyatSearchStringInFiles(pattern_arg)
     set efm=%f:%l:%m
 
     let g:SearchPattern = pattern
-    execute "lexpr match_string"
+    execute "silent! lexpr match_string"
     lopen
     let &errorformat=ef
+    redraw!
 endfunction
 
 function! Argfind(pattern)
@@ -747,9 +749,10 @@ function! Argfind(pattern)
     let matchlen = len(matchlist)
 
     let g:SearchPattern = pattern
-    execute "lexpr matchlist"
+    execute "silent! lexpr matchlist"
     lopen
     let &errorformat=ef
+    redraw!
 endfunction
 
 function! LjyatSearchFileInFileList()
