@@ -93,6 +93,10 @@ if !exists("s:tmpcscope_files")
     let s:cscope_tag_dir_list = []
 endif
 
+if !exists("s:tmpmatchfilelist")
+    let s:tmpmatchfilelist = []
+endif
+
 if !exists("s:language_mode")
     let s:language_mode = "EN"
 endif
@@ -130,20 +134,21 @@ map <C-h> <C-w>h
 map <C-l> <C-w>l
 nnoremap <M-=> :call IncreaseFontSize()<CR>
 nnoremap <M--> :call DecreaseFontSize()<CR>
-nnoremap <F4> :LjyatSearchStringCurrentBuffer<CR>
-nnoremap <C-s> :LjyatSearchStringCurrentBuffer<CR>
+nnoremap <F4> :LjyatSearchStrCurBuf<CR>
+nnoremap <C-s> :LjyatSearchStrCurBuf<CR>
 
 "color set
 nmap / <leader>r
 nmap n <leader>/
 nmap N <leader>?
 nmap M :MarkClear<CR><leader>m
+nmap S :LjyatSearchStrInFileListCmd<CR>
 nmap <leader>] :call LjyatShowTagInPreview(expand("<cword>"))<CR>
 
 nnoremap <Space> <Nop>
-nnoremap <M-f> :LjyatSearchFileInFileList<CR>
-vnoremap <M-r> <ESC>:call LjyatVSearchStringInFiles()<CR>
-vnoremap <M-R> <ESC>:call LjyatVSearchStringCurrentBuffer()<CR>
+nnoremap <M-f> :LjyatSearchFileCmd<CR>
+vnoremap <M-r> <ESC>:call LjyatVSearchStrInFiles()<CR>
+vnoremap <M-R> <ESC>:call LjyatVSearchStrCurBuf()<CR>
 
 nnoremap <M-[> :cs find c <C-R>=expand("<cword>")<CR><CR>
 nnoremap <M-\> :cs find s <C-R>=expand("<cword>")<CR><CR>
@@ -180,11 +185,11 @@ nnoremap C :LjyatBookMarkClear<CR>
 nnoremap B :LjyatAddBookMark<CR>
 
 "grep -E
-nnoremap <M-s> :LjyatSearchStringInFiles<CR>
+nnoremap <M-s> :LjyatSearchStrCmd<CR>
 nnoremap <F10> :edit ++ff=dos<CR>
 
 "vim nnoremap
-nnoremap <Space>s :LjyatSearchStringInFiles<CR>
+nnoremap <Space>s :LjyatSearchStrCmd<CR>
 nmap <Space>m <leader>m
 nnoremap <silent> <Space>1 :pc<CR>:lclose<CR>:cclose<CR>
 nnoremap <Space>a 0
@@ -199,14 +204,14 @@ nnoremap <Space>2 <C-w>c
 nnoremap <Space>t :cs f t
 nnoremap <Space>\ :cs find s <C-R>=expand("<cword>")<CR><CR>
 nnoremap <Space>[ :cs find c <C-R>=expand("<cword>")<CR><CR>
-nnoremap <Space>f :LjyatSearchFileInFileList<CR>
+nnoremap <Space>f :LjyatSearchFileCmd<CR>
 nnoremap <Space>] :call LjyatShowTags(expand("<cword>"))<CR>
 nmap <Space><RightMouse> :MarkClear<CR>
 nmap <Space><LeftMouse> <LeftMouse><leader>m
 nnoremap <Space>l :LjyatShowBookMarks<CR>
 
-vnoremap <Space>R <ESC>:call LjyatVSearchStringCurrentBuffer()<CR>
-vnoremap <Space>r <ESC>:call LjyatVSearchStringInFiles()<CR>
+vnoremap <Space>R <ESC>:call LjyatVSearchStrCurBuf()<CR>
+vnoremap <Space>r <ESC>:call LjyatVSearchStrInFiles()<CR>
 vnoremap <M-=> :<C-U> call AlignPattern()<CR>
 
 "============= show preview tag config ===========
@@ -451,10 +456,8 @@ if has("cscope")
     endif
 endif
 
-function! CleanTmpListFile()
-    if filereadable(s:tmpcscope_files)
-        execute "silent! !rm -rf " . s:tmpcscope_files
-    endif
+function! CleanTmpListFile(cscope_files)
+        return delete(a:cscope_files)
 endfunction
 
 function! TagDirs()
@@ -468,10 +471,11 @@ endfunction
 
 function! InitTagDirs()
     silent exe "cs kill -1"
-    call CleanTmpListFile()
+    call CleanTmpListFile(s:tmpcscope_files)
     let &tags=''
     let &dict=''
     let s:tmpcscope_files = ''
+    let s:tmpmatchfilelist = []
     let s:cscope_tag_dir_list = []
 endfunction
 
@@ -673,26 +677,18 @@ function! LjyatSearchFunctionCaller()
     redraw
 endfunction
 
-function! LjyatSearchStringInFiles(pattern_arg)
-    if !filereadable(s:tmpcscope_files)
+function! LjyatSearchStr(pattern, cscope_files)
+    if !filereadable(a:cscope_files)
         call s:EchoWarningMsg("cscope.files not exist")
         return
     endif
 
-    echohl Question
-    if a:pattern_arg != ''
-        let pattern = input("  Search all-str: ", a:pattern_arg)
-    else
-        let pattern = input("  Search all-str: ", escape(expand("<cword>"), '#'))
-    endif
-    echohl None
-
-    if pattern == ""
+    if a:pattern == ""
         return
     endif
 
-    let pattern = "'" . pattern . "'"
-    let real_cmd = 'cat '. s:tmpcscope_files . '|xargs grep -n -E ' . pattern
+    let pattern = "'" . a:pattern . "'"
+    let real_cmd = 'cat '. a:cscope_files . '|xargs grep -n -E ' . pattern
     call s:EchoMoreMsg("Searching String " . pattern . " ...")
     let match_string = system(real_cmd, "\n")
     if match_string == ""
@@ -715,6 +711,18 @@ function! LjyatSearchStringInFiles(pattern_arg)
     lopen
     let &errorformat=ef
     redraw!
+endfunction
+
+function! LjyatSearchStrCmd()
+    if !filereadable(s:tmpcscope_files)
+        call s:EchoWarningMsg("cscope.files not exist")
+        return
+    endif
+
+    echohl Question
+    let pattern = input("  Search str: ", escape(expand("<cword>"), '#'))
+    echohl None
+    call LjyatSearchStr(pattern, s:tmpcscope_files)
 endfunction
 
 function! Argfind(pattern)
@@ -755,7 +763,68 @@ function! Argfind(pattern)
     redraw!
 endfunction
 
-function! LjyatSearchFileInFileList()
+function! LjyatSearchStrInFileList(pattern, filelist)
+    if empty(a:filelist)
+        call s:EchoWarningMsg("tmpmatchfilelist is empty")
+        return
+    endif
+
+    let tmplistfile = "/tmp/cscope.matchlist." . getpid()
+    call writefile(a:filelist, tmplistfile)
+    call LjyatSearchStr(a:pattern, tmplistfile)
+    call delete(tmplistfile)
+endfunction
+
+function! LjyatSearchStrInFileListCmd()
+    if empty(s:tmpmatchfilelist)
+        call s:EchoWarningMsg("matchfilelist is empty")
+        return
+    endif
+    echohl Question
+    let pattern = input("  Search str in match file: ", escape(expand("<cword>"), '#'))
+    echohl None
+    call LjyatSearchStrInFileList(pattern, s:tmpmatchfilelist)
+endfunction
+
+function! LjyatSearchFile(pattern, cscope_files)
+    if !filereadable(a:cscope_files)
+        call s:EchoWarningMsg("cscope.files not exist")
+        return []
+    endif
+
+    if a:pattern == ""
+        return []
+    endif
+
+    let pattern = "'" . a:pattern . "'"
+    let real_cmd = 'grep  -i -E ' . pattern . ' ' . a:cscope_files
+    call s:EchoMoreMsg("Searching file " . pattern . " ...")
+
+    let match_files = system(real_cmd)
+    if match_files == ""
+        call s:EchoWarningMsg("No match files: " . pattern)
+        return []
+    endif
+
+    let matchlist = split(match_files, '\n')
+    let matchlen = len(matchlist)
+    if matchlen > g:SearchLimit
+        call s:EchoMoreMsg("match " . matchlen . " > " . g:SearchLimit . " items, change pattern please ")
+        return []
+    endif
+
+    let ef = &errorformat
+    set efm=%f
+
+    let g:SearchPattern = pattern
+    execute "silent! lexpr match_files"
+    lopen
+    let &errorformat = ef
+    redraw!
+    return matchlist
+endfunction
+
+function! LjyatSearchFileCmd()
     if !filereadable(s:tmpcscope_files)
         call s:EchoWarningMsg("cscope.files not exist")
         return
@@ -769,31 +838,7 @@ function! LjyatSearchFileInFileList()
         return
     endif
 
-    let pattern = "'" . pattern . "'"
-    let real_cmd = 'grep  -i -E ' . pattern . ' ' . s:tmpcscope_files
-    call s:EchoMoreMsg("Searching file " . pattern . " ...")
-
-    let match_files = system(real_cmd)
-    if match_files == ""
-        call s:EchoWarningMsg("No match files: " . pattern)
-        return
-    endif
-
-    let matchlist = split(match_files, '\n')
-    let matchlen = len(matchlist)
-    if matchlen > g:SearchLimit
-        call s:EchoMoreMsg("match " . matchlen . " > " . g:SearchLimit . " items, change pattern please ")
-        return
-    endif
-
-    let ef = &errorformat
-    set efm=%f
-
-    let g:SearchPattern = pattern
-    execute "silent! lexpr match_files"
-    lopen
-    let &errorformat = ef
-    redraw!
+    let s:tmpmatchfilelist = LjyatSearchFile(pattern, s:tmpcscope_files)
 endfunction
 
 function! LjyatSkipSpecWindow()
@@ -809,7 +854,7 @@ function! LjyatSkipSpecWindow()
 endfunction
 
 "<C-s> not work in terminal. so should use <F4>
-function! LjyatSearchStringCurrentBuffer()
+function! LjyatSearchStrCurBuf()
     call LjyatSkipSpecWindow()
     let curfilename = expand("%")
     if curfilename == ""
@@ -865,7 +910,7 @@ function! LjyatSearchStringCurrentBuffer()
     redraw!
 endfunction
 
-function! LjyatVSearchStringCurrentBuffer()
+function! LjyatVSearchStrCurBuf()
     let curfilename = expand("%")
     if curfilename == ""
         call s:EchoWarningMsg("buffer name is NULL")
@@ -888,11 +933,11 @@ function! LjyatVSearchStringCurrentBuffer()
     redraw!
 endfunction
 
-function! LjyatVSearchStringInFiles()
+function! LjyatVSearchStrInFiles()
     let old = @"
     exe "normal! gvy"
     let pattern = @"
-    call LjyatSearchStringInFiles(pattern)
+    call LjyatSearchStr(pattern, s:tmpcscope_files)
     let @" = old
     redraw!
 endfunction
@@ -1039,14 +1084,14 @@ endfunction
 command! -nargs=1 Argfind call Argfind(<f-args>)
 command! -nargs=+ -complete=dir A call AddTagDirs('<f-args>')
 command! -nargs=* -complete=dir R call RemoveTagDirs('<f-args>')
-command! -nargs=0  S echo TagDirs()
 command! LjyatNERDTreeOpenBufDir call LjyatNERDTreeOpenBufDir ()
 command! -nargs=1 Arggrep call Arggrep(<f-args>)
-command! LjyatSearchStringInFiles call LjyatSearchStringInFiles('')
+command! LjyatSearchStrCmd call LjyatSearchStrCmd()
 command! LjyatSearchFunctionCaller call LjyatSearchFunctionCaller()
-command! LjyatSearchFileInFileList call LjyatSearchFileInFileList()
-command! LjyatVSearchStringCurrentBuffer call LjyatVSearchStringCurrentBuffer()
-command! LjyatSearchStringCurrentBuffer call LjyatSearchStringCurrentBuffer()
+command! LjyatSearchFileCmd call LjyatSearchFileCmd()
+command! LjyatSearchStrInFileListCmd call LjyatSearchStrInFileListCmd()
+command! LjyatVSearchStrCurBuf call LjyatVSearchStrCurBuf()
+command! LjyatSearchStrCurBuf call LjyatSearchStrCurBuf()
 command! LjyatAddBookMark call LjyatAddBookMark()
 command! LjyatAddBookMark call LjyatAddBookMark()
 command! LjyatShowBookMarks call LjyatShowBookMarks()
@@ -1069,7 +1114,7 @@ augroup LjyatAutoCmds
     autocmd FileType qf setlocal nowrap nu
     autocmd VimEnter * call AddTagDirs('.')
 
-    autocmd VimLeave * call CleanTmpListFile()
+    autocmd VimLeave * call CleanTmpListFile(s:tmpcscope_files)
     autocmd BufNewFile,BufRead *.aidl setf java
 augroup end
 " => Set OminComplete
