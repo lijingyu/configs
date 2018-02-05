@@ -855,11 +855,11 @@ function! LjyatSearchStringCurrentBuffer()
         return
     endif
 
+    let g:SearchPattern = pattern
     let pattern = "/" . pattern . "/"
     let real_cmd = "lvimgrep " . pattern . " %"
     call s:EchoMoreMsg("Searching cur-str " . pattern . " ...")
 
-    let g:SearchPattern = pattern
     execute "silent! " . real_cmd
     lopen
     redraw!
@@ -879,10 +879,10 @@ function! LjyatVSearchStringCurrentBuffer()
 
     let pattern = input("  Search cur-str: ", pattern)
 
+    let g:SearchPattern = pattern
     let pattern = "/" . pattern . "/"
     let real_cmd = "lvimgrep " . pattern . " %"
 
-    let g:SearchPattern = pattern
     execute "silent! " . real_cmd
     lopen
     redraw!
