@@ -618,7 +618,7 @@ function! Arggrep(pattern_arg)
     execute "silent! MarkClear|silent! Mark " . a:pattern_arg
 
     let pattern = "'" . a:pattern_arg . "'"
-    let real_cmd = 'cat ' . s:tmpcscope_files .' |xargs grep -n -E ' . pattern
+    let real_cmd = 'cat ' . s:tmpcscope_files .' |xargs grep -n -H -E ' . pattern
     call s:EchoMoreMsg("Searching String ". pattern . ' ...")
 
     let match_string = system(real_cmd)
@@ -659,7 +659,7 @@ function! LjyatSearchFunctionCaller()
 
     let pattern = '=\s*\<' . pattern . '\>|\<' . pattern . '\>\s*\('
     let pattern = "'" . pattern . "'"
-    let real_cmd = 'cat '. s:tmpcscope_files . '|xargs grep -n -E ' . pattern
+    let real_cmd = 'cat '. s:tmpcscope_files . '|xargs grep -n -H -E ' . pattern
     call s:EchoMoreMsg("Searching called " . pattern . " ...")
     let match_string = system(real_cmd, "\n")
     if match_string == ""
@@ -688,7 +688,7 @@ function! LjyatSearchStr(pattern, cscope_files)
     endif
 
     let pattern = "'" . a:pattern . "'"
-    let real_cmd = 'cat '. a:cscope_files . '|xargs grep -n -E ' . pattern
+    let real_cmd = 'cat '. a:cscope_files . '|xargs grep -n -H -E ' . pattern
     call s:EchoMoreMsg("Searching String " . pattern . " ...")
     let match_string = system(real_cmd, "\n")
     if match_string == ""
@@ -737,7 +737,7 @@ function! Argfind(pattern)
     endif
 
     let pattern = "'" . a:pattern . "'"
-    let real_cmd = 'grep  -i -E ' . pattern . ' ' . s:tmpcscope_files
+    let real_cmd = 'grep -i -h -E ' . pattern . ' ' . s:tmpcscope_files
     call s:EchoMoreMsg("Searching file " . pattern . " ...")
     let match_files = system(real_cmd, " ")
     if match_files == ""
@@ -797,7 +797,7 @@ function! LjyatSearchFile(pattern, cscope_files)
     endif
 
     let pattern = "'" . a:pattern . "'"
-    let real_cmd = 'grep  -i -E ' . pattern . ' ' . a:cscope_files
+    let real_cmd = 'grep -i -h -E ' . pattern . ' ' . a:cscope_files
     call s:EchoMoreMsg("Searching file " . pattern . " ...")
 
     let match_files = system(real_cmd)
@@ -839,6 +839,7 @@ function! LjyatSearchFileCmd()
     endif
 
     let s:tmpmatchfilelist = LjyatSearchFile(pattern, s:tmpcscope_files)
+    echo s:tmpmatchfilelist
 endfunction
 
 function! LjyatSkipSpecWindow()
