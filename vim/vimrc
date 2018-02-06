@@ -839,7 +839,6 @@ function! LjyatSearchFileCmd()
     endif
 
     let s:tmpmatchfilelist = LjyatSearchFile(pattern, s:tmpcscope_files)
-    echo s:tmpmatchfilelist
 endfunction
 
 function! LjyatSkipSpecWindow()
