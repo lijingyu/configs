@@ -457,7 +457,9 @@ if has("cscope")
 endif
 
 function! CleanTmpListFile(cscope_files)
+    if a:cscope_files != ''
         return delete(a:cscope_files)
+    endif
 endfunction
 
 function! TagDirs()
@@ -619,7 +621,7 @@ function! Arggrep(pattern_arg)
 
     let pattern = "'" . a:pattern_arg . "'"
     let real_cmd = 'cat ' . s:tmpcscope_files .' |xargs grep -n -H -E ' . pattern
-    call s:EchoMoreMsg("Searching String ". pattern . ' ...")
+    call s:EchoMoreMsg("Searching String ". pattern . " ...")
 
     let match_string = system(real_cmd)
     if match_string == ""
@@ -1084,7 +1086,7 @@ endfunction
 command! -nargs=1 Argfind call Argfind(<f-args>)
 command! -nargs=+ -complete=dir A call AddTagDirs('<f-args>')
 command! -nargs=* -complete=dir R call RemoveTagDirs('<f-args>')
-command! LjyatNERDTreeOpenBufDir call LjyatNERDTreeOpenBufDir ()
+command! LjyatNERDTreeOpenBufDir call LjyatNERDTreeOpenBufDir()
 command! -nargs=1 Arggrep call Arggrep(<f-args>)
 command! LjyatSearchStrCmd call LjyatSearchStrCmd()
 command! LjyatSearchFunctionCaller call LjyatSearchFunctionCaller()
