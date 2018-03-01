@@ -11,18 +11,12 @@
 (set-frame-font "-CYRE-Inconsolata-normal-normal-normal-*-16-*-*-*-m-0-iso10646-1" t t)
 
 (require 'xcscope)
-(add-hook 'gtags-mode-hook
-	  '(lambda ()
-	     (define-key gtags-mode-map "\C-t" 'gtags-pop-stack)
-	     (define-key gtags-mode-map "\M-s" 'gtags-find-with-grep)		
-	     (define-key gtags-mode-map "\M-]" 'gtags-find-tag)
-	     (define-key gtags-mode-map "\M-[" 'gtags-find-rtag)
-	     (define-key gtags-mode-map "\M-\\" 'gtags-find-symbol)
-	     (define-key gtags-mode-map "\M-/" 'gtags-find-pattern)
-	     (define-key gtags-mode-map "\M-f" 'gtags-find-file)
-	     ))
+
+
 
 (setq gtags-mode t)
+(autoload 'gtags-mode "gtags" "" t)
+
 (add-hook 'after-init-hook 'gtags-mode)
 
 (setq c-mode-hook
@@ -51,3 +45,13 @@
  ;; If there is more than one, they won't work right.
  )
 
+(add-hook 'gtags-mode-hook
+	  '(lambda ()
+	     (define-key gtags-mode-map "\C-t" 'gtags-pop-stack)
+	     (define-key gtags-mode-map "\M-s" 'gtags-find-with-grep)
+	     (define-key gtags-mode-map "\M-]" 'gtags-find-tag)
+	     (define-key gtags-mode-map "\M-[" 'gtags-find-rtag)
+	     (define-key gtags-mode-map "\M-\\" 'gtags-find-symbol)
+	     (define-key gtags-mode-map "\M-/" 'gtags-find-pattern)
+	     (define-key gtags-mode-map "\M-f" 'gtags-find-file)
+	     ))
