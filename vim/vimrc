@@ -1083,6 +1083,49 @@ function! CreateSpaces(n)
     return s
 endfunction
 
+let g:Flist_title = "__File_List__"
+function! s:Tlist_Window_Init()
+    "setlocal noreadonly
+    setlocal filetype=taglist
+    silent! setlocal nowrap
+
+    mapclear <buffer>
+
+    let str_in = ''
+    while 1
+        redr | echoh MoreMsg | echon str_in | echoh None
+        let c = nr2char(getchar()) 
+        let str_in = str_in . c
+        if len(str_in) > 2
+            let match_files = system('grep -i -h -E ' . str_in . ' ' . s:tmpcscope_files)
+            put =match_files
+        endif 
+    endwhile
+
+
+endfunction
+
+function! Flist_Window_Create()
+    if !filereadable(s:tmpcscope_files)
+        call s:EchoWarningMsg("cscope.files not exist")
+        return
+    endif
+
+    " If the window is open, jump to it
+    let winnum = bufwinnr(g:Flist_title)
+    if winnum != -1
+        " Jump to the existing window
+        if winnr() != winnum
+            exe winnum . 'wincmd w'
+        endif
+        return
+    endif
+
+    exe 'silent! keepalt botright 10 split +buffer ' . g:Flist_title
+    " Initialize the taglist window
+    call s:Tlist_Window_Init()
+endfunction
+
 command! -nargs=1 Argfind call Argfind(<f-args>)
 command! -nargs=+ -complete=dir A call AddTagDirs('<f-args>')
 command! -nargs=* -complete=dir R call RemoveTagDirs('<f-args>')
