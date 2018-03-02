@@ -13,7 +13,9 @@
 (require 'xcscope)
 
 (setq c-default-style "linux"
-      c-basic-offset 4)
+      c-basic-offset 4
+      tab-width 4
+      indent-tabs-mode nil)
 
 (setq gtags-mode t)
 (autoload 'gtags-mode "gtags" "" t)
