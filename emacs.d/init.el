@@ -12,7 +12,8 @@
 
 (require 'xcscope)
 
-
+(setq c-default-style "linux"
+      c-basic-offset 4)
 
 (setq gtags-mode t)
 (autoload 'gtags-mode "gtags" "" t)
