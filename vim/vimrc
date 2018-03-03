@@ -1167,9 +1167,8 @@ function! s:Prompt_Search(pattern, cscope_files)
     let s:prompt_match_len = len(split(match_files, '\n'))
     silent! call matchdelete(s:PromptGroupID)
     let s:PromptGroupID = matchadd('PromptGroup', a:pattern . '\c')
-    call append(0, '===Match file is ' . s:prompt_match_len . '===')
     normal! gg
-    put =match_files
+    0put =match_files
 endfunction
 
 function! s:Prompt_Window_Init()
