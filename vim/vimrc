@@ -1095,11 +1095,9 @@ function! FlistClose()
         " Jump to the existing window
         if winnr() != winnum
             exe winnum . 'wincmd w'
-            close
-        else
-            close
         endif
-        return
+        close
+        silent! bdelete . bufnr(g:Flist_title)
     endif
     let s:keyloop = 0
 endfunction
@@ -1115,9 +1113,9 @@ function! Flist_Spkey(key)
         let s:str_in = ''
         redr | echoh MoreMsg | echon s:str_in | echoh None
     elseif a:key == 16 "UP
-        call cursor(line('.') - 1, 1)
+        -1
     elseif a:key == 14 "Down
-        call cursor(line('.') + 1, 1)
+        +1
     endif
 endfunction
 
@@ -1125,6 +1123,10 @@ function! s:Tlist_Window_Init()
     setlocal noreadonly
     setlocal filetype=taglist
     silent! setlocal nowrap
+    silent! setlocal nobuflisted
+    silent! setlocal number
+    silent! setlocal noma cul
+    silent! setlocal buftype=nofile
 
     mapclear <buffer>
 
@@ -1133,7 +1135,6 @@ function! s:Tlist_Window_Init()
     while s:keyloop
         redr | echoh MoreMsg | echon s:str_in | echoh None
         let nr = getchar()
-        echo "key=".nr
         if (nr >= 0x20) "normal char
             let c = nr2char(nr) 
             let s:str_in = s:str_in . c
@@ -1144,7 +1145,6 @@ function! s:Tlist_Window_Init()
                 put =match_files
 
                 keepjumps normal gg
-                setlocal noma cul
             endif 
         else
             call Flist_Spkey(nr)
