@@ -109,6 +109,11 @@ if !exists("s:ignore_match_tag")
     let s:ignore_match_tag = "EXPORT_SYMBOL"
 endif
 
+if exists("s:PromptGroupID")
+    silent! call matchdelete(s:PromptGroupID)
+else
+    let s:PromptGroupID = -1
+endif
 if exists("s:PreviewTagID")
     silent! call matchdelete(s:PreviewTagID)
 else
@@ -216,6 +221,7 @@ vnoremap <M-=> :<C-U> call AlignPattern()<CR>
 
 "============= show preview tag config ===========
 hi PreviewTagGroup ctermbg=30 ctermfg=11 guifg=Black guibg=Yellow gui=NONE
+hi PromptGroup ctermbg=30 ctermfg=11 guifg=Black guibg=Yellow gui=NONE
 
 function! s:EchoMoreMsg(msg)
     redraw
@@ -1100,6 +1106,7 @@ function! FlistClose()
         silent! bdelete . bufnr(g:Flist_title)
     endif
     let s:keyloop = 0
+    silent! call matchdelete(s:PromptGroupID)
 endfunction
 
 function! Flist_Spkey(key)
@@ -1142,6 +1149,9 @@ function! s:Tlist_Window_Init()
                 setlocal ma
                 sil! exe '%d _'
                 let match_files = system('grep -i -h -E ' . s:str_in . ' ' . s:tmpcscope_files)
+                silent! call matchdelete(s:PromptGroupID)
+                let s:PromptGroupID = matchadd('PromptGroup', s:str_in)
+                call append(0, '===Match file is ' . len(match_files) . '===')
                 put =match_files
 
                 keepjumps normal gg
