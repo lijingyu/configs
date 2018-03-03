@@ -1153,9 +1153,9 @@ function! s:CtrlKeyHandler(key)
         normal j
     elseif a:key == "\<Up>" || a:key == 16
         normal k
-    elseif a:key == "\<PageDown>" || a:key == 6
+    elseif a:key == "\<PageDown>" || a:key == 6 || a:key == 4
         normal 10j
-    elseif a:key == "\<PageUp>" || a:key == 2
+    elseif a:key == "\<PageUp>" || a:key == 2 || a:key == 21
         normal 10k
     endif
 endfunction
