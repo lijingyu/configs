@@ -1130,10 +1130,12 @@ function! PromptJumpTag(line)
     else
         exe "edit " . filename
     endif
-    let scanop = &wrapscan
-    setlocal wrapscan
+    let scan_op = &wrapscan
+    let magic_op = &magic
+    setlocal wrapscan nomagic
     exe cmd
-    let &wrapscan = scanop
+    let &wrapscan = scan_op
+    let &magic = magic_op
 endfunction
 
 function! PromptJumpFile(file)
@@ -1202,7 +1204,7 @@ function! s:Prompt_SearchTag(tag)
     let showtags = ""
 
     for tagitem in  match_tags
-        let showtags = showtags . tagitem["name"] . " " . tagitem["filename"] . " " . tagitem["kind"] . " " .tagitem["kind"] . " cmd:" . tagitem["cmd"] . "\n" 
+        let showtags = showtags . tagitem["name"] . "    " . tagitem["filename"] . " " . tagitem["kind"] . " " .tagitem["kind"] . " cmd:" . tagitem["cmd"] . "\n" 
     endfor
 
     silent! call matchdelete(s:PromptGroupID)
