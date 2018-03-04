@@ -162,7 +162,7 @@ nnoremap <M-t> :cs f t
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <M-2> <C-w>c
 nnoremap <M-3> <C-w>v
-nnoremap <M-/> :call LjyatSearchTags()<CR>
+nnoremap <M-/> :call Prompt_Window_Create("tag")<CR>
 "=> switch windows end
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "=> normal set
@@ -203,7 +203,7 @@ nnoremap <Space>q <C-q>
 nnoremap <Space>c :MarkClear<CR>
 nnoremap <Space>k 3<C-y>
 nnoremap <Space>j 3<C-e>
-nnoremap <Space>/ :call LjyatSearchTags()<CR>
+nnoremap <Space>/ :call Prompt_Window_Create("tag")<CR>
 nnoremap <Space>3 <C-w>v
 nnoremap <Space>2 <C-w>c
 nnoremap <Space>t :cs f t
@@ -1093,8 +1093,7 @@ let g:Prompt_Title = "__File_List__"
 let s:str_in = ''
 let s:prompt_prefix_min = 3
 let s:prompt_height= 15
-let s:keyloop = 0
-let s:curline = 1
+let s:prompt_keyloop = 0
 let s:prompt_match_len = 0
 
 function! PromptClose()
@@ -1108,14 +1107,33 @@ function! PromptClose()
         close
         "silent! bdelete . bufnr(g:Prompt_Title)
     endif
-    let s:keyloop = 0
+    let s:prompt_keyloop = 0
     let s:prompt_match_len = 0
     silent! call matchdelete(s:PromptGroupID)
     call LjyatSkipSpecWindow()
     redraw!
 endfunction
 
-function! PromptJump(file)
+function! PromptJumpTag(line)
+    if a:line == ""
+        return
+    endif
+
+    call LjyatSkipSpecWindow()
+    if bufname('%') == g:Prompt_Title
+        exe "wincmd p"
+    endif
+    let filename = split(a:line, ' ')[1]
+    let cmd = split(a:line, 'cmd:')[1]
+    if buflisted(filename)
+        exe "b ". filename
+    else
+        exe "edit " . filename
+    endif
+    call search(cmd, "ew")
+endfunction
+
+function! PromptJumpFile(file)
     if a:file == ""
         return
     endif
@@ -1131,12 +1149,16 @@ function! PromptJump(file)
     endif
 endfunction
 
-function! s:CtrlKeyHandler(key)
+function! s:CtrlKeyHandler(key, type)
     if a:key == "\<Bs>"
         if len(s:str_in) > 0
             let s:str_in = s:str_in[:-2]
             if len(s:str_in) >= s:prompt_prefix_min
-                call s:Prompt_Search(s:str_in, s:tmpcscope_files)
+                if a:type == "file"
+                    call s:Prompt_SearchFile(s:str_in, s:tmpcscope_files)
+                elseif a:type == "tag"
+                    call s:Prompt_SearchTag(s:str_in)
+                endif
             else
                 sil! exe '%d _'
             endif
@@ -1144,7 +1166,11 @@ function! s:CtrlKeyHandler(key)
     elseif a:key == 27 "<Esc>
         call PromptClose()
     elseif a:key == 0x0d "CR
-        call PromptJump(getline('.'))
+        if a:type == "file"
+            call PromptJumpFile(getline('.'))
+        elseif a:type == "tag"
+            call PromptJumpTag(getline('.'))
+        endif
         call PromptClose()
     elseif a:key == 0x17 "CTRL_W
         let s:str_in = ''
@@ -1160,7 +1186,29 @@ function! s:CtrlKeyHandler(key)
     endif
 endfunction
 
-function! s:Prompt_Search(pattern, cscope_files)
+function! s:Prompt_SearchTag(tag)
+    if !filereadable(s:tmpcscope_files)
+        call s:EchoWarningMsg("cscope.files not exist")
+        return
+    endif
+
+    setlocal ma
+    sil! exe '%d _'
+    let match_tags = taglist(a:tag)
+    let s:prompt_match_len = len(match_tags)
+    let showtags = ""
+
+    for tagitem in  match_tags
+        let showtags = showtags . tagitem["name"] . " " . tagitem["filename"] . " " . tagitem["kind"] . " " .tagitem["kind"] . " cmd:" . tagitem["cmd"] . "\n" 
+    endfor
+
+    silent! call matchdelete(s:PromptGroupID)
+    let s:PromptGroupID = matchadd('PromptGroup', a:tag. '\c')
+    normal! gg
+    0put =showtags
+endfunction
+
+function! s:Prompt_SearchFile(pattern, cscope_files)
     setlocal ma
     sil! exe '%d _'
     let match_files = system('grep -i -h -E ' . a:pattern . ' ' . a:cscope_files)
@@ -1171,7 +1219,7 @@ function! s:Prompt_Search(pattern, cscope_files)
     0put =match_files
 endfunction
 
-function! s:Prompt_Window_Init()
+function! s:Prompt_Window_Init(type)
     setlocal noreadonly
     silent! setlocal nowrap
     silent! setlocal nobuflisted
@@ -1181,24 +1229,31 @@ function! s:Prompt_Window_Init()
     mapclear <buffer>
 
     let s:str_in = ''
-    let s:keyloop = 1
+    let s:prompt_keyloop = 1
     sil! exe '%d _'
-    while s:keyloop
+    while s:prompt_keyloop
         redr | echoh MoreMsg | echon '   ['.s:prompt_match_len.'] >>> ' . s:str_in | echoh None
         let nr = getchar()
         if (nr >= 0x20) "normal char
             let c = nr2char(nr) 
             let s:str_in = s:str_in . c
             if len(s:str_in) >= s:prompt_prefix_min
-                call s:Prompt_Search(s:str_in, s:tmpcscope_files)
+                if a:type == "file"
+                    call s:Prompt_SearchFile(s:str_in, s:tmpcscope_files)
+                elseif a:type == "tag"
+                    call s:Prompt_SearchTag(s:str_in)
+                else
+                    call EchoWarningMsg("no support type search")
+                    call PromptClose()
+                endif
             endif 
         else
-            call s:CtrlKeyHandler(nr)
+            call s:CtrlKeyHandler(nr, a:type)
         en
     endwhile
 endfunction
 
-function! Prompt_Window_Create()
+function! Prompt_Window_Create(type)
     if !filereadable(s:tmpcscope_files)
         call s:EchoWarningMsg("cscope.files not exist")
         return
@@ -1216,7 +1271,7 @@ function! Prompt_Window_Create()
 
     exe 'silent! keepalt botright ' . s:prompt_height . ' split +buffer ' . g:Prompt_Title
     " Initialize the taglist window
-    call s:Prompt_Window_Init()
+    call s:Prompt_Window_Init(a:type)
 endfunction
 
 command! -nargs=1 Argfind call Argfind(<f-args>)
@@ -1226,7 +1281,7 @@ command! LjyatNERDTreeOpenBufDir call LjyatNERDTreeOpenBufDir()
 command! -nargs=1 Arggrep call Arggrep(<f-args>)
 command! LjyatSearchStrCmd call LjyatSearchStrCmd()
 command! LjyatSearchFunctionCaller call LjyatSearchFunctionCaller()
-command! LjyatSearchFileCmd call Prompt_Window_Create()
+command! LjyatSearchFileCmd call Prompt_Window_Create("file")
 command! LjyatSearchStrInFileListCmd call LjyatSearchStrInFileListCmd()
 command! LjyatVSearchStrCurBuf call LjyatVSearchStrCurBuf()
 command! LjyatSearchStrCurBuf call LjyatSearchStrCurBuf()
