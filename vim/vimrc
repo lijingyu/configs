@@ -1190,6 +1190,25 @@ function! s:CtrlKeyHandler(key, type)
     endif
 endfunction
 
+function! s:PatternNumInFile(tag, file, ignorecase)
+    if !filereadable(a:file)
+        return 0
+    endif
+    let igcase = ""
+    if a:ignorecase
+        let igcase = " -i "
+    endif
+    return system('grep -h -E '. igcase . a:tag . ' ' . a:file . " |wc -l")
+endfunction
+
+function! s:PatternNumInDictDirs(tag, dirs)
+    let tag_num = 0
+    for dir in a:dirs
+        let tag_num = tag_num + s:PatternNumInFile(a:tag, dir.'/dict', &ignorecase)
+    endfor
+    return tag_num
+endfunction
+
 function! s:Prompt_SearchTag(tag)
     if !filereadable(s:tmpcscope_files)
         call s:EchoWarningMsg("cscope.files not exist")
@@ -1198,6 +1217,13 @@ function! s:Prompt_SearchTag(tag)
 
     setlocal ma
     sil! exe '%d _'
+
+    let s:prompt_match_len = s:PatternNumInDictDirs(a:tag, s:cscope_tag_dir_list)
+    if s:prompt_match_len > g:SearchLimit
+        call s:EchoMoreMsg("match " . s:prompt_match_len . " > " . g:SearchLimit . " items, change pattern please ")
+        return
+    endif
+
     let match_tags = taglist(a:tag)
     let s:prompt_match_len = len(match_tags)
     let showtags = ""
