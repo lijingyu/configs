@@ -1124,13 +1124,14 @@ function! PromptJumpTag(line)
         exe "wincmd p"
     endif
     let filename = split(a:line, ' ')[1]
-    let cmd = split(a:line, 'cmd:')[1]
+    let cmd = split(split(a:line, 'cmd:')[1], '/')[0]
     if buflisted(filename)
         exe "b ". filename
     else
         exe "edit " . filename
     endif
-    call search(cmd, "ew")
+    setlocal nomagic
+    call search(cmd, 'w')
 endfunction
 
 function! PromptJumpFile(file)
