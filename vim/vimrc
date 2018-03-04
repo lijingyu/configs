@@ -1123,7 +1123,7 @@ function! PromptJumpTag(line)
     if bufname('%') == g:Prompt_Title
         exe "wincmd p"
     endif
-    let filename = split(a:line, '   ')[1]
+    let filename = split(a:line, '\s\+')[1]
     let cmd = split(a:line, 'cmd:')[1]
     if buflisted(filename)
         exe "b ". filename
@@ -1203,7 +1203,7 @@ function! s:Prompt_SearchTag(tag)
     let showtags = ""
 
     for tagitem in  match_tags
-        let showtags = showtags . tagitem["name"] . "   " . tagitem["filename"] . "   " .tagitem["kind"] . "    cmd:" . tagitem["cmd"] . "\n"
+        let showtags = showtags . tagitem["name"] . "    " . tagitem["filename"] . " " .tagitem["kind"] . " cmd:" . tagitem["cmd"] . "\n"
     endfor
 
     silent! call matchdelete(s:PromptGroupID)
