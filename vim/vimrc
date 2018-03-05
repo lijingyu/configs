@@ -1083,6 +1083,9 @@ endfunction
 
 function! CreateSpaces(n)
     let s = ''
+    if a:n < 0
+	    return s
+    endif
     for i in range(a:n)
         let s .= ' '
     endfor
@@ -1094,6 +1097,8 @@ let s:str_in = ''
 let s:type = ''
 let s:prompt_prefix_min = 3
 let s:prompt_height= 15
+let s:prompt_tagwidth = 15
+let s:prompt_taglist = []
 let s:prompt_keyloop = 0
 let s:prompt_match_len = 0
 let s:prompt_timer = 0
@@ -1118,7 +1123,7 @@ function! PromptClose()
 endfunction
 
 function! PromptJumpTag(line)
-    if a:line == ""
+    if a:line > s:prompt_match_len
         return
     endif
 
@@ -1126,8 +1131,8 @@ function! PromptJumpTag(line)
     if bufname('%') == g:Prompt_Title
         exe "wincmd p"
     endif
-    let filename = split(a:line, '\s\+')[2]
-    let cmd = split(a:line, 'cmd:')[1]
+    let filename = s:prompt_taglist[a:line - 1]["filename"]
+    let cmd = s:prompt_taglist[a:line - 1]["cmd"]
     if buflisted(filename)
         exe "b ". filename
     else
@@ -1172,7 +1177,7 @@ function! s:CtrlKeyHandler(key, type)
         if a:type == "file"
             call PromptJumpFile(getline('.'))
         elseif a:type == "tag"
-            call PromptJumpTag(getline('.'))
+            call PromptJumpTag(line('.'))
         endif
         call PromptClose()
         return
@@ -1223,19 +1228,26 @@ function! s:Prompt_SearchTag(tag)
         return
     endif
 
-    let match_tags = taglist(a:tag)
+    let s:prompt_taglist = taglist(a:tag)
     let showtags = ""
 
     normal! gg
     let s:prompt_match_len = 0
-    for tagitem in  match_tags
-        let showtags = tagitem["kind"] . "  " . tagitem["name"] . "    " . tagitem["filename"]  . " cmd:" . tagitem["cmd"] . "\n"
-        0put =showtags
+    let idx = 0
+    for tagitem in s:prompt_taglist
+        let tagname = tagitem["name"] . CreateSpaces(s:prompt_tagwidth - len(tagitem["name"]))
+        let showtags = tagitem["kind"] . "  " . tagname . "    " . tagitem["filename"] . "  " . tagitem["cmd"] . "\n"
+        if idx == 0
+            0put =showtags
+        else
+            put =showtags
+        endif
         let s:prompt_match_len = s:prompt_match_len + 1
         if s:prompt_match_len > g:SearchLimit
             sil! exe '%d _'
             return
         endif
+        let idx += 1
     endfor
 
     silent! call matchdelete(s:PromptGroupID)
