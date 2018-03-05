@@ -1216,7 +1216,6 @@ function! s:Prompt_SearchTag(tag)
         return
     endif
 
-    setlocal ma
     sil! exe '%d _'
 
     let s:prompt_match_len = s:PatternNumInDictDirs(a:tag, s:cscope_tag_dir_list)
@@ -1244,7 +1243,6 @@ function! s:Prompt_SearchTag(tag)
 endfunction
 
 function! s:Prompt_SearchFile(pattern, cscope_files)
-    setlocal ma
     sil! exe '%d _'
     let match_files = system('grep -i -h -E ' . a:pattern . ' ' . a:cscope_files)
     let s:prompt_match_len = len(split(match_files, '\n'))
@@ -1255,6 +1253,7 @@ function! s:Prompt_SearchFile(pattern, cscope_files)
 endfunction
 
 function! s:PromptUpdateMsg()
+    echon ""
     if s:prompt_match_len > g:SearchLimit
         redr | echoh MoreMsg | echon '   [>' . g:SearchLimit.'] >>> ' . s:str_in | echoh None
     else
@@ -1280,7 +1279,7 @@ function! s:Prompt_Window_Init(type)
     silent! setlocal nowrap
     silent! setlocal nobuflisted
     silent! setlocal number
-    silent! setlocal noma cul
+    silent! setlocal ma cul
     silent! setlocal buftype=nofile
     mapclear <buffer>
 
