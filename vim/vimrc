@@ -1123,7 +1123,7 @@ function! PromptJumpTag(line)
     if bufname('%') == g:Prompt_Title
         exe "wincmd p"
     endif
-    let filename = split(a:line, '\s\+')[1]
+    let filename = split(a:line, '\s\+')[2]
     let cmd = split(a:line, 'cmd:')[1]
     if buflisted(filename)
         exe "b ". filename
@@ -1220,22 +1220,26 @@ function! s:Prompt_SearchTag(tag)
 
     let s:prompt_match_len = s:PatternNumInDictDirs(a:tag, s:cscope_tag_dir_list)
     if s:prompt_match_len > g:SearchLimit
-        call s:EchoMoreMsg("match " . s:prompt_match_len . " > " . g:SearchLimit . " items, change pattern please ")
         return
     endif
 
     let match_tags = taglist(a:tag)
-    let s:prompt_match_len = len(match_tags)
     let showtags = ""
 
+    normal! gg
+    let s:prompt_match_len = 0
     for tagitem in  match_tags
-        let showtags = showtags . tagitem["name"] . "    " . tagitem["filename"] . " " .tagitem["kind"] . " cmd:" . tagitem["cmd"] . "\n"
+        let showtags = tagitem["kind"] . "  " . tagitem["name"] . "    " . tagitem["filename"]  . " cmd:" . tagitem["cmd"] . "\n"
+        0put =showtags
+        let s:prompt_match_len = s:prompt_match_len + 1
+        if s:prompt_match_len > g:SearchLimit
+            sil! exe '%d _'
+            return
+        endif
     endfor
 
     silent! call matchdelete(s:PromptGroupID)
     let s:PromptGroupID = matchadd('PromptGroup', a:tag. '\c')
-    normal! gg
-    0put =showtags
 endfunction
 
 function! s:Prompt_SearchFile(pattern, cscope_files)
@@ -1261,8 +1265,8 @@ function! s:Prompt_Window_Init(type)
     let s:str_in = ''
     let s:prompt_keyloop = 1
     sil! exe '%d _'
+    redr | echoh MoreMsg | echon '   >>> ' . s:str_in | echoh None
     while s:prompt_keyloop
-        redr | echoh MoreMsg | echon '   ['.s:prompt_match_len.'] >>> ' . s:str_in | echoh None
         let nr = getchar()
         if (nr >= 0x20) "normal char
             let c = nr2char(nr) 
@@ -1280,6 +1284,11 @@ function! s:Prompt_Window_Init(type)
         else
             call s:CtrlKeyHandler(nr, a:type)
         en
+        if s:prompt_match_len > g:SearchLimit
+            redr | echoh MoreMsg | echon '   [>' . g:SearchLimit.'] >>> ' . s:str_in | echoh None
+        else
+            redr | echoh MoreMsg | echon '   ['.s:prompt_match_len.'] >>> ' . s:str_in | echoh None
+        endif
     endwhile
 endfunction
 
