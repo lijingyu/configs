@@ -1302,7 +1302,7 @@ function! s:Prompt_Window_Init(type)
     redr | echoh MoreMsg | echon '   >>> ' . s:str_in | echoh None
     while s:prompt_keyloop
         let nr = getchar()
-        call timer_stop(s:prompt_timer)
+        call timer_stopall()
         if (nr >= 0x20) "normal char
             let c = nr2char(nr) 
             let s:str_in = s:str_in . c
