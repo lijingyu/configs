@@ -366,7 +366,7 @@ function! LjyatShowTagInPreview(word)
         if item['cmd'] =~ s:ignore_match_tag
             let use_cscope = 1
         endif
-	endfor
+    endfor
 
     let pw_exist = 0
     let win_cur = winnr()
@@ -1084,7 +1084,7 @@ endfunction
 function! CreateSpaces(n)
     let s = ''
     if a:n < 0
-	    return s
+        return s
     endif
     for i in range(a:n)
         let s .= ' '
