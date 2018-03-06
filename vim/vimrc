@@ -1282,9 +1282,9 @@ function! s:Prompt_SearchFile(pattern, cscope_files)
     let pattern = a:pattern
     if a:pattern =~ "^f: "
         let pattern = a:pattern[3:]
-        let filter_cmd = 'substitute(v:val, ".*/", "","") =~ pattern'
+        let filter_cmd = 'substitute(v:val, ".*/", "","") =~? pattern'
     else
-        let filter_cmd = 'v:val =~ a:pattern'
+        let filter_cmd = 'v:val =~? a:pattern'
     endif
 
     let match_list = filter(linelist, filter_cmd)
