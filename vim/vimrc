@@ -221,7 +221,7 @@ vnoremap <M-=> :<C-U> call AlignPattern()<CR>
 
 "============= show preview tag config ===========
 hi PreviewTagGroup ctermbg=30 ctermfg=11 guifg=Black guibg=Yellow gui=NONE
-hi PromptGroup ctermbg=30 ctermfg=11 guifg=Black guibg=Yellow gui=NONE
+hi PromptGroup guibg=#8b2500 guifg=NONE
 
 function! s:EchoMoreMsg(msg)
     redraw
@@ -1236,7 +1236,7 @@ function! s:Prompt_SearchTag(tag)
     let idx = 0
     for tagitem in s:prompt_taglist
         let tagname = tagitem["name"] . CreateSpaces(s:prompt_tagwidth - len(tagitem["name"]))
-        let showtags = tagitem["kind"] . "  " . tagname . "    " . tagitem["filename"] . "  " . tagitem["cmd"] . "\n"
+        let showtags = tagitem["kind"] . "  " . tagname . "    " . tagitem["filename"] . "  " . substitute(substitute(tagitem["cmd"], "/^","",""),"$/","","") . "\n"
         if idx == 0
             0put =showtags
         else
@@ -1249,6 +1249,7 @@ function! s:Prompt_SearchTag(tag)
         endif
         let idx += 1
     endfor
+    normal! gg
 
     silent! call matchdelete(s:PromptGroupID)
     let s:PromptGroupID = matchadd('PromptGroup', a:tag. '\c')
@@ -1262,6 +1263,7 @@ function! s:Prompt_SearchFile(pattern, cscope_files)
     let s:PromptGroupID = matchadd('PromptGroup', a:pattern . '\c')
     normal! gg
     0put =match_files
+    normal! gg
 endfunction
 
 function! s:PromptUpdateMsg()
