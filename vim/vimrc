@@ -1203,7 +1203,11 @@ function! s:CtrlKeyHandler(key, type)
         call PromptClose()
         return
     elseif a:key == 0x17 "CTRL_W
-        let s:str_in = ''
+        if a:type == "file" && len(s:str_in) > 3
+            let s:str_in = "f: "
+        else
+            let s:str_in = ''
+        endif
         call s:PromptUpdateMsg(a:type)
     elseif a:key == "\<Down>" || a:key == 14
         normal j
