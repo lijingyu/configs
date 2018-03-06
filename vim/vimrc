@@ -1104,6 +1104,19 @@ let s:prompt_match_len = 0
 let s:prompt_timer = 0
 let s:prompt_keywait = 300
 
+function! PromptGetPrefixMin(str_in, type)
+    let s:prompt_prefix_min = 3
+    if a:type == "tag"
+        return (len(a:str_in) >= s:prompt_prefix_min)?1:0
+    elseif a:type == "file"
+        if a:str_in =~ "^f: "
+            return (len(a:str_in) >= s:prompt_prefix_min + 3)?1:0
+        else
+            return (len(a:str_in) >= s:prompt_prefix_min)?1:0
+        endif
+    endif
+endfunction
+
 function! PromptClose()
     let s:str_in = ''
     let winnum = bufwinnr(g:Prompt_Title)
@@ -1161,11 +1174,19 @@ function! PromptJumpFile(file)
     endif
 endfunction
 
+function! s:PromptDelLastChar(str_in, type)
+    if a:type == "file" && a:str_in == "f: "
+        return ""
+    endif
+
+    return a:str_in[:-2]
+endfunction
+
 function! s:CtrlKeyHandler(key, type)
     if a:key == "\<Bs>"
         if len(s:str_in) > 0
-            let s:str_in = s:str_in[:-2]
-            if len(s:str_in) >= s:prompt_prefix_min
+            let s:str_in = s:PromptDelLastChar(s:str_in, a:type)
+            if PromptGetPrefixMin(s:str_in, a:type)
                 call s:TimerStop(s:prompt_timer)
                 let s:prompt_timer = timer_start(s:prompt_keywait, "s:PromptTimerHandler")
             endif
@@ -1183,7 +1204,7 @@ function! s:CtrlKeyHandler(key, type)
         return
     elseif a:key == 0x17 "CTRL_W
         let s:str_in = ''
-        call s:PromptUpdateMsg()
+        call s:PromptUpdateMsg(a:type)
     elseif a:key == "\<Down>" || a:key == 14
         normal j
     elseif a:key == "\<Up>" || a:key == 16
@@ -1193,7 +1214,7 @@ function! s:CtrlKeyHandler(key, type)
     elseif a:key == "\<PageUp>" || a:key == 2 || a:key == 21
         normal 10k
     endif
-    call s:PromptUpdateMsg()
+    call s:PromptUpdateMsg(a:type)
 endfunction
 
 function! s:PatternNumInFile(tag, file, ignorecase)
@@ -1236,7 +1257,7 @@ function! s:Prompt_SearchTag(tag)
     let idx = 0
     for tagitem in s:prompt_taglist
         let tagname = tagitem["name"] . CreateSpaces(s:prompt_tagwidth - len(tagitem["name"]))
-        let showtags = tagitem["kind"] . "  " . tagname . "    " . tagitem["filename"] . "  " . substitute(substitute(tagitem["cmd"], "/^","",""),"$/","","") . "\n"
+        let showtags = tagitem["kind"] . "  " . tagname . "    " . tagitem["filename"] . "  " . substitute(substitute(tagitem["cmd"], "/^","",""),"$/","","")
         if idx == 0
             0put =showtags
         else
@@ -1257,21 +1278,30 @@ endfunction
 
 function! s:Prompt_SearchFile(pattern, cscope_files)
     sil! exe '%d _'
-    let match_files = system('grep -i -h -E ' . a:pattern . ' ' . a:cscope_files)
-    let s:prompt_match_len = len(split(match_files, '\n'))
+    let linelist = readfile(a:cscope_files)
+    let pattern = a:pattern
+    if a:pattern =~ "^f: "
+        let pattern = a:pattern[3:]
+        let filter_cmd = 'substitute(v:val, ".*/", "","") =~ pattern'
+    else
+        let filter_cmd = 'v:val =~ a:pattern'
+    endif
+
+    let match_list = filter(linelist, filter_cmd)
+    let s:prompt_match_len = len(match_list)
     silent! call matchdelete(s:PromptGroupID)
-    let s:PromptGroupID = matchadd('PromptGroup', a:pattern . '\c')
+    let s:PromptGroupID = matchadd('PromptGroup', pattern . '\c')
     normal! gg
-    0put =match_files
+    0put =match_list
     normal! gg
 endfunction
 
-function! s:PromptUpdateMsg()
+function! s:PromptUpdateMsg(type)
     echon ""
     if s:prompt_match_len > g:SearchLimit
-        redr | echoh MoreMsg | echon '   [>' . g:SearchLimit.'] >>> ' . s:str_in | echoh None
+        redr | echoh MoreMsg | echon a:type .'   [>' . g:SearchLimit.'] >>> ' . s:str_in | echoh None
     else
-        redr | echoh MoreMsg | echon '   ['.s:prompt_match_len.'] >>> ' . s:str_in | echoh None
+        redr | echoh MoreMsg | echon a:type . '   ['.s:prompt_match_len.'] >>> ' . s:str_in | echoh None
     endif
 endfunction
 
@@ -1285,7 +1315,7 @@ function! s:PromptTimerHandler(timer)
         call PromptClose()
         return
     endif
-    call s:PromptUpdateMsg()
+    call s:PromptUpdateMsg(s:type)
 endfunction
 
 function! s:TimerStop(timerid)
@@ -1306,20 +1336,23 @@ function! s:Prompt_Window_Init(type)
     mapclear <buffer>
 
     let s:str_in = ''
+    if a:type == "file"
+        let s:str_in = 'f: '
+    endif
     let s:type = a:type
     let s:prompt_keyloop = 1
     sil! exe '%d _'
-    redr | echoh MoreMsg | echon '   >>> ' . s:str_in | echoh None
+    call s:PromptUpdateMsg(a:type)
     while s:prompt_keyloop
         let nr = getchar()
         call s:TimerStop(s:prompt_timer)
         if (nr >= 0x20) "normal char
-            let c = nr2char(nr) 
+            let c = nr2char(nr)
             let s:str_in = s:str_in . c
-            call s:PromptUpdateMsg()
-            if len(s:str_in) >= s:prompt_prefix_min
+            call s:PromptUpdateMsg(a:type)
+            if PromptGetPrefixMin(s:str_in, a:type)
                 let s:prompt_timer = timer_start(s:prompt_keywait, "s:PromptTimerHandler")
-            endif 
+            endif
         else
             call s:CtrlKeyHandler(nr, a:type)
         en
