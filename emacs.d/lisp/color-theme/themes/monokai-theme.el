@@ -33,10 +33,10 @@ Based on the TextMate theme Monokai"
 
      ;;; Standard font lock faces
      (default ((t (nil))))
-     (font-lock-comment-face ((t (:foreground "#75715E")))) ; dark aluminum
-     (font-lock-comment-delimiter-face ((t (:foreground "#75715E")))) ; dark aluminum
-     (font-lock-doc-face ((t (:foreground "#75715E")))) ; plum
-     (font-lock-doc-string-face ((t (:foreground "#75715E")))) ; plum
+     (font-lock-comment-face ((t (:foreground "#00BFFF")))) ; dark aluminum
+     (font-lock-comment-delimiter-face ((t (:foreground "#00BFFF")))) ; dark aluminum
+     (font-lock-doc-face ((t (:foreground "#00BFFF")))) ; plum
+     (font-lock-doc-string-face ((t (:foreground "#00BFFF")))) ; plum
      (font-lock-string-face ((t (:foreground "#E6DB74")))) ; plum
      (font-lock-keyword-face ((t (:foreground "#F92672")))) ; light sky blue
      (font-lock-builtin-face ((t (:foreground "#855c1b")))) ; med-dark chocolate
@@ -49,7 +49,7 @@ Based on the TextMate theme Monokai"
 
      ;; Search
      (isearch ((t (:foreground "#080808" :background "#edd400"))))
-     (isearch-lazy-highlight-face ((t (:foreground "#080808" :background "#75715E"))))
+     (isearch-lazy-highlight-face ((t (:foreground "#080808" :background "#00BFFF"))))
 
      ;; Emacs Interface
      (fringe ((t (:background "#0f0f0f"))))
