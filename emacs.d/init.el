@@ -4,8 +4,8 @@
 (add-to-list 'load-path "~/.emacs.d/lisp")
 (require 'color-theme)
 (color-theme-initialize)
-(load-file "~/.emacs.d/lisp/color-theme/themes/monokai-theme.el")
-(color-theme-monokai)
+;(load-file "~/.emacs.d/lisp/color-theme/themes/monokai-theme.el")
+;(color-theme-monokai)
 
 (show-paren-mode t)
 (set-frame-font "-CYRE-Inconsolata-normal-normal-normal-*-16-*-*-*-m-0-iso10646-1" t t)
@@ -16,11 +16,6 @@
       c-basic-offset 4
       tab-width 4
       indent-tabs-mode nil)
-
-(setq gtags-mode t)
-(autoload 'gtags-mode "gtags" "" t)
-
-(add-hook 'after-init-hook 'gtags-mode)
 
 (setq c-mode-hook
       '(lambda ()
