@@ -1168,10 +1168,13 @@ function! PromptJumpFile(file)
         exe "wincmd p"
     endif
     if buflisted(a:file)
-        exe "b ". a:file
-    else
-        exe "edit " . a:file
+        try
+            exe "b ". a:file
+            return
+        catch /^Vim\%((\a\+)\)\=:E/
+        endtry
     endif
+    exe "edit " . a:file
 endfunction
 
 function! s:PromptDelLastChar(str_in, type)
