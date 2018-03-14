@@ -52,7 +52,7 @@ def Filter(FileSource, FileObj, TypesPattern, IgDir):
     
     delete_count = 0
     while(True):
-        line = SourFd.readline()
+        savline = line = SourFd.readline()
         if line == '':
             break
 
@@ -60,12 +60,12 @@ def Filter(FileSource, FileObj, TypesPattern, IgDir):
             if IgDir:
                line = os.path.basename(line)
             if re.search(line[:(line.rindex('.'))] + '\.', ObjFiles):
-                NewFd.write(line)
+                NewFd.write(savline)
             else:
                 delete_count += 1
                 continue
         else:
-            NewFd.write(line)
+            NewFd.write(savline)
 
     SourFd.close()
     os.remove(oldFilSource)
