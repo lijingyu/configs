@@ -7,10 +7,11 @@ import re
 SourceFileList = "cscope.files"
 ObjFileList = "obj.files"
 ObjType = "c|cpp|s|S"
+IgnDir = False
 
 def parseParam(argv):
-    global SourceFileList, ObjFileList, ObjType 
-    opts, args = getopt.getopt(sys.argv[1:], "s:o:t:")
+    global SourceFileList, ObjFileList, ObjType, IgnDir
+    opts, args = getopt.getopt(sys.argv[1:], "s:o:t:i")
     for op, value in opts:
         if op == "-s":
             SourceFileList = value
@@ -18,6 +19,8 @@ def parseParam(argv):
             ObjFileList = value
         elif op == "-t":
             ObjType = value
+        elif op == "-i":
+            IgnDir = True
         else:
             usage()
             sys.exit()
@@ -29,10 +32,11 @@ def usage():
             filter compiled files, only for ObjType in SourceFileList, others will ignore\n\
             -s SourceFileList\n\
             -o ObjFileList\n\
-            -f ObjType (.class,.o)\n\
+            -t ObjType (.class,.o)\n\
+            -i Match filename, file path is not necessary\n\
             ")
 
-def Filter(FileSource, FileObj, TypesPattern):
+def Filter(FileSource, FileObj, TypesPattern, IgDir):
     if os.path.exists(FileSource) and os.path.exists(FileObj):
         oldFilSource = FileSource + '_'
         os.rename(FileSource, oldFilSource)
@@ -53,6 +57,8 @@ def Filter(FileSource, FileObj, TypesPattern):
             break
 
         if re.search("\.("+TypesPattern +")", line):
+            if IgDir:
+               line = os.path.basename(line)
             if re.search(line[:(line.rindex('.'))] + '\.', ObjFiles):
                 NewFd.write(line)
             else:
@@ -72,5 +78,5 @@ if __name__ == "__main__":
             "ObjFileList:" + ObjFileList + "\n"\
             "Obj Type:" + ObjType + "\n")
 
-    Filter(SourceFileList, ObjFileList, ObjType) 
+    Filter(SourceFileList, ObjFileList, ObjType, IgnDir) 
 
