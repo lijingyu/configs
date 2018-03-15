@@ -1186,7 +1186,7 @@ function! s:PromptDelLastChar(str_in, type)
 endfunction
 
 function! s:CtrlKeyHandler(key, type)
-    if a:key == "\<Bs>"
+    if a:key == "\<Bs>" || a:key == "\<C-Bs>" || a:key == "\<M-Bs>" || a:key == "\<S-Bs>"
         if len(s:str_in) > 0
             let s:str_in = s:PromptDelLastChar(s:str_in, a:type)
             if PromptGetPrefixMin(s:str_in, a:type)
