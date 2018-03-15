@@ -11,19 +11,23 @@ IgnDir = False
 
 def parseParam(argv):
     global SourceFileList, ObjFileList, ObjType, IgnDir
-    opts, args = getopt.getopt(sys.argv[1:], "s:o:t:i")
-    for op, value in opts:
-        if op == "-s":
-            SourceFileList = value
-        elif op == "-o":
-            ObjFileList = value
-        elif op == "-t":
-            ObjType = value
-        elif op == "-i":
-            IgnDir = True
-        else:
-            usage()
-            sys.exit()
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "s:o:t:ih")
+        for op, value in opts:
+            if op == "-s":
+                SourceFileList = value
+            elif op == "-o":
+                ObjFileList = value
+            elif op == "-t":
+                ObjType = value
+            elif op == "-i":
+                IgnDir = True
+            elif op == "-h":
+                usage()
+                sys.exit(0)
+    except Exception,e:
+        usage()
+        sys.exit(0)
 
 
 def usage():
