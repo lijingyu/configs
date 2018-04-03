@@ -58,6 +58,7 @@ set expandtab tabstop=4 shiftwidth=4
 set nohlsearch
 set smarttab
 set linebreak
+set number
 set nobackup
 set backspace=indent,eol,start
 set nowrapscan
@@ -870,7 +871,7 @@ function! LjyatGotoWin(name)
         endif
         return 0
     else
-        return -1;
+        return -1
     endif
 endfunction
 
@@ -1397,18 +1398,11 @@ function! Prompt_Window_Create(type)
         return
     endif
 
-    " If the window is open, jump to it
-    let winnum = bufwinnr(g:Prompt_Title)
-    if winnum != -1
-        " Jump to the existing window
-        if winnr() != winnum
-            exe winnum . 'wincmd w'
-        endif
+    if LjyatGotoWin(g:Prompt_Title) == 0
         return
     endif
 
     exe 'silent! keepalt botright ' . s:prompt_height . ' split +buffer ' . g:Prompt_Title
-    " Initialize the taglist window
     call s:Prompt_Window_Init(a:type)
 endfunction
 
