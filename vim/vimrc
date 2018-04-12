@@ -253,7 +253,7 @@ function! Trace(prefix)
 endfunction
 
 function! ShowCurrentMode(timer)
-    if s:kernel_mode == "FALSE"
+    if s:kernel_mode == "TRUE"
         call s:EchoWarningMsg("Kernel Code Mode")
     else
         call s:EchoWarningMsg( "Normal Code Mode")
