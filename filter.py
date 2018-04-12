@@ -4,22 +4,22 @@ import sys
 import getopt
 import re
 
-SourceFileList = "cscope.files"
-ObjFileList = "obj.files"
-ObjType = "c|cpp|s|S"
+File_SourceList = "cscope.files"
+File_ObjList = "obj.files"
+FilterSourceType = "c|cpp|s|S"
 IgnDir = False
 
 def parseParam(argv):
-    global SourceFileList, ObjFileList, ObjType, IgnDir
+    global File_SourceList, File_ObjList, FilterSourceType, IgnDir
     try:
         opts, args = getopt.getopt(sys.argv[1:], "s:o:t:ih")
         for op, value in opts:
             if op == "-s":
-                SourceFileList = value
+                File_SourceList = value
             elif op == "-o":
-                ObjFileList = value
+                File_ObjList = value
             elif op == "-t":
-                ObjType = value
+                FilterSourceType = value
             elif op == "-i":
                 IgnDir = True
             elif op == "-h":
@@ -33,10 +33,10 @@ def parseParam(argv):
 def usage():
     print("filter.py V1.0:\n\
             usage:\n\
-            filter compiled files, only for ObjType in SourceFileList, others will ignore\n\
-            -s SourceFileList\n\
-            -o ObjFileList\n\
-            -t ObjType (.class,.o)\n\
+            filter compiled files, only for FilterSourceType in File_SourceList, others will ignore\n\
+            -s File_SourceList\n\
+            -o File_ObjList\n\
+            -t FilterSourceType \n\
             -i Match filename, file path is not necessary\n\
             ")
 
@@ -48,7 +48,7 @@ def Filter(FileSource, FileObj, TypesPattern, IgDir):
         ObjFd = open(FileObj, 'r')
         NewFd = open(FileSource, 'w')
     else:
-        print('SourceFileList or Objs is not exists')
+        print('File_SourceList or Objs is not exists')
         return
     
     ObjFiles = ObjFd.read()
@@ -60,6 +60,7 @@ def Filter(FileSource, FileObj, TypesPattern, IgDir):
         if line == '':
             break
 
+        # match type
         if re.search("\.("+TypesPattern +")", line):
             if IgDir:
                line = os.path.basename(line)
@@ -78,9 +79,9 @@ def Filter(FileSource, FileObj, TypesPattern, IgDir):
 
 if __name__ == "__main__":
     parseParam(sys.argv[1:])
-    print("SourceFileList:" + SourceFileList + "\n"\
-            "ObjFileList:" + ObjFileList + "\n"\
-            "Obj Type:" + ObjType + "\n")
+    print("File_SourceList:" + File_SourceList + "\n"\
+            "File_ObjList:" + File_ObjList + "\n"\
+            "Filter Source Type:" + FilterSourceType + "\n")
 
-    Filter(SourceFileList, ObjFileList, ObjType, IgnDir) 
+    Filter(File_SourceList, File_ObjList, FilterSourceType, IgnDir)
 

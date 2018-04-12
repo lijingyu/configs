@@ -238,7 +238,8 @@ function create_objfiles()
         if [ -d $arg ];then
             cd $arg
             work_dir=`pwd`
-            find .  -type f  -name "*.o"| sed -e '/ /d' -e 's:^\./::'  >> $cur_dir/obj.files
+            find . -type f -regextype posix-egrep \
+                -iregex '.*\.(o|obj)'  |sed  -e '/ /d' -e 's:^\./::' >> $cur_dir/obj.files
             cd $cur_dir
         else
             echo_msg "$@ is not directory!!"
