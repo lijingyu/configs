@@ -1217,6 +1217,10 @@ function! s:CtrlKeyHandler(key, type)
         endif
     elseif a:key == 18 "Ctrl-R register
         let s:prompt_register_mark = 1
+    elseif a:key == "\<MiddleMouse>"
+        let s:str_in = s:str_in . getreg('*')
+        call s:PromptUpdateMsg(a:type)
+        call s:PromptTimerHandler(0)
     elseif a:key == 23 "Ctrl-R CTRL_W current word
         if LjyatGotoNormalWin() != 0
             return
