@@ -1223,6 +1223,7 @@ function! s:CtrlKeyHandler(key, type)
     elseif a:key == "\<MiddleRelease>"
         call PromptSearchTrigger(s:str_in, a:type)
     elseif a:key == 23 "Ctrl-R CTRL_W current word
+        let s:prompt_register_mark = 0
         if LjyatGotoNormalWin() != 0
             return
         endif

@@ -7,9 +7,9 @@ KERNEL_TAGS=0
 SKIP_CREATE_CSCOPE_FILES=0
 ONLY_CREATE_CSCOPE_FILES=0
 
-CTAGS_PARAM_DEF=" --c-kinds=-m --c++-kinds=-m --python-kinds=-i --fields=+iaS --langmap=c:.c.h --extra=+q -L cscope.files"
-CTAGS_PARAM_H_AS_CPP=" --c-kinds=-m --c++-kinds=-m --python-kinds=-i --fields=+iaS  --extra=+q -L cscope.files"
-CTAGS_PARAM_CPP=" --python-kinds=-i --fields=+iaS --extra=+q -L cscope.files"
+CTAGS_PARAM_DEF=" --c-kinds=-m --c++-kinds=-m --python-kinds=-i --fields=+iaS --langmap=c:.c.h,java:+.aidl --extra=+q -L cscope.files"
+CTAGS_PARAM_H_AS_CPP=" --c-kinds=-m --c++-kinds=-m --python-kinds=-i --fields=+iaS --langmap=java:+.aidl --extra=+q -L cscope.files"
+CTAGS_PARAM_CPP=" --python-kinds=-i --fields=+iaS --langmap=java:+.aidl --extra=+q -L cscope.files"
 CTAGS_PARAM=$CTAGS_PARAM_DEF_H_AS_C
 
 function csset_usage()
@@ -239,7 +239,7 @@ function create_objfiles()
             cd $arg
             work_dir=`pwd`
             find . -type f -regextype posix-egrep \
-                -iregex '.*\.(o|obj)'  |sed  -e '/ /d' -e 's:^\./::' >> $cur_dir/obj.files
+                -iregex '.*\.(o|obj|class)'  |sed  -e '/ /d' -e 's:^\./::' >> $cur_dir/obj.files
             cd $cur_dir
         else
             echo_msg "$@ is not directory!!"
