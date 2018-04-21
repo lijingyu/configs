@@ -7,10 +7,8 @@ KERNEL_TAGS=0
 SKIP_CREATE_CSCOPE_FILES=0
 ONLY_CREATE_CSCOPE_FILES=0
 
-CTAGS_PARAM_DEF=" --c-kinds=-m --c++-kinds=-m --python-kinds=-i --fields=+iaS --langmap=c:.c.h,java:+.aidl --extra=+q -L cscope.files"
-CTAGS_PARAM_H_AS_CPP=" --c-kinds=-m --c++-kinds=-m --python-kinds=-i --fields=+iaS --langmap=java:+.aidl --extra=+q -L cscope.files"
-CTAGS_PARAM_CPP=" --python-kinds=-i --fields=+iaS --langmap=java:+.aidl --extra=+q -L cscope.files"
-CTAGS_PARAM=$CTAGS_PARAM_DEF_H_AS_C
+CTAGS_PARAM_H_AS_C=" --c-kinds=-m --c++-kinds=-m --python-kinds=-i --fields=+iaS --langmap=c:.c.h,java:+.aidl --extra=+q -L cscope.files"
+CTAGS_PARAM_DEF=" --c-kinds=-m --python-kinds=-i --fields=+iaS --langmap=java:+.aidl --extra=+q -L cscope.files"
 
 function csset_usage()
 {
@@ -20,8 +18,7 @@ function csset_usage()
                   -s skip create cscope.files\n
                   -  exinclude dir \n
                   -k kernel mode, for create tags\n
-                  +  .h file as c++ files, for create tags(default .h as c)\n
-                  ++ do not remove m in kinds used for c++, fot create tags\n
+                  -c  .h file as c files, used when all souce is c(default c++ mode)\n
                   "
 }
 
@@ -122,12 +119,8 @@ function parse_param()
             KERNEL_TAGS=1
             continue
         fi
-        if [ $arg == "+" ]; then
-            CTAGS_PARAM=$CTAGS_PARAM_H_AS_CPP
-            continue
-        fi
-        if [ $arg == "++" ]; then
-            CTAGS_PARAM=$CTAGS_PARAM_CPP
+        if [ $arg == "-c" ]; then
+            CTAGS_PARAM=$CTAGS_PARAM_H_AS_C
             continue
         fi
         if [ $arg == "-h" ]; then
@@ -140,6 +133,7 @@ function parse_param()
             INCLUD_DIRS="$INCLUD_DIRS $arg"
         fi
     done
+    echo_msg $CTAGS_PARAM
 }
 
 # create tags cscope in current dir
@@ -179,7 +173,12 @@ function exe_process()
     create_tags
     create_dict
     echo_msg "create  success"
-    echo_msg "=== c or + or ++ mode ==="
+
+    if [ "$CTAGS_PARAM" == "$CTAGS_PARAM_DEF" ]; then
+        echo_msg "    c++ mode    "
+    elif [ "$CTAGS_PARAM" == "$CTAGS_PARAM_H_AS_C" ]; then
+        echo_msg "    c mode    "
+    fi
 }
 
 function csset()
