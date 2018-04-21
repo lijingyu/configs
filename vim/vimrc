@@ -333,7 +333,7 @@ function! LjyatShowTags(word)
 
     call s:EchoMoreMsg(word)
 
-    silent! let tlist = taglist('\<'. word . '\>')
+    silent! let tlist = taglist(word)
     if empty(tlist)
         let use_cscope = 1
     endif
@@ -369,7 +369,7 @@ function! LjyatShowTagInPreview(word)
     let use_cscope = 0
     call s:EchoMoreMsg(word)
 
-    silent! let tlist = taglist('\<'. word . '\>')
+    silent! let tlist = taglist(word)
     for item in tlist
         if item['cmd'] =~ s:ignore_match_tag
             let use_cscope = 1
@@ -1370,6 +1370,24 @@ function! s:TimerStop(timerid)
     endif
 endfunction
 
+function! s:PromptGetCurrentTagWord()
+    let word = ''
+    if LjyatGotoNormalWin() != 0
+        call LjyatGotoWin(g:Prompt_Title)
+        return word
+    endif
+
+    if &ft == 'cpp'
+        setlocal iskeyword+=:
+        let word = expand("<cword>")
+        setlocal iskeyword-=:
+    else
+        let word = expand("<cword>")
+    endif
+    call LjyatGotoWin(g:Prompt_Title)
+    return word
+endfunction
+
 function! s:Prompt_Window_Init(type)
     setlocal noreadonly
     silent! setlocal nowrap
@@ -1379,13 +1397,19 @@ function! s:Prompt_Window_Init(type)
     silent! setlocal buftype=nofile
     mapclear <buffer>
 
-    let s:str_in = ''
-    if a:type == "file"
-        let s:str_in = 'f: '
-    endif
     let s:type = a:type
     let s:prompt_keyloop = 1
     sil! exe '%d _'
+    let s:str_in = ''
+    if a:type == "file"
+        let s:str_in = 'f: '
+    elseif a:type == "tag"
+        let s:str_in = s:PromptGetCurrentTagWord()
+        if s:str_in != ''
+            call s:PromptUpdateMsg(a:type)
+            call PromptSearchTrigger(s:str_in, a:type)
+        endif
+    endif
     call s:PromptUpdateMsg(a:type)
     while s:prompt_keyloop
         let nr = getchar()
