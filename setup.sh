@@ -179,6 +179,7 @@ function exe_process()
     create_tags
     create_dict
     echo_msg "create  success"
+    echo_msg "=== c or + or ++ mode ==="
 }
 
 function csset()
