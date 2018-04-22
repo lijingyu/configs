@@ -133,7 +133,6 @@ function parse_param()
             INCLUD_DIRS="$INCLUD_DIRS $arg"
         fi
     done
-    echo_msg $CTAGS_PARAM
 }
 
 # create tags cscope in current dir
