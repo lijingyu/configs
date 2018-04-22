@@ -8,7 +8,7 @@ SKIP_CREATE_CSCOPE_FILES=0
 ONLY_CREATE_CSCOPE_FILES=0
 
 CTAGS_PARAM_H_AS_C=" --c-kinds=-m --c++-kinds=-m --python-kinds=-i --fields=+iaS --langmap=c:.c.h,java:+.aidl --extra=+q -L cscope.files"
-CTAGS_PARAM_DEF=" --c-kinds=-m --python-kinds=-i --fields=+iaS --langmap=java:+.aidl --extra=+q -L cscope.files"
+CTAGS_PARAM_DEF=" --c-kinds=-m --c-kinds=+m --python-kinds=-i --fields=+iaS --langmap=java:+.aidl --extra=+q -L cscope.files"
 
 function csset_usage()
 {
