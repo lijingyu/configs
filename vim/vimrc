@@ -1405,9 +1405,11 @@ function! s:Prompt_Window_Init(type)
         let s:str_in = 'f: '
     elseif a:type == "tag"
         let s:str_in = s:PromptGetCurrentTagWord()
-        if s:str_in != ''
+        if len(s:str_in) >= s:prompt_prefix_min
             call s:PromptUpdateMsg(a:type)
             call PromptSearchTrigger(s:str_in, a:type)
+        else
+            let s:str_in = ''
         endif
     endif
     call s:PromptUpdateMsg(a:type)
