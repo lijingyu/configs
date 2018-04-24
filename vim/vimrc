@@ -1222,15 +1222,15 @@ function! s:CtrlKeyHandler(key, type)
         call s:PromptUpdateMsg(a:type)
     elseif a:key == "\<MiddleRelease>"
         call PromptSearchTrigger(s:str_in, a:type)
-    elseif a:key == 23 "Ctrl-R CTRL_W current word
-        let s:prompt_register_mark = 0
-        if LjyatGotoNormalWin() != 0
-            return
-        endif
-
-        let s:str_in = s:str_in . expand('<cword>')
-        call LjyatGotoWin(g:Prompt_Title)
-        call PromptSearchTrigger(s:str_in, a:type)
+"    elseif a:key == 23 "Ctrl-R CTRL_W current word
+"        let s:prompt_register_mark = 0
+"        if LjyatGotoNormalWin() != 0
+"            return
+"        endif
+"
+"        let s:str_in = s:str_in . expand('<cword>')
+"        call LjyatGotoWin(g:Prompt_Title)
+"        call PromptSearchTrigger(s:str_in, a:type)
     elseif a:key == 27 "<Esc>
         call PromptClose()
         return
