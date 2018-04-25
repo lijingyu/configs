@@ -1370,6 +1370,19 @@ function! s:TimerStop(timerid)
     endif
 endfunction
 
+function! s:PromptGetCurrentFileName()
+    if LjyatGotoNormalWin() != 0
+        call LjyatGotoWin(g:Prompt_Title)
+        return ''
+    endif
+    let filename = system("basename ". getreg("%"))
+    if filename != ''
+        let filename = split(filename, '\.')[0]
+    endif
+    call LjyatGotoWin(g:Prompt_Title)
+    return filename
+endfunction
+
 function! s:PromptGetCurrentTagWord()
     let word = ''
     if LjyatGotoNormalWin() != 0
@@ -1403,15 +1416,18 @@ function! s:Prompt_Window_Init(type)
     let s:str_in = ''
     if a:type == "file"
         let s:str_in = 'f: '
+        let s:str_in = s:str_in . s:PromptGetCurrentFileName()
     elseif a:type == "tag"
         let s:str_in = s:PromptGetCurrentTagWord()
-        if len(s:str_in) >= s:prompt_prefix_min
-            call s:PromptUpdateMsg(a:type)
-            call PromptSearchTrigger(s:str_in, a:type)
-        else
-            let s:str_in = ''
-        endif
     endif
+
+    if len(s:str_in) >= s:prompt_prefix_min
+        call s:PromptUpdateMsg(a:type)
+        call PromptSearchTrigger(s:str_in, a:type)
+    else
+        let s:str_in = ''
+    endif
+
     call s:PromptUpdateMsg(a:type)
     while s:prompt_keyloop
         let nr = getchar()
