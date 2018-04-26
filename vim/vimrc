@@ -1375,9 +1375,12 @@ function! s:PromptGetCurrentFileName()
         call LjyatGotoWin(g:Prompt_Title)
         return ''
     endif
-    let filename = system("basename ". getreg("%"))
+    let filename = getreg("%")
     if filename != ''
-        let filename = split(filename, '\.')[0]
+        let filename = system("basename ". filename)
+        if filename != ''
+            let filename = split(filename, '\.')[0]
+        endif
     endif
     call LjyatGotoWin(g:Prompt_Title)
     return filename
