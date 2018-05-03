@@ -713,12 +713,20 @@ function! LjyatSearchStr(pattern, cscope_files)
     endif
 
     let matchlist = split(match_string, '\n')
-    let matchlen = len(matchlist)
+    let filterlist = []
+    for item in matchlist
+        if matchstr(split(item, ':')[2], '^\s*//') == ""
+            call add(filterlist, item)
+        endif
+    endfor
+
+    let matchlen = len(filterlist)
     if matchlen > g:SearchLimit
         call s:EchoMoreMsg("match " . matchlen . " > " . g:SearchLimit . " items, change pattern please ")
         return
     endif
 
+    let match_string = join(filterlist, "\n")
     let ef = &errorformat
     set efm=%f:%l:%m
 
