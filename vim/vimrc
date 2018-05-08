@@ -634,7 +634,7 @@ function! Arggrep(pattern_arg)
     execute "silent! MarkClear|silent! Mark " . a:pattern_arg
 
     let pattern = "'" . a:pattern_arg . "'"
-    let real_cmd = 'cat ' . s:tmpcscope_files .' |xargs grep -n -H -E ' . pattern
+    let real_cmd = 'xargs grep -n -H -E ' . pattern . ' < ' . s:tmpcscope_files
     call s:EchoMoreMsg("Searching String ". pattern . " ...")
 
     let match_string = system(real_cmd)
@@ -675,7 +675,7 @@ function! LjyatSearchFunctionCaller()
 
     let pattern = '=\s*\<' . pattern . '\>|\<' . pattern . '\>\s*\('
     let pattern = "'" . pattern . "'"
-    let real_cmd = 'cat '. s:tmpcscope_files . '|xargs grep -n -H -E ' . pattern
+    let real_cmd = 'xargs grep -n -H -E ' . pattern . ' < ' . s:tmpcscope_files
     call s:EchoMoreMsg("Searching called " . pattern . " ...")
     let match_string = system(real_cmd, "\n")
     if match_string == ""
@@ -704,7 +704,7 @@ function! LjyatSearchStr(pattern, cscope_files)
     endif
 
     let pattern = "'" . a:pattern . "'"
-    let real_cmd = 'cat '. a:cscope_files . '|xargs grep -n -H -E ' . pattern
+    let real_cmd = 'xargs grep -n -H -E ' . pattern . ' < ' . a:cscope_files
     call s:EchoMoreMsg("Searching String " . pattern . " ...")
     let match_string = system(real_cmd, "\n")
     if match_string == ""
