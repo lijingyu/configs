@@ -704,7 +704,7 @@ function! LjyatSearchStr(pattern, cscope_files)
     endif
 
     let pattern = "'" . a:pattern . "'"
-    let real_cmd = 'xargs grep -n -H -E ' . pattern . ' < ' . a:cscope_files
+    let real_cmd = 'xargs grep -n -H -E ' . ((&ignorecase == 1)? " -i ": " ")  . pattern . ' < ' . a:cscope_files
     call s:EchoMoreMsg("Searching String " . pattern . " ...")
     let match_string = system(real_cmd, "\n")
     if match_string == ""
@@ -761,7 +761,7 @@ function! Argfind(pattern)
     endif
 
     let pattern = "'" . a:pattern . "'"
-    let real_cmd = 'grep -i -h -E ' . pattern . ' ' . s:tmpcscope_files
+    let real_cmd = 'grep -i -h -E ' . ((&ignorecase == 1)? " -i ": " ") . pattern . ' ' . s:tmpcscope_files
     call s:EchoMoreMsg("Searching file " . pattern . " ...")
     let match_files = system(real_cmd, " ")
     if match_files == ""
@@ -821,7 +821,7 @@ function! LjyatSearchFile(pattern, cscope_files)
     endif
 
     let pattern = "'" . a:pattern . "'"
-    let real_cmd = 'grep -i -h -E ' . pattern . ' ' . a:cscope_files
+    let real_cmd = 'grep -i -h -E ' . ((&ignorecase == 1)? " -i ": " ")  . pattern . ' ' . a:cscope_files
     call s:EchoMoreMsg("Searching file " . pattern . " ...")
 
     let match_files = system(real_cmd)
