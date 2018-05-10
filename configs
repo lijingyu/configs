@@ -44,3 +44,5 @@ export XIM_PROGRAM=fcitx
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 ==========fcitx=================
+Host xxxxxx
+    KexAlgorithms +diffie-hellman-group1-sha1
