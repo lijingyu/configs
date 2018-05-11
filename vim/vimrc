@@ -28,7 +28,7 @@ if has("gui_running")
         set guifont=Monaco:h13
         colorscheme ljyat
     else
-        set guifont=Inconsolata\ 14 linespace=3
+        set guifont=Inconsolata\ 12 linespace=3
         set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
         colorscheme ljyat
     endif
@@ -305,7 +305,7 @@ function! LjyatSwitchLanguageMode()
             call s:EchoWarningMsg("Englist Mode")
             return
         endif
-        set guifont=Inconsolata\ 14 linespace=3
+        set guifont=Inconsolata\ 12 linespace=3
         call s:EchoWarningMsg("Englist Mode")
     endif
 endfunction
