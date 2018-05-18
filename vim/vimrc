@@ -15,6 +15,10 @@ if has("unix")
     set mouse=""
 endif
 
+"custume font size for you computer screen size
+"right font size will make eyes comfortable. no too big or too small
+let default_linux_font_size = 17
+
 if has("gui_running")
     set guioptions-=m
     set guioptions-=T
@@ -22,13 +26,13 @@ if has("gui_running")
     set mouse=a        "Enable mouse in gui
 
     if has("win32")
-        set guifont=Courier_New:h13:cANSI:qDRAFT linespace=0
+        set guifont=Courier_New:h13:cANSI:qDRAFT
         set fileencodings=
     elseif has("mac")
         set guifont=Monaco:h13
         colorscheme ljyat
     else
-        set guifont=Inconsolata\ 14 linespace=0
+        let &guifont='Inconsolata ' . default_linux_font_size
         set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
         colorscheme ljyat
     endif
@@ -291,7 +295,7 @@ function! LjyatSwitchLanguageMode()
             return
         endif
 
-        set guifont=YaHei\ Consolas\ Hybrid\ 13 linespace=0
+        let &guifont='YaHei Consolas Hybrid ' . default_linux_font_size
         call s:EchoWarningMsg("Chinese Mode")
     else
         AcpEnable
@@ -305,7 +309,7 @@ function! LjyatSwitchLanguageMode()
             call s:EchoWarningMsg("Englist Mode")
             return
         endif
-        set guifont=Inconsolata\ 14 linespace=0
+        let &guifont='Inconsolata ' . default_linux_font_size
         call s:EchoWarningMsg("Englist Mode")
     endif
 endfunction
