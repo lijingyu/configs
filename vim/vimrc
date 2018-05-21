@@ -17,7 +17,7 @@ endif
 
 "custume font size for you computer screen size
 "right font size will make eyes comfortable. no too big or too small
-let default_linux_font_size = 17
+let g:default_linux_font_size = 17
 
 if has("gui_running")
     set guioptions-=m
@@ -32,7 +32,7 @@ if has("gui_running")
         set guifont=Monaco:h13
         colorscheme ljyat
     else
-        let &guifont='Inconsolata ' . default_linux_font_size
+        let &guifont='Inconsolata ' . g:default_linux_font_size
         set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
         colorscheme ljyat
     endif
@@ -295,7 +295,7 @@ function! LjyatSwitchLanguageMode()
             return
         endif
 
-        let &guifont='YaHei Consolas Hybrid ' . default_linux_font_size
+        let &guifont='YaHei Consolas Hybrid ' . g:default_linux_font_size
         call s:EchoWarningMsg("Chinese Mode")
     else
         AcpEnable
@@ -309,7 +309,7 @@ function! LjyatSwitchLanguageMode()
             call s:EchoWarningMsg("Englist Mode")
             return
         endif
-        let &guifont='Inconsolata ' . default_linux_font_size
+        let &guifont='Inconsolata ' . g:default_linux_font_size
         call s:EchoWarningMsg("Englist Mode")
     endif
 endfunction
