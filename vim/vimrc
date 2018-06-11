@@ -18,7 +18,7 @@ endif
 "custume font size for you computer screen size
 "right font size will make eyes comfortable. no too big or too small
 let g:default_linux_font_size = 17
-let g:normal_guibg = ["#272822", "#3f4139", "#2b3032", "#1b1b1b", "#002b36"]
+let g:normal_guibg = ["#272822", "#2b3032", "#1b1b1b", "#002b36"]
 let g:normal_guibg_idx = 0
 
 if has("gui_running")
