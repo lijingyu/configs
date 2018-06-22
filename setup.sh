@@ -7,8 +7,8 @@ KERNEL_TAGS=0
 SKIP_CREATE_CSCOPE_FILES=0
 ONLY_CREATE_CSCOPE_FILES=0
 
-CTAGS_PARAM_H_AS_C=" --c-kinds=-m --c++-kinds=-m --python-kinds=-i --fields=+iaS --langmap=c:.c.h,java:+.aidl --extra=+q -L cscope.files"
-CTAGS_PARAM_DEF=" --c-kinds=-m --c-kinds=+m --python-kinds=-i --fields=+iaS --langmap=java:+.aidl --extra=+q -L cscope.files"
+CTAGS_PARAM_H_AS_C=" --c-kinds=-m --c++-kinds=-m --python-kinds=-i --fields=+iaS --langmap=c:.c.h,java:+.aidl -L cscope.files"
+CTAGS_PARAM_DEF=" --c-kinds=-m --c-kinds=+m --python-kinds=-i --fields=+iaS --langmap=java:+.aidl -L cscope.files"
 
 function csset_usage()
 {
@@ -276,7 +276,7 @@ function cstag()
         echo_msg "create cscope"
         cscope -bki cscope.files
         echo_msg "create tags"
-        ctags --c-kinds=-m --c++-kinds=-m --fields=+iaS --extra=+q  -L cscope.files
+        ctags --c-kinds=-m --c++-kinds=-m --fields=+iaS  -L cscope.files
         sed 's/\s.*$//g' tags | uniq >  dict
     else
         echo_msg "no cscope.files"
