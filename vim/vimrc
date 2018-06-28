@@ -19,7 +19,11 @@ endif
 "right font size will make eyes comfortable. no too big or too small
 let g:default_linux_font_size = 17
 let g:normal_guibg = ["#272822", "#2b3032", "#1b1b1b", "#002b36"]
-let g:normal_guibg_idx = 0
+let g:normal_guibg_idx = 3
+
+if filereadable(expand("~/.local.vim"))
+    source ~/.local.vim
+endif
 
 if has("gui_running")
     set guioptions-=m
@@ -1532,3 +1536,5 @@ hi MarkWord3  ctermbg=Yellow   ctermfg=Black  guibg=#FFDB72    guifg=Black
 hi MarkWord4  ctermbg=Red      ctermfg=Black  guibg=#FF7272    guifg=Black
 hi MarkWord5  ctermbg=Magenta  ctermfg=Black  guibg=#FFB3FF    guifg=Black
 hi MarkWord6  ctermbg=Blue     ctermfg=Black  guibg=#9999FF    guifg=Black
+
+call LoopNormalBG()
