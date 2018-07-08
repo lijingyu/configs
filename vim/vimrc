@@ -110,21 +110,10 @@ if !exists("s:tmpcscope_files")
     let s:cscope_tag_dir_list = []
 endif
 
-if !exists("s:tmpmatchfilelist")
-    let s:tmpmatchfilelist = []
-endif
-
-if !exists("s:language_mode")
-    let s:language_mode = "EN"
-endif
-
-if !exists("s:kernel_mode")
-    let s:kernel_mode = "FALSE"
-endif
-
-if !exists("s:ignore_match_tag")
-    let s:ignore_match_tag = "EXPORT_SYMBOL"
-endif
+call s:CheckAddSetDefaultVal("s:tmpmatchfilelist", '[]')
+call s:CheckAddSetDefaultVal("s:language_mode", "'EN'")
+call s:CheckAddSetDefaultVal("s:kernel_mode", "'FALSE'")
+call s:CheckAddSetDefaultVal("s:ignore_match_tag", "'EXPORT_SYMBOL'")
 
 if exists("s:PromptGroupID")
     silent! call matchdelete(s:PromptGroupID)
