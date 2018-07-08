@@ -15,11 +15,17 @@ if has("unix")
     set mouse=""
 endif
 
+function! s:CheckAddSetDefaultVal(var_name, val)
+    if !exists(a:var_name)
+        exec 'let ' . a:var_name . ' = ' . a:val
+    endif
+endfunction
+
 "custume font size for you computer screen size
 "right font size will make eyes comfortable. no too big or too small
-let g:default_linux_font_size = 17
 let g:normal_guibg = ["#272822", "#2b3032", "#1b1b1b", "#002b36"]
-let g:normal_guibg_idx = 3
+call s:CheckAddSetDefaultVal("g:default_linux_font_size", 17)
+call s:CheckAddSetDefaultVal("g:normal_guibg_idx", 3)
 
 if filereadable(expand("~/.local.vim"))
     source ~/.local.vim
