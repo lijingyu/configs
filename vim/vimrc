@@ -668,7 +668,7 @@ function! Arggrep(pattern_arg)
     let matchlen = len(matchlist)
     let g:SearchPattern = pattern
     execute "silent! lexpr matchlist"
-    lopen
+    botright lopen
     let &errorformat=ef
     redraw!
 endfunction
@@ -694,7 +694,7 @@ function! LjyatSearchFunctionCaller()
 
     let g:SearchPattern = pattern
     execute "silent! lexpr match_string"
-    lopen
+    botright lopen
     let &errorformat=ef
     redraw
 endfunction
@@ -738,7 +738,7 @@ function! LjyatSearchStr(pattern, cscope_files)
 
     let g:SearchPattern = pattern
     execute "silent! lexpr match_string"
-    lopen
+    botright lopen
     let &errorformat=ef
     redraw!
 endfunction
@@ -788,7 +788,7 @@ function! Argfind(pattern)
 
     let g:SearchPattern = pattern
     execute "silent! lexpr matchlist"
-    lopen
+    botright lopen
     let &errorformat=ef
     redraw!
 endfunction
@@ -848,7 +848,7 @@ function! LjyatSearchFile(pattern, cscope_files)
 
     let g:SearchPattern = pattern
     execute "silent! lexpr match_files"
-    lopen
+    botright lopen
     let &errorformat = ef
     redraw!
     return matchlist
@@ -949,7 +949,7 @@ function! LjyatSearchStrCurBuf()
     call s:EchoMoreMsg("Searching cur-str " . pattern . " ...")
 
     execute "silent! " . real_cmd
-    lopen
+    botright lopen
     redraw!
 endfunction
 
@@ -972,7 +972,7 @@ function! LjyatVSearchStrCurBuf()
     let real_cmd = "lvimgrep " . pattern . " %"
 
     execute "silent! " . real_cmd
-    lopen
+    botright lopen
     redraw!
 endfunction
 
