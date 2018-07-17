@@ -945,7 +945,7 @@ function! LjyatSearchStrCurBuf()
 
     let g:SearchPattern = pattern
     let pattern = "/" . pattern . "/"
-    let real_cmd = "lvimgrep " . pattern . " %"
+    let real_cmd = "vimgrep " . pattern . " %"
     call s:EchoMoreMsg("Searching cur-str " . pattern . " ...")
 
     execute "silent! " . real_cmd
@@ -969,7 +969,7 @@ function! LjyatVSearchStrCurBuf()
 
     let g:SearchPattern = pattern
     let pattern = "/" . pattern . "/"
-    let real_cmd = "lvimgrep " . pattern . " %"
+    let real_cmd = "vimgrep " . pattern . " %"
 
     execute "silent! " . real_cmd
     botright copen
