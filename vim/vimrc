@@ -198,6 +198,8 @@ nnoremap B :LjyatAddBookMark<CR>
 
 "grep -E
 nnoremap <M-s> :LjyatSearchStrCmd<CR>
+nnoremap <C-p> :cp<CR>
+nnoremap <C-n> :cn<CR>
 nnoremap <F10> :edit ++ff=dos<CR>
 
 "vim nnoremap
