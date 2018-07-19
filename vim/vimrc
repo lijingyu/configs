@@ -1535,3 +1535,6 @@ hi MarkWord5  ctermbg=Magenta  ctermfg=Black  guibg=#FFB3FF    guifg=Black
 hi MarkWord6  ctermbg=Blue     ctermfg=Black  guibg=#9999FF    guifg=Black
 
 call LoopNormalBG()
+if filereadable('projs.vim')
+    source projs.vim
+endif
