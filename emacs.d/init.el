@@ -1,11 +1,9 @@
-(setq inhibit-startup-message t)
-
-(add-to-list 'load-path "~/.emacs.d/lisp/color-theme")
 (add-to-list 'load-path "~/.emacs.d/lisp")
-(require 'color-theme)
-(color-theme-initialize)
-;(load-file "~/.emacs.d/lisp/color-theme/themes/monokai-theme.el")
-;(color-theme-monokai)
+(setq inhibit-startup-message t)
+(setq  initial-scratch-message nil)
+
+(set-background-color "#1b1b1b")
+(set-foreground-color "#d1d8d4")
 
 (show-paren-mode t)
 (set-frame-font "-CYRE-Inconsolata-normal-normal-normal-*-16-*-*-*-m-0-iso10646-1" t t)
@@ -53,9 +51,3 @@
 	     (define-key gtags-mode-map "\M-/" 'gtags-find-pattern)
 	     (define-key gtags-mode-map "\M-f" 'gtags-find-file)
 	     ))
-
-(require 'helm-config)
-(global-set-key (kbd "M-x") #'helm-M-x)
-(global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
-(global-set-key (kbd "C-x C-f") #'helm-find-files)
-(helm-mode 1)
