@@ -1311,7 +1311,7 @@ function! s:Prompt_InputClear()
 endfunction
 
 function! s:Prompt_InputAppend(str)
-    let s:str_in = s:str_in . substitute(a:str, '\[^0-9A-Za-z-_\]*$','','g')
+    let s:str_in = s:str_in . substitute(a:str, '[^0-9A-Za-z-_]*','','g')
 endfunction
 
 function! s:Prompt_getInput()
