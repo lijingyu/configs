@@ -1456,7 +1456,7 @@ function! s:Prompt_Window_Init(type)
     sil! exe '%d _'
     call s:Prompt_InputClear()
     if a:type == "file"
-        call s:Prompt_InputAppend('f: ')
+        call s:Prompt_InputInit('f: ')
         call s:Prompt_InputAppend(s:PromptGetCurrentFileName())
     elseif a:type == "tag"
         call s:Prompt_InputAppend(s:PromptGetCurrentTagWord())
