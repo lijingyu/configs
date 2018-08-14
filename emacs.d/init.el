@@ -6,7 +6,7 @@
 (set-foreground-color "#d1d8d4")
 
 (show-paren-mode t)
-(set-frame-font "-CYRE-Inconsolata-normal-normal-normal-*-16-*-*-*-m-0-iso10646-1" t t)
+(set-frame-font "-CYRE-Inconsolata-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1" t t)
 
 (require 'xcscope)
 (require 'sr-speedbar)
