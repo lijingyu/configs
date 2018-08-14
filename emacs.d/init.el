@@ -9,6 +9,7 @@
 (set-frame-font "-CYRE-Inconsolata-normal-normal-normal-*-16-*-*-*-m-0-iso10646-1" t t)
 
 (require 'xcscope)
+(require 'sr-speedbar)
 
 (setq c-default-style "linux"
       c-basic-offset 4
