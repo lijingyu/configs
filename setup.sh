@@ -6,7 +6,8 @@ EX_START=0
 KERNEL_TAGS=0
 SKIP_CREATE_CSCOPE_FILES=0
 ONLY_CREATE_CSCOPE_FILES=0
-GTAGS_MODE=0
+#cscope mode or gtags mode
+GTAGS_MODE=1
 
 CTAGS_PARAM_H_AS_C=" --c-kinds=-m --c++-kinds=-m --python-kinds=-i --fields=+iaS --langmap=c:.c.h,java:+.aidl -L cscope.files"
 CTAGS_PARAM_DEF=" --c-kinds=-m --c-kinds=+m --python-kinds=-i --fields=+iaS --langmap=java:+.aidl -L cscope.files"
@@ -17,7 +18,7 @@ function csset_usage()
                   -o only create cscope.files\n
                      -a append create cscope.files\n
                   -s skip create cscope.files\n
-                  -g use global replace cscope\n
+                  -ng use cscope mode (default use gtags)\n
                   -  exinclude dir \n
                   -k kernel mode, for create tags\n
                   -c  .h file as c files, used when all souce is c(default c++ mode)\n
@@ -102,7 +103,7 @@ function parse_param()
     SKIP_CREATE_CSCOPE_FILES=0
     APPEND_CREATE_CSCOPE_FILES=0
     ONLY_CREATE_CSCOPE_FILES=0
-    GTAGS_MODE=0
+    GTAGS_MODE=1
 
     for arg in $@
     do
@@ -115,8 +116,8 @@ function parse_param()
             SKIP_CREATE_CSCOPE_FILES=1
             continue
         fi
-        if [ $arg == "-g" ]; then
-            GTAGS_MODE=1
+        if [ $arg == "-ng" ]; then
+            GTAGS_MODE=0
             continue
         fi
         if [ $arg == "-o" ]; then
