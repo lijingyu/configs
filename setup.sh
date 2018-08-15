@@ -17,6 +17,7 @@ function csset_usage()
                   -o only create cscope.files\n
                      -a append create cscope.files\n
                   -s skip create cscope.files\n
+                  -g use global replace cscope\n
                   -  exinclude dir \n
                   -k kernel mode, for create tags\n
                   -c  .h file as c files, used when all souce is c(default c++ mode)\n
@@ -27,6 +28,7 @@ function create_cscope()
 {
     echo_msg "create cscope"
     if [ $GTAGS_MODE -eq 1 ];then
+	export GTAGSFORCECPP=1
         gtags --gtagslabel ctags -f cscope.files
     else
         cscope -bki cscope.files
