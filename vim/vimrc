@@ -89,6 +89,8 @@ set statusline=%!StatusLine()
 let c_syntax_for_h = 1
 let Tlist_WinWidth = 40
 let Tlist_Auto_Open = 0
+"global_mode is 0:cscope 1:global
+let g:global_mode = 0
 let g:tagbar_left = 1
 let g:tagbar_sort = 0
 let g:tagbar_indent = 4
@@ -162,7 +164,7 @@ vnoremap <M-r> <ESC>:call LjyatVSearchStrInFiles()<CR>
 vnoremap <M-R> <ESC>:call LjyatVSearchStrCurBuf()<CR>
 
 nnoremap <M-n> :call LoopNormalBG()<CR>
-nnoremap <M-[> :cs find c <C-R>=expand("<cword>")<CR><CR>
+nnoremap <M-[> :cs find c <C-R>=expand("<cword>")<CR><CR>:copen<CR>
 nnoremap <M-\> :cs find s <C-R>=expand("<cword>")<CR><CR>
 nnoremap <M-t> :cs f t
 "=> switch windows
@@ -217,7 +219,7 @@ nnoremap <Space>3 <C-w>v
 nnoremap <Space>2 <C-w>c
 nnoremap <Space>t :cs f t
 nnoremap <Space>\ :cs find s <C-R>=expand("<cword>")<CR><CR>
-nnoremap <Space>[ :cs find c <C-R>=expand("<cword>")<CR><CR>
+nnoremap <Space>[ :cs find c <C-R>=expand("<cword>")<CR><CR>:copen<CR>
 nnoremap <Space>f :LjyatSearchFileCmd<CR>
 nnoremap <Space>] :call LjyatShowTags(expand("<cword>"))<CR>
 nmap <Space><RightMouse> :MarkClear<CR>
@@ -469,9 +471,10 @@ if has("cscope")
     set csprg=/usr/bin/cscope
     set csto=1
     set nocst
+    set cscopequickfix=c-
     " add any database in current directory
-    if filereadable("cscope.out")
-        silent! cs add cscope.out
+    if filereadable("GTAGS")
+        silent! cs add GTAGS
         " else add database pointed to by environment
     elseif $CSCOPE_DB != ""
         cs add $CSCOPE_DB
@@ -514,7 +517,7 @@ function! RemoveTagDirs(rmdirs)
     for dir in split(a:rmdirs, ",")
         let dir = substitute(expand(split(dir, "\"")[0]),'/$', '','')
         let rm_tag          = dir . "/tags"
-        let rm_cscope       = dir . "/cscope.out"
+        let rm_cscope       = dir . "/GTAGS"
 
         if !filereadable(rm_tag) || !filereadable(rm_cscope)
             call s:EchoWarningMsg("empty dir: " . dir)
@@ -568,13 +571,23 @@ function! AddTagDirs(predirs)
         if dir == '.'
             let new_tag_path     = "tags"
             let new_cscope_path  = "cscope.out"
+            let new_global_path  = "GTAGS"
             let new_dict_path    = "dict"
             let new_cscope_files = "cscope.files"
         else
             let new_cscope_path  = dir . "/cscope.out"
+            let new_global_path  = dir . "/GTAGS"
             let new_tag_path     = dir . "/tags"
             let new_dict_path    = dir . "/dict"
             let new_cscope_files = dir . "/cscope.files"
+        endif
+
+        if filereadable(new_global_path)
+            let new_cscope_path = new_global_path
+            set csprg=/usr/bin/gtags-cscope
+            let g:global_mode = 1
+        else
+            set csprg=/usr/bin/cscope
         endif
 
         if !filereadable(new_tag_path) || !filereadable(new_cscope_path)
@@ -607,7 +620,13 @@ function! AddTagDirs(predirs)
                 let dir = substitute(dir, '^', './','')
             endif
         endif
-        silent! exe "cscope add " . new_cscope_path . " " . dir
+        if g:global_mode == 0
+            silent! exe "cscope add " . new_cscope_path . " " . dir
+        else
+            let $GTAGSROOT = getcwd() . '/'. dir
+            let $GTAGSDBPATH = getcwd() . '/'. dir
+            silent! exe "cscope add " . new_cscope_path
+        endif
     endfor
     redraw!
 endfunction

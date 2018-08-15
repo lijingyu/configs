@@ -6,6 +6,7 @@ EX_START=0
 KERNEL_TAGS=0
 SKIP_CREATE_CSCOPE_FILES=0
 ONLY_CREATE_CSCOPE_FILES=0
+GTAGS_MODE=0
 
 CTAGS_PARAM_H_AS_C=" --c-kinds=-m --c++-kinds=-m --python-kinds=-i --fields=+iaS --langmap=c:.c.h,java:+.aidl -L cscope.files"
 CTAGS_PARAM_DEF=" --c-kinds=-m --c-kinds=+m --python-kinds=-i --fields=+iaS --langmap=java:+.aidl -L cscope.files"
@@ -25,7 +26,11 @@ function csset_usage()
 function create_cscope()
 {
     echo_msg "create cscope"
-    cscope -bki cscope.files
+    if [ $GTAGS_MODE -eq 1 ];then
+        gtags --gtagslabel ctags -f cscope.files
+    else
+        cscope -bki cscope.files
+    fi
 }
 
 function create_cscopefiles()
@@ -95,6 +100,7 @@ function parse_param()
     SKIP_CREATE_CSCOPE_FILES=0
     APPEND_CREATE_CSCOPE_FILES=0
     ONLY_CREATE_CSCOPE_FILES=0
+    GTAGS_MODE=0
 
     for arg in $@
     do
@@ -105,6 +111,10 @@ function parse_param()
 
         if [ $arg == "-s" ]; then
             SKIP_CREATE_CSCOPE_FILES=1
+            continue
+        fi
+        if [ $arg == "-g" ]; then
+            GTAGS_MODE=1
             continue
         fi
         if [ $arg == "-o" ]; then
@@ -200,7 +210,7 @@ function cssetg()
 
     create_cscopefiles $@
 
-    gtags -f cscope.files
+    gtags --gtagslabel ctags -f cscope.files
     echo_msg "create  success"
 }
 
@@ -288,7 +298,7 @@ function delete_cscope_tags()
    if [ -d $@ ];then
        cur_dir=`pwd`
        cd $@
-       rm  -rf cscope* tags TAGS ncscope* dict GPATH GRTAGS  GTAGS
+       rm  -rf cscope* tags TAGS ncscope* dict GPATH GRTAGS  GTAGS GSYMS
        cd $cur_dir
    else
        echo_msg "$@ is not directory!!"
@@ -298,7 +308,7 @@ function delete_cscope_tags()
 function csclean()
 {
     if [ $# -eq 0 ];then
-        rm  -rf cscope* tags TAGS ncscope* dict GPATH GRTAGS  GTAGS
+        rm  -rf cscope* tags TAGS ncscope* dict GPATH GRTAGS  GTAGS GSYMS
     else
         for arg in $@
         do
