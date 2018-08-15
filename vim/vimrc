@@ -164,7 +164,7 @@ vnoremap <M-r> <ESC>:call LjyatVSearchStrInFiles()<CR>
 vnoremap <M-R> <ESC>:call LjyatVSearchStrCurBuf()<CR>
 
 nnoremap <M-n> :call LoopNormalBG()<CR>
-nnoremap <M-[> :cs find c <C-R>=expand("<cword>")<CR><CR>:copen<CR>
+nnoremap <M-[> :cs find c <C-R>=expand("<cword>")<CR><CR>:botright copen<CR>
 nnoremap <M-\> :cs find s <C-R>=expand("<cword>")<CR><CR>
 nnoremap <M-t> :cs f t
 "=> switch windows
@@ -219,7 +219,7 @@ nnoremap <Space>3 <C-w>v
 nnoremap <Space>2 <C-w>c
 nnoremap <Space>t :cs f t
 nnoremap <Space>\ :cs find s <C-R>=expand("<cword>")<CR><CR>
-nnoremap <Space>[ :cs find c <C-R>=expand("<cword>")<CR><CR>:copen<CR>
+nnoremap <Space>[ :cs find c <C-R>=expand("<cword>")<CR><CR>:botright copen<CR>
 nnoremap <Space>f :LjyatSearchFileCmd<CR>
 nnoremap <Space>] :call LjyatShowTags(expand("<cword>"))<CR>
 nmap <Space><RightMouse> :MarkClear<CR>
@@ -586,11 +586,10 @@ function! AddTagDirs(predirs)
             let new_cscope_path = new_global_path
             set csprg=/usr/bin/gtags-cscope
             let g:global_mode = 1
-        else
+        elseif filereadable(new_cscope_path)
+            let g:global_mode = 0
             set csprg=/usr/bin/cscope
-        endif
-
-        if !filereadable(new_tag_path) || !filereadable(new_cscope_path)
+        else
             call s:EchoWarningMsg("No needed file in: " . dir)
             return
         endif

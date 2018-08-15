@@ -29,9 +29,10 @@ function create_cscope()
 {
     echo_msg "create cscope"
     if [ $GTAGS_MODE -eq 1 ];then
-	export GTAGSFORCECPP=1
-        gtags --gtagslabel ctags -f cscope.files
+        export GTAGSFORCECPP=1
+        gtags -f cscope.files
     else
+        unset GTAGSFORCECPP
         cscope -bki cscope.files
     fi
 }
@@ -152,8 +153,8 @@ function parse_param()
 function me()
 {
     if [ -e "cscope.files" ]; then
-        create_cscope
         create_tags
+        create_cscope
         create_dict
         echo_msg "create  success"
     else
@@ -181,8 +182,8 @@ function exe_process()
         return
     fi
 
-    create_cscope
     create_tags
+    create_cscope
     create_dict
     echo_msg "create  success"
 
@@ -213,7 +214,7 @@ function cssetg()
 
     create_cscopefiles $@
 
-    gtags --gtagslabel ctags -f cscope.files
+    gtags  -f cscope.files
     echo_msg "create  success"
 }
 
