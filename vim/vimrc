@@ -1090,6 +1090,16 @@ function! LjyatShowBookMarks()
     let &errorformat = ef
 endfunction
 
+function! LjyatUpdateGTAGS(file)
+    if len(s:cscope_tag_dir_list) == 0 || g:global_mode == 0
+        return
+    endif
+    let curdir = getcwd()
+    let dir = fnamemodify(a:file, ":p:h")
+    let name = fnamemodify(a:file, ":t")
+    call system('cd ' . dir . '; global --single-update  ' . name)
+endfunction
+
 function! LjyatBookMarkClear()
     let s:mark_index = 0
     let s:mark_list=[]
@@ -1554,6 +1564,7 @@ augroup LjyatAutoCmds
     autocmd VimEnter * call AddTagDirs('.')
 
     autocmd VimLeave * call CleanTmpListFile(s:tmpcscope_files)
+    autocmd BufWritePost * call LjyatUpdateGTAGS(bufname("%"))
     autocmd BufNewFile,BufRead *.aidl setf java
 augroup end
 " => Set OminComplete
