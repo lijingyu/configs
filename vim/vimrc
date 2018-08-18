@@ -163,7 +163,7 @@ nnoremap <M-f> :LjyatSearchFileCmd<CR>
 vnoremap <M-r> <ESC>:call LjyatVSearchStrInFiles()<CR>
 vnoremap <M-R> <ESC>:call LjyatVSearchStrCurBuf()<CR>
 
-nnoremap <M-n> :call LoopNormalBG()<CR>
+"nnoremap <M-n> :call LoopNormalBG()<CR>
 nnoremap <M-[> :cs find c <C-R>=expand("<cword>")<CR><CR>:botright copen<CR>
 nnoremap <M-\> :cs find s <C-R>=expand("<cword>")<CR><CR>
 nnoremap <M-t> :cs f t
@@ -202,6 +202,8 @@ nnoremap B :LjyatAddBookMark<CR>
 nnoremap <M-s> :LjyatSearchStrCmd<CR>
 nnoremap <C-p> :cp<CR>
 nnoremap <C-n> :cn<CR>
+nnoremap <M-p> :cp<CR>
+nnoremap <M-n> :cn<CR>
 nnoremap <F10> :edit ++ff=dos<CR>
 
 "vim nnoremap
@@ -625,6 +627,8 @@ function! AddTagDirs(predirs)
             let $GTAGSROOT = getcwd() . '/'. dir
             let $GTAGSDBPATH = getcwd() . '/'. dir
             silent! exe "cscope add " . new_cscope_path
+            unlet $GTAGSROOT
+            unlet $GTAGSDBPATH
         endif
     endfor
     redraw!
@@ -1097,7 +1101,7 @@ function! LjyatUpdateGTAGS(file)
     let curdir = getcwd()
     let dir = fnamemodify(a:file, ":p:h")
     let name = fnamemodify(a:file, ":t")
-    call system('cd ' . dir . '; global --single-update  ' . name)
+    exe 'silent !cd ' . dir . ' && global --single-update  ' . name
 endfunction
 
 function! LjyatBookMarkClear()
@@ -1299,9 +1303,9 @@ function! s:CtrlKeyHandler(key, type)
             call s:Prompt_InputClear()
         endif
         call s:PromptUpdateMsg(a:type)
-    elseif a:key == "\<Down>" || a:key == 14
+    elseif a:key == "\<Down>" || a:key == 14 || a:key == 238
         normal j
-    elseif a:key == "\<Up>" || a:key == 16
+    elseif a:key == "\<Up>" || a:key == 16 || a:key == 240
         normal k
     elseif a:key == "\<PageDown>" || a:key == 6 || a:key == 4
         normal 10j
@@ -1501,7 +1505,7 @@ function! s:Prompt_Window_Init(type)
     while s:prompt_keyloop
         let nr = getchar()
         call s:TimerStop(s:prompt_timer)
-        if (nr >= 0x20) "normal char
+        if (nr >= 0x20) &&  nr <= 0x7f "normal char
             let c = nr2char(nr)
             if s:prompt_register_mark
                 call s:Prompt_InputAppend(getreg(c))
