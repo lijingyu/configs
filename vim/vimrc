@@ -165,7 +165,7 @@ vnoremap <M-R> <ESC>:call LjyatVSearchStrCurBuf()<CR>
 
 "nnoremap <M-n> :call LoopNormalBG()<CR>
 nnoremap <M-[> :cs find c <C-R>=expand("<cword>")<CR><CR>:botright copen<CR>
-nnoremap <M-\> :cs find s <C-R>=expand("<cword>")<CR><CR>
+nnoremap <M-\> :cs find s <C-R>=expand("<cword>")<CR><CR>:botright copen<CR>
 nnoremap <M-t> :cs f t
 "=> switch windows
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -220,7 +220,7 @@ nnoremap <Space>/ :call Prompt_Window_Create("tag")<CR>
 nnoremap <Space>3 <C-w>v
 nnoremap <Space>2 <C-w>c
 nnoremap <Space>t :cs f t
-nnoremap <Space>\ :cs find s <C-R>=expand("<cword>")<CR><CR>
+nnoremap <Space>\ :cs find s <C-R>=expand("<cword>")<CR><CR>:botright copen<CR>
 nnoremap <Space>[ :cs find c <C-R>=expand("<cword>")<CR><CR>:botright copen<CR>
 nnoremap <Space>f :LjyatSearchFileCmd<CR>
 nnoremap <Space>] :call LjyatShowTags(expand("<cword>"))<CR>
@@ -473,7 +473,7 @@ if has("cscope")
     set csprg=/usr/bin/cscope
     set csto=1
     set nocst
-    set cscopequickfix=c-
+    set cscopequickfix=c-,s-
     " add any database in current directory
     if filereadable("GTAGS")
         silent! cs add GTAGS
