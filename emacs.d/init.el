@@ -1,3 +1,7 @@
+;;put next two line in ~/.emacs.el
+;;(set-frame-font "-CYRE-Inconsolata-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1" t t)
+;;(load-file "~/bin/emacs.d/init.el")
+
 (add-to-list 'load-path "~/.emacs.d/lisp")
 (setq inhibit-startup-message t)
 (setq  initial-scratch-message nil)
@@ -6,7 +10,6 @@
 (set-foreground-color "#d1d8d4")
 
 (show-paren-mode t)
-;;(set-frame-font "-CYRE-Inconsolata-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1" t t)
 
 (require 'xcscope)
 (require 'sr-speedbar)
