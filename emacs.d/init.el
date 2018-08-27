@@ -2,7 +2,7 @@
 ;;(set-frame-font "-CYRE-Inconsolata-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1" t t)
 ;;(load-file "~/bin/emacs.d/init.el")
 
-(add-to-list 'load-path "~/.emacs.d/lisp")
+(add-to-list 'load-path "~/bin/emacs.d/lisp")
 (setq inhibit-startup-message t)
 (setq  initial-scratch-message nil)
 
@@ -28,8 +28,8 @@
       '(lambda ()
 	 (setq gtags-path-style 'relative)))
 
-(add-to-list 'load-path "~/.emacs.d/lisp/elpa/company-0.9.3")
-(load-file "~/.emacs.d/lisp/elpa/company-0.9.3/company.el")
+(add-to-list 'load-path "~/bin/emacs.d/lisp/elpa/company-0.9.3")
+(load-file "~/bin/emacs.d/lisp/elpa/company-0.9.3/company.el")
 (autoload 'company-mode "company" nil t)
 (add-hook 'after-init-hook 'global-company-mode)
 (global-set-key (kbd "\t") 'company-complete)
