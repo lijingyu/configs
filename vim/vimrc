@@ -1570,6 +1570,7 @@ augroup LjyatAutoCmds
     autocmd VimLeave * call CleanTmpListFile(s:tmpcscope_files)
     autocmd BufWritePost * call LjyatUpdateGTAGS(bufname("%"))
     autocmd BufNewFile,BufRead *.aidl setf java
+    autocmd BufNewFile,BufRead *.hal setf c
 augroup end
 " => Set OminComplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
