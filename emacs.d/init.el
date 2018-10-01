@@ -6,8 +6,8 @@
 (setq inhibit-startup-message t)
 (setq  initial-scratch-message nil)
 
-(set-background-color "#1b1b1b")
-(set-foreground-color "#d1d8d4")
+(set-background-color "#002b36")
+(set-foreground-color "#FFFFFF")
 
 (show-paren-mode t)
 
