@@ -627,8 +627,6 @@ function! AddTagDirs(predirs)
             let $GTAGSROOT = getcwd() . '/'. dir
             let $GTAGSDBPATH = getcwd() . '/'. dir
             silent! exe "cscope add " . new_cscope_path
-            unlet $GTAGSROOT
-            unlet $GTAGSDBPATH
         endif
     endfor
     redraw!
