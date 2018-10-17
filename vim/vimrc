@@ -346,16 +346,16 @@ function! LjyatShowTags(word)
 
     call s:EchoMoreMsg(word)
 
-    silent! let tlist = taglist(word)
-    if empty(tlist)
-        let use_cscope = 1
-    endif
-
-    for item in tlist
-        if item['cmd'] =~ s:ignore_match_tag
-            let use_cscope = 1
-        endif
-    endfor
+"    silent! let tlist = taglist(word)
+"    if empty(tlist)
+"        let use_cscope = 1
+"    endif
+"
+"    for item in tlist
+"        if item['cmd'] =~ s:ignore_match_tag
+"            let use_cscope = 1
+"        endif
+"    endfor
 
     if use_cscope
         if LjyatShowCscopeTags(word) == -1
@@ -1391,21 +1391,24 @@ endfunction
 
 function! s:Prompt_SearchFile(pattern, cscope_files)
     sil! exe '%d _'
-    let linelist = readfile(a:cscope_files)
     let pattern = a:pattern
+    let real_cmd = ''
     if a:pattern =~ "^f: "
         let pattern = a:pattern[3:]
         let filter_cmd = 'substitute(v:val, ".*/", "","") =~? pattern'
+        let real_cmd = 'grep -a -i -h -E ' . ((&ignorecase == 1)? " -i ": " ") . a:pattern[3:] . ' ' . a:cscope_files
     else
         let filter_cmd = 'v:val =~? a:pattern'
+        let real_cmd = 'grep -a -i -h -E ' . ((&ignorecase == 1)? " -i ": " ") . a:pattern . ' ' . a:cscope_files
     endif
 
-    let match_list = filter(linelist, filter_cmd)
-    let s:prompt_match_len = len(match_list)
+    let match_files = system(real_cmd)
+    let matchlist = split(match_files, '\n')
+    let s:prompt_match_len = len(matchlist)
     silent! call matchdelete(s:PromptGroupID)
     let s:PromptGroupID = matchadd('PromptGroup', pattern . '\c')
     normal! gg
-    0put =match_list
+    0put =matchlist
     normal! gg
 endfunction
 
