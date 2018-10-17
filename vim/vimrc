@@ -382,13 +382,13 @@ function! LjyatShowTagInPreview(word)
     let use_cscope = 0
     call s:EchoMoreMsg(word)
 
-    silent! let tlist = taglist(word)
-    for item in tlist
-        if item['cmd'] =~ s:ignore_match_tag
-            let use_cscope = 1
-        endif
-    endfor
-
+"    silent! let tlist = taglist(word)
+"    for item in tlist
+"        if item['cmd'] =~ s:ignore_match_tag
+"            let use_cscope = 1
+"        endif
+"    endfor
+"
     let pw_exist = 0
     let win_cur = winnr()
     silent! wincmd P
