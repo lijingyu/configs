@@ -81,6 +81,7 @@ set nowrapscan
 set winaltkeys=no
 set diffopt=filler,vertical
 set foldmethod=manual
+set complete=.,k
 
 "set statusline
 set laststatus=2
