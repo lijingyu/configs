@@ -292,7 +292,6 @@ endfunction
 
 function! LjyatSwitchLanguageMode()
     if s:language_mode == "EN"
-        AcpDisable
         let s:language_mode = "CH"
         if !has("gui_running")
             call s:EchoWarningMsg("Chinese Mode")
@@ -307,7 +306,6 @@ function! LjyatSwitchLanguageMode()
         let &guifont='YaHei Consolas Hybrid ' . g:default_linux_font_size
         call s:EchoWarningMsg("Chinese Mode")
     else
-        AcpEnable
         let s:language_mode = "EN"
 
         if !has("gui_running")
