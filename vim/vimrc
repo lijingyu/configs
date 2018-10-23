@@ -328,7 +328,9 @@ function! LjyatShowCscopeTags(tag)
 
     try
         exe "cs f g " . a:tag
-        copen
+        if len(getqflist()) > 1
+            copen
+        endif
     catch /^Vim\%((\a\+)\)\=:E/
         if v:exception =~ "E259"
             call s:EchoWarningMsg("not found tag: " . a:tag)
@@ -1168,7 +1170,7 @@ endfunction
 let g:Prompt_Title = "__File_List__"
 let s:str_in = ''
 let s:type = ''
-let s:prompt_prefix_min = 5
+let s:prompt_prefix_min = 3
 let s:prompt_height= 15
 let s:prompt_tagwidth = 15
 let s:prompt_taglist = []
@@ -1325,7 +1327,7 @@ function! s:Prompt_InputClear()
 endfunction
 
 function! s:Prompt_InputAppend(str)
-    let s:str_in = s:str_in . substitute(a:str, '[^0-9A-Za-z-_.:+\\]\+.*','','g')
+    let s:str_in = s:str_in . substitute(a:str, '[^0-9A-Za-z-_.:><+\\]\+.*','','g')
 endfunction
 
 function! s:Prompt_getInput()
@@ -1345,10 +1347,11 @@ function! s:Prompt_SearchTag(tag)
         return
     endif
 
-    let real_cmd = 'grep -a -h -E ' . ((&ignorecase == 1)? " -i ": " ") . a:tag . ' ' . substitute(&dict, ',', ' ', '')
+    let pattern = "'" . a:tag . "'"
+    let real_cmd = 'grep -a -h -E ' . ((&ignorecase == 1)? " -i ": " ") . pattern . ' ' . substitute(&dict, ',', ' ', '')
     let match_files = system(real_cmd)
     if match_files == ""
-        call s:EchoWarningMsg("No match tag: " . a:tag)
+        call s:EchoWarningMsg("No match tag: " . pattern)
         return
     endif
 
@@ -1388,10 +1391,10 @@ function! s:Prompt_SearchFile(pattern, cscope_files)
     if a:pattern =~ "^f: "
         let pattern = a:pattern[3:]
         let filter_cmd = 'substitute(v:val, ".*/", "","") =~? pattern'
-        let real_cmd = 'grep -a -i -h -E ' . ((&ignorecase == 1)? " -i ": " ") . a:pattern[3:] . ' ' . a:cscope_files
+        let real_cmd = 'grep -a -i -h -E ' . a:pattern[3:] . ' ' . a:cscope_files
     else
         let filter_cmd = 'v:val =~? a:pattern'
-        let real_cmd = 'grep -a -i -h -E ' . ((&ignorecase == 1)? " -i ": " ") . a:pattern . ' ' . a:cscope_files
+        let real_cmd = 'grep -a -i -h -E ' . a:pattern . ' ' . a:cscope_files
     endif
 
     let match_files = system(real_cmd)
