@@ -1167,7 +1167,7 @@ endfunction
 let g:Prompt_Title = "__File_List__"
 let s:str_in = ''
 let s:type = ''
-let s:prompt_prefix_min = 3
+let s:prompt_prefix_min = 5
 let s:prompt_height= 15
 let s:prompt_tagwidth = 15
 let s:prompt_taglist = []
@@ -1185,7 +1185,6 @@ function! PromptSearchTrigger(str_in, type)
 endfunction
 
 function! PromptGetPrefixMin(str_in, type)
-    let s:prompt_prefix_min = 3
     if a:type == "tag"
         return (len(a:str_in) >= s:prompt_prefix_min)?1:0
     elseif a:type == "file"
