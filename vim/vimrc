@@ -190,7 +190,7 @@ nnoremap <M-e> g_
 nnoremap <M-a> 0
 nnoremap <silent> <M-1> :pc<CR>:lclose<CR>:cclose<CR>
 nmap <M-m> <leader>m
-nnoremap <M-]> :call LjyatShowTags(expand("<cword>"), 0)<CR>
+nnoremap <M-]> :call LjyatShowTags(expand("<cword>"), 1)<CR>
 nmap <M-LeftMouse> <LeftMouse><leader>m
 nnoremap <RightMouse> <C-o>
 nmap <S-LeftMouse> <LeftMouse>:MarkClear<CR><leader>m
@@ -224,7 +224,7 @@ nnoremap <Space>t :cs f t
 nnoremap <Space>\ :cs find s <C-R>=expand("<cword>")<CR><CR>:botright copen<CR>
 nnoremap <Space>[ :cs find c <C-R>=expand("<cword>")<CR><CR>:botright copen<CR>
 nnoremap <Space>f :LjyatSearchFileCmd<CR>
-nnoremap <Space>] :call LjyatShowTags(expand("<cword>"), 0)<CR>
+nnoremap <Space>] :call LjyatShowTags(expand("<cword>"), 1)<CR>
 nmap <Space><RightMouse> :MarkClear<CR>
 nmap <Space><LeftMouse> <LeftMouse><leader>m
 nnoremap <Space>l :LjyatShowBookMarks<CR>
@@ -322,18 +322,18 @@ function! LjyatSwitchLanguageMode()
 endfunction
 
 function! LjyatShowCscopeTags(tag)
-    if &ft == "java"
-        return -1
-    endif
+"    if &ft == "java"
+"        return -1
+"    endif
 
     try
         exe "cs f g " . a:tag
         if len(getqflist()) > 1
-            copen
+            botright copen
         endif
     catch /^Vim\%((\a\+)\)\=:E/
         if v:exception =~ "E259"
-            call s:EchoWarningMsg("not found tag: " . a:tag)
+            "call s:EchoWarningMsg("cscope not found tag: " . a:tag)
         elseif v:exception =~ "E567"
             call s:EchoWarningMsg("no cscope connection !!!")
         endif
@@ -345,21 +345,9 @@ function! LjyatShowTags(word, cscope_tag)
     let word = a:word
     let use_cscope = a:cscope_tag
 
-    call s:EchoMoreMsg(word)
-
-"    silent! let tlist = taglist(word)
-"    if empty(tlist)
-"        let use_cscope = 1
-"    endif
-"
-"    for item in tlist
-"        if item['cmd'] =~ s:ignore_match_tag
-"            let use_cscope = 1
-"        endif
-"    endfor
-
     if use_cscope
         if LjyatShowCscopeTags(word) == -1
+            exe "tjump " . word
             return
         endif
     else
@@ -1090,7 +1078,7 @@ function! LjyatShowBookMarks()
     let ef = &errorformat
     set efm=%f:%l:%m
     exe "cgetexpr s:mark_list"
-    exe "botright copen"
+    botright copen
     let &errorformat = ef
 endfunction
 
