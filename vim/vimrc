@@ -190,7 +190,7 @@ nnoremap <M-e> g_
 nnoremap <M-a> 0
 nnoremap <silent> <M-1> :pc<CR>:lclose<CR>:cclose<CR>
 nmap <M-m> <leader>m
-nnoremap <M-]> :call LjyatShowTags(expand("<cword>"), 1)<CR>
+nnoremap <M-]> :call LjyatShowTags(expand("<cword>"), 0)<CR>
 nmap <M-LeftMouse> <LeftMouse><leader>m
 nnoremap <RightMouse> <C-o>
 nmap <S-LeftMouse> <LeftMouse>:MarkClear<CR><leader>m
@@ -224,7 +224,7 @@ nnoremap <Space>t :cs f t
 nnoremap <Space>\ :cs find s <C-R>=expand("<cword>")<CR><CR>:botright copen<CR>
 nnoremap <Space>[ :cs find c <C-R>=expand("<cword>")<CR><CR>:botright copen<CR>
 nnoremap <Space>f :LjyatSearchFileCmd<CR>
-nnoremap <Space>] :call LjyatShowTags(expand("<cword>"), 1)<CR>
+nnoremap <Space>] :call LjyatShowTags(expand("<cword>"), 0)<CR>
 nmap <Space><RightMouse> :MarkClear<CR>
 nmap <Space><LeftMouse> <LeftMouse><leader>m
 nnoremap <Space>l :LjyatShowBookMarks<CR>
@@ -322,10 +322,6 @@ function! LjyatSwitchLanguageMode()
 endfunction
 
 function! LjyatShowCscopeTags(tag)
-"    if &ft == "java"
-"        return -1
-"    endif
-
     try
         exe "cs f g " . a:tag
         if len(getqflist()) > 1
@@ -1205,7 +1201,7 @@ function! PromptJumpTag(line)
     if bufname('%') == g:Prompt_Title
         exe "wincmd p"
     endif
-    call LjyatShowTags(a:line, 1)
+    call LjyatShowTags(a:line, 0)
 endfunction
 
 function! PromptJumpFile(file)
