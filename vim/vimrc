@@ -341,6 +341,7 @@ function! LjyatShowTags(word, cscope_tag)
     let word = a:word
     let use_cscope = a:cscope_tag
 
+    call PromptClose()
     if use_cscope
         if LjyatShowCscopeTags(word) == -1
             exe "tjump " . word
