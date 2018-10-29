@@ -325,7 +325,7 @@ function! LjyatShowCscopeTags(tag)
     try
         exe "cs f g " . a:tag
         if len(getqflist()) > 1
-            botright copen
+            botright copen s:prompt_height
         endif
     catch /^Vim\%((\a\+)\)\=:E/
         if v:exception =~ "E259"
