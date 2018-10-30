@@ -751,7 +751,7 @@ function! LjyatSearchStr(pattern, cscope_files)
 
     let g:SearchPattern = pattern
     execute "silent! cexpr match_string"
-    call OpenQuickFixWin(s:prompt_height)
+    call OpenQuickFixWin(&window/2)
     let &errorformat=ef
     redraw!
 endfunction
@@ -1160,7 +1160,6 @@ let g:Prompt_Title = "__File_List__"
 let s:str_in = ''
 let s:type = ''
 let s:prompt_prefix_min = 3
-let s:prompt_height= &window/2
 let s:prompt_tagwidth = 15
 let s:prompt_taglist = []
 let s:prompt_keyloop = 0
@@ -1517,7 +1516,7 @@ function! Prompt_Window_Create(type)
     endif
 
     execute "cclose"
-    exe 'silent! keepalt botright ' . s:prompt_height . ' split +buffer ' . g:Prompt_Title
+    exe 'silent! keepalt botright ' . &window/2 . ' split +buffer ' . g:Prompt_Title
     call s:Prompt_Window_Init(a:type)
 endfunction
 
