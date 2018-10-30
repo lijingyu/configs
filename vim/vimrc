@@ -15,6 +15,10 @@ if has("unix")
     set mouse=""
 endif
 
+function! OpenQuickFixWin(h)
+    exe "botright copen " . a:h
+endfunction
+
 function! s:CheckAddSetDefaultVal(var_name, val)
     if !exists(a:var_name)
         exec 'let ' . a:var_name . ' = ' . a:val
@@ -165,8 +169,8 @@ vnoremap <M-r> <ESC>:call LjyatVSearchStrInFiles()<CR>
 vnoremap <M-R> <ESC>:call LjyatVSearchStrCurBuf()<CR>
 
 "nnoremap <M-n> :call LoopNormalBG()<CR>
-nnoremap <M-[> :cs find c <C-R>=expand("<cword>")<CR><CR>:botright copen<CR>
-nnoremap <M-\> :cs find s <C-R>=expand("<cword>")<CR><CR>:botright copen<CR>
+nnoremap <M-[> :cs find c <C-R>=expand("<cword>")<CR><CR>:call OpenQuickFixWin(&window/2)<CR>
+nnoremap <M-\> :cs find s <C-R>=expand("<cword>")<CR><CR>:call OpenQuickFixWin(&window/2)<CR>
 nnoremap <M-t> :cs f t
 "=> switch windows
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -221,8 +225,8 @@ nnoremap <Space>/ :call Prompt_Window_Create("tag")<CR>
 nnoremap <Space>3 <C-w>v
 nnoremap <Space>2 <C-w>c
 nnoremap <Space>t :cs f t
-nnoremap <Space>\ :cs find s <C-R>=expand("<cword>")<CR><CR>:botright copen<CR>
-nnoremap <Space>[ :cs find c <C-R>=expand("<cword>")<CR><CR>:botright copen<CR>
+nnoremap <Space>\ :cs find s <C-R>=expand("<cword>")<CR><CR>:call OpenQuickFixWin(&window/2)<CR>
+nnoremap <Space>[ :cs find c <C-R>=expand("<cword>")<CR><CR>:call OpenQuickFixWin(&window/2)<CR>
 nnoremap <Space>f :LjyatSearchFileCmd<CR>
 nnoremap <Space>] :call LjyatShowTags(expand("<cword>"), 0)<CR>
 nmap <Space><RightMouse> :MarkClear<CR>
@@ -325,7 +329,7 @@ function! LjyatShowCscopeTags(tag)
     try
         exe "cs f g " . a:tag
         if len(getqflist()) > 1
-            botright copen s:prompt_height
+            call OpenQuickFixWin(&window/2)
         endif
     catch /^Vim\%((\a\+)\)\=:E/
         if v:exception =~ "E259"
@@ -677,7 +681,7 @@ function! Arggrep(pattern_arg)
     let matchlen = len(matchlist)
     let g:SearchPattern = pattern
     execute "silent! cexpr matchlist"
-    botright copen
+    call OpenQuickFixWin(&window/2)
     let &errorformat=ef
     redraw!
 endfunction
@@ -703,7 +707,7 @@ function! LjyatSearchFunctionCaller()
 
     let g:SearchPattern = pattern
     execute "silent! cexpr match_string"
-    botright copen
+    call OpenQuickFixWin(&window/2)
     let &errorformat=ef
     redraw
 endfunction
@@ -747,7 +751,7 @@ function! LjyatSearchStr(pattern, cscope_files)
 
     let g:SearchPattern = pattern
     execute "silent! cexpr match_string"
-    botright copen
+    call OpenQuickFixWin(s:prompt_height)
     let &errorformat=ef
     redraw!
 endfunction
@@ -797,7 +801,7 @@ function! Argfind(pattern)
 
     let g:SearchPattern = pattern
     execute "silent! cexpr matchlist"
-    botright copen
+    call OpenQuickFixWin(&window/2)
     let &errorformat=ef
     redraw!
 endfunction
@@ -857,7 +861,7 @@ function! LjyatSearchFile(pattern, cscope_files)
 
     let g:SearchPattern = pattern
     execute "silent! cexpr match_files"
-    botright copen
+    call OpenQuickFixWin(&window/2)
     let &errorformat = ef
     redraw!
     return matchlist
@@ -958,7 +962,7 @@ function! LjyatSearchStrCurBuf()
     call s:EchoMoreMsg("Searching cur-str " . pattern . " ...")
 
     execute "silent! " . real_cmd
-    botright copen
+    call OpenQuickFixWin(&window/2)
     redraw!
 endfunction
 
@@ -981,7 +985,7 @@ function! LjyatVSearchStrCurBuf()
     let real_cmd = "vimgrep " . pattern . " %"
 
     execute "silent! " . real_cmd
-    botright copen
+    call OpenQuickFixWin(&window/2)
     redraw!
 endfunction
 
@@ -1075,7 +1079,7 @@ function! LjyatShowBookMarks()
     let ef = &errorformat
     set efm=%f:%l:%m
     exe "cgetexpr s:mark_list"
-    botright copen
+    call OpenQuickFixWin(&window/2)
     let &errorformat = ef
 endfunction
 
@@ -1156,7 +1160,7 @@ let g:Prompt_Title = "__File_List__"
 let s:str_in = ''
 let s:type = ''
 let s:prompt_prefix_min = 3
-let s:prompt_height= 15
+let s:prompt_height= &window/2
 let s:prompt_tagwidth = 15
 let s:prompt_taglist = []
 let s:prompt_keyloop = 0
