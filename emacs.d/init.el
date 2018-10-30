@@ -10,6 +10,7 @@
 (set-foreground-color "#FFFFFF")
 
 (show-paren-mode t)
+(setq dired-recursive-deletes 'always)
 
 (require 'xcscope)
 (require 'sr-speedbar)
