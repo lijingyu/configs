@@ -1475,8 +1475,6 @@ function! s:Prompt_Window_Init(type)
     if a:type == "file"
         call s:Prompt_InputInit('f: ')
         call s:Prompt_InputAppend(s:PromptGetCurrentFileName())
-    elseif a:type == "tag"
-        call s:Prompt_InputAppend(s:PromptGetCurrentTagWord())
     endif
 
     if len(s:Prompt_getInput()) >= s:prompt_prefix_min
