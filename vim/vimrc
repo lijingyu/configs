@@ -192,7 +192,7 @@ vmap m <leader>m
 nnoremap <C-v> "+p
 nnoremap <M-e> g_
 nnoremap <M-a> 0
-nnoremap <silent> <M-1> :pc<CR>:lclose<CR>:cclose<CR>
+nnoremap <silent> <M-1> :call ClosePreAndQuickWin()<CR>
 nmap <M-m> <leader>m
 nnoremap <M-]> :call LjyatShowTags(expand("<cword>"), 0)<CR>
 nmap <M-LeftMouse> <LeftMouse><leader>m
@@ -214,7 +214,7 @@ nnoremap <F10> :edit ++ff=dos<CR>
 "vim nnoremap
 nnoremap <Space>s :LjyatSearchStrCmd<CR>
 nmap <Space>m <leader>m
-nnoremap <silent> <Space>1 :pc<CR>:lclose<CR>:cclose<CR>
+nnoremap <silent> <Space>1 :call ClosePreAndQuickWin()<CR>
 nnoremap <Space>a 0
 nnoremap <Space>e g_
 nnoremap <Space>q <C-q>
@@ -246,6 +246,13 @@ function! s:EchoMoreMsg(msg)
     echohl MoreMsg
     echo "   " . a:msg
     echohl None
+endfunction
+
+function! ClosePreAndQuickWin()
+    pc
+    lclose
+    cclose
+    call LjyatGotoNormalWin()
 endfunction
 
 function! s:EchoWarningMsg(msg)
