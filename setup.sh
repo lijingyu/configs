@@ -302,6 +302,7 @@ function delete_cscope_tags()
    if [ -d $@ ];then
        cur_dir=`pwd`
        cd $@
+       echo_msg "csclean dir:" `pwd`
        rm  -rf cscope* tags TAGS ncscope* dict GPATH GRTAGS  GTAGS GSYMS
        cd $cur_dir
    else
@@ -312,7 +313,7 @@ function delete_cscope_tags()
 function csclean()
 {
     if [ $# -eq 0 ];then
-        rm  -rf cscope* tags TAGS ncscope* dict GPATH GRTAGS  GTAGS GSYMS
+            delete_cscope_tags .
     else
         for arg in $@
         do
