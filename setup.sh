@@ -313,7 +313,8 @@ function delete_cscope_tags()
 function csclean()
 {
     if [ $# -eq 0 ];then
-            delete_cscope_tags .
+        echo_msg "csclean dir:" `pwd`
+        rm  -rf cscope* tags TAGS ncscope* dict GPATH GRTAGS  GTAGS GSYMS
     else
         for arg in $@
         do
