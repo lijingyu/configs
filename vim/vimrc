@@ -1170,6 +1170,7 @@ let s:prompt_prefix_min = 3
 let s:prompt_tagwidth = 15
 let s:prompt_taglist = []
 let s:prompt_keyloop = 0
+let s:prompt_entry = 0
 let s:prompt_match_len = 0
 let s:prompt_timer = 0
 let s:prompt_keywait = 200
@@ -1202,6 +1203,7 @@ function! PromptClose()
     let s:prompt_keyloop = 0
     let s:prompt_match_len = 0
     let s:prompt_register_mark = 0
+    let s:prompt_entry = 0
     silent! call matchdelete(s:PromptGroupID)
     call LjyatGotoNormalWin()
     redraw!
@@ -1492,10 +1494,16 @@ function! s:Prompt_Window_Init(type)
     endif
 
     call s:PromptUpdateMsg(a:type)
+    let s:prompt_entry = 1
     while s:prompt_keyloop
         let nr = getchar()
         call s:TimerStop(s:prompt_timer)
         if (nr >= 0x20) &&  nr <= 0x7f "normal char
+            if s:prompt_entry == 1
+                call s:Prompt_InputInit("f: ")
+                let s:prompt_entry = 0
+            endif
+
             let c = nr2char(nr)
             if s:prompt_register_mark
                 call s:Prompt_InputAppend(getreg(c))
