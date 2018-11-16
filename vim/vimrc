@@ -1278,11 +1278,7 @@ function! s:CtrlKeyHandler(key, type)
         call PromptClose()
         return
     elseif a:key == 0x17 "CTRL_W
-        if a:type == "file" && len(s:Prompt_getInput()) > 3
-            call s:Prompt_InputInit("f: ")
-        else
-            call s:Prompt_InputClear()
-        endif
+        call s:Prompt_InputClear()
         call s:PromptUpdateMsg(a:type)
     elseif a:key == "\<Down>" || a:key == 14 || a:key == 238
         normal j
@@ -1409,10 +1405,14 @@ function! s:PromptUpdateMsg(type)
     if s:prompt_match_len > g:SearchLimit
         redr | echoh MoreMsg | echon a:type .'   [>' . g:SearchLimit.'] >>> ' . s:Prompt_getInput() | echoh None
     else
-        if (a:type == "file") && s:prompt_search_file_init
-            redr | echoh MoreMsg | echon a:type . '   ['.s:prompt_match_len.'] >>> [' . s:Prompt_getInput() . ']' | echoh None
+        if a:type == "file"
+            if s:prompt_search_file_init
+                redr | echoh MoreMsg | echon 'Find '. s:prompt_match_len .' file: ' | echoh None
+            else
+                redr | echoh MoreMsg | echon 'Find '. s:prompt_match_len .' file: ' . s:Prompt_getInput() | echoh None
+            endif
         else
-            redr | echoh MoreMsg | echon a:type . '   ['.s:prompt_match_len.'] >>> ' . s:Prompt_getInput() | echoh None
+            redr | echoh MoreMsg | echon 'Find ' . s:prompt_match_len.' tag: ' . s:Prompt_getInput() | echoh None
         endif
     endif
 endfunction
@@ -1486,7 +1486,6 @@ function! s:Prompt_Window_Init(type)
     sil! exe '%d _'
     call s:Prompt_InputClear()
     if a:type == "file"
-        call s:Prompt_InputInit('f: ')
         let cur_file = s:PromptGetCurrentFileName()
         if cur_file != ""
             let s:prompt_search_file_init = 1
@@ -1507,8 +1506,8 @@ function! s:Prompt_Window_Init(type)
         call s:TimerStop(s:prompt_timer)
         if (nr >= 0x20) &&  nr <= 0x7f "normal char
             if s:prompt_search_file_init == 1
-                call s:Prompt_InputInit("f: ")
                 let s:prompt_search_file_init = 0
+                call s:Prompt_InputClear()
             endif
 
             let c = nr2char(nr)
