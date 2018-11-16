@@ -1486,9 +1486,12 @@ function! s:Prompt_Window_Init(type)
     sil! exe '%d _'
     call s:Prompt_InputClear()
     if a:type == "file"
-        let s:prompt_search_file_init = 1
         call s:Prompt_InputInit('f: ')
-        call s:Prompt_InputAppend(s:PromptGetCurrentFileName())
+        let cur_file = s:PromptGetCurrentFileName()
+        if cur_file != ""
+            let s:prompt_search_file_init = 1
+            call s:Prompt_InputAppend(s:PromptGetCurrentFileName())
+        endif
     endif
 
     if len(s:Prompt_getInput()) >= s:prompt_prefix_min
