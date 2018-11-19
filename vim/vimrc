@@ -137,23 +137,23 @@ if &dict == ''
     let &dict = 'dict'
 endif
 "=> key maps
-nnoremap j gj
-nnoremap k gk
-nnoremap <F2> :call SwitchTlistTagbar()<CR>
-nnoremap <F3> :LjyatNERDTreeOpenBufDir<CR>
-nnoremap <F5> :call LjyatSwitchKernelCodeMode()<CR>
-nnoremap <F8> :call LjyatSwitchLanguageMode()<CR>
-nnoremap <F9> :call LjyatFoldToggle()<CR>
-nnoremap <C-F9> :let &foldlevel=&foldlevel-1<CR>
-nnoremap <C-F10> :let &foldlevel=&foldlevel+1<CR>
+nnoremap <silent> j gj
+nnoremap <silent> k gk
+nnoremap <silent> <F2> :call SwitchTlistTagbar()<CR>
+nnoremap <silent> <F3> :LjyatNERDTreeOpenBufDir<CR>
+nnoremap <silent> <F5> :call LjyatSwitchKernelCodeMode()<CR>
+nnoremap <silent> <F8> :call LjyatSwitchLanguageMode()<CR>
+nnoremap <silent> <F9> :call LjyatFoldToggle()<CR>
+nnoremap <silent> <C-F9> :let &foldlevel=&foldlevel-1<CR>
+nnoremap <silent> <C-F10> :let &foldlevel=&foldlevel+1<CR>
 map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-h> <C-w>h
 map <C-l> <C-w>l
-nnoremap <M-=> :call IncreaseFontSize()<CR>
-nnoremap <M--> :call DecreaseFontSize()<CR>
-nnoremap <F4> :LjyatSearchStrCurBuf<CR>
-nnoremap <C-s> :LjyatSearchStrCurBuf<CR>
+nnoremap <silent> <M-=> :call IncreaseFontSize()<CR>
+nnoremap <silent> <M--> :call DecreaseFontSize()<CR>
+nnoremap <silent> <F4> :LjyatSearchStrCurBuf<CR>
+nnoremap <silent> <C-s> :LjyatSearchStrCurBuf<CR>
 
 "color set
 nmap / <leader>r
@@ -163,75 +163,75 @@ nmap M :MarkClear<CR><leader>m
 nmap S :LjyatSearchStrInFileListCmd<CR>
 nmap <leader>] :call LjyatShowTagInPreview(expand("<cword>"))<CR>
 
-nnoremap <Space> <Nop>
-nnoremap <M-f> :LjyatSearchFileCmd<CR>
+nnoremap <silent> <Space> <Nop>
+nnoremap <silent> <silent> <M-f> :LjyatSearchFileCmd<CR>
 vnoremap <M-r> <ESC>:call LjyatVSearchStrInFiles()<CR>
 vnoremap <M-R> <ESC>:call LjyatVSearchStrCurBuf()<CR>
 
 "nnoremap <M-n> :call LoopNormalBG()<CR>
-nnoremap <M-[> :cs find c <C-R>=expand("<cword>")<CR><CR>:call OpenQuickFixWin(&window/2)<CR>
-nnoremap <M-\> :cs find s <C-R>=expand("<cword>")<CR><CR>:call OpenQuickFixWin(&window/2)<CR>
-nnoremap <M-t> :cs f t
+nnoremap <silent> <M-[> :cs find c <C-R>=expand("<cword>")<CR><CR>:call OpenQuickFixWin(&window/2)<CR>
+nnoremap <silent> <M-\> :cs find s <C-R>=expand("<cword>")<CR><CR>:call OpenQuickFixWin(&window/2)<CR>
+nnoremap <silent> <M-t> :cs f t
 "=> switch windows
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <M-2> <C-w>c
-nnoremap <M-3> <C-w>v
-nnoremap <M-/> :call Prompt_Window_Create("tag")<CR>
+nnoremap <silent> <M-2> <C-w>c
+nnoremap <silent> <M-3> <C-w>v
+nnoremap <silent> <M-/> :call Prompt_Window_Create("tag")<CR>
 "=> switch windows end
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "=> normal set
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "move
-nnoremap <M-j> 3<C-e>
-nnoremap <M-k> 3<C-y>
-nnoremap <M-c> :MarkClear<CR>
-nnoremap <M-q> <C-q>
+nnoremap <silent> <M-j> 3<C-e>
+nnoremap <silent> <M-k> 3<C-y>
+nnoremap <silent> <M-c> :MarkClear<CR>
+nnoremap <silent> <M-q> <C-q>
 "copy and paste
 vmap <C-c> "+y
 vmap m <leader>m
-nnoremap <C-v> "+p
-nnoremap <M-e> g_
-nnoremap <M-a> 0
-nnoremap <silent> <M-1> :call ClosePreAndQuickWin()<CR>
+nnoremap <silent> <C-v> "+p
+nnoremap <silent> <M-e> g_
+nnoremap <silent> <M-a> 0
+nnoremap <silent> <silent> <M-1> :call ClosePreAndQuickWin()<CR>
 nmap <M-m> <leader>m
-nnoremap <M-]> :call LjyatShowTags(expand("<cword>"), 0)<CR>
+nnoremap <silent> <M-]> :call LjyatShowTags(expand("<cword>"), 0)<CR>
 nmap <M-LeftMouse> <LeftMouse><leader>m
-nnoremap <RightMouse> <C-o>
+nnoremap <silent> <RightMouse> <C-o>
 nmap <S-LeftMouse> <LeftMouse>:MarkClear<CR><leader>m
 nmap <M-RightMouse> :MarkClear<CR>
-nnoremap <M-l> :LjyatShowBookMarks<CR>
-nnoremap C :LjyatBookMarkClear<CR>
-nnoremap B :LjyatAddBookMark<CR>
+nnoremap <silent> <M-l> :LjyatShowBookMarks<CR>
+nnoremap <silent> C :LjyatBookMarkClear<CR>
+nnoremap <silent> B :LjyatAddBookMark<CR>
 
 "grep -E
-nnoremap <M-s> :LjyatSearchStrCmd<CR>
-nnoremap <C-p> :cp<CR>
-nnoremap <C-n> :cn<CR>
-nnoremap <M-p> :cp<CR>
-nnoremap <M-n> :cn<CR>
-nnoremap <F10> :edit ++ff=dos<CR>
+nnoremap <silent> <M-s> :LjyatSearchStrCmd<CR>
+nnoremap <silent> <C-p> :cp<CR>
+nnoremap <silent> <C-n> :cn<CR>
+nnoremap <silent> <M-p> :cp<CR>
+nnoremap <silent> <M-n> :cn<CR>
+nnoremap <silent> <F10> :edit ++ff=dos<CR>
 
 "vim nnoremap
-nnoremap <Space>s :LjyatSearchStrCmd<CR>
+nnoremap <silent> <Space>s :LjyatSearchStrCmd<CR>
 nmap <Space>m <leader>m
-nnoremap <silent> <Space>1 :call ClosePreAndQuickWin()<CR>
-nnoremap <Space>a 0
-nnoremap <Space>e g_
-nnoremap <Space>q <C-q>
-nnoremap <Space>c :MarkClear<CR>
-nnoremap <Space>k 3<C-y>
-nnoremap <Space>j 3<C-e>
-nnoremap <Space>/ :call Prompt_Window_Create("tag")<CR>
-nnoremap <Space>3 <C-w>v
-nnoremap <Space>2 <C-w>c
-nnoremap <Space>t :cs f t
-nnoremap <Space>\ :cs find s <C-R>=expand("<cword>")<CR><CR>:call OpenQuickFixWin(&window/2)<CR>
-nnoremap <Space>[ :cs find c <C-R>=expand("<cword>")<CR><CR>:call OpenQuickFixWin(&window/2)<CR>
-nnoremap <Space>f :LjyatSearchFileCmd<CR>
-nnoremap <Space>] :call LjyatShowTags(expand("<cword>"), 0)<CR>
+nnoremap <silent> <silent> <Space>1 :call ClosePreAndQuickWin()<CR>
+nnoremap <silent> <Space>a 0
+nnoremap <silent> <Space>e g_
+nnoremap <silent> <Space>q <C-q>
+nnoremap <silent> <Space>c :MarkClear<CR>
+nnoremap <silent> <Space>k 3<C-y>
+nnoremap <silent> <Space>j 3<C-e>
+nnoremap <silent> <Space>/ :call Prompt_Window_Create("tag")<CR>
+nnoremap <silent> <Space>3 <C-w>v
+nnoremap <silent> <Space>2 <C-w>c
+nnoremap <silent> <Space>t :cs f t
+nnoremap <silent> <Space>\ :cs find s <C-R>=expand("<cword>")<CR><CR>:call OpenQuickFixWin(&window/2)<CR>
+nnoremap <silent> <Space>[ :cs find c <C-R>=expand("<cword>")<CR><CR>:call OpenQuickFixWin(&window/2)<CR>
+nnoremap <silent> <Space>f :LjyatSearchFileCmd<CR>
+nnoremap <silent> <Space>] :call LjyatShowTags(expand("<cword>"), 0)<CR>
 nmap <Space><RightMouse> :MarkClear<CR>
 nmap <Space><LeftMouse> <LeftMouse><leader>m
-nnoremap <Space>l :LjyatShowBookMarks<CR>
+nnoremap <silent> <Space>l :LjyatShowBookMarks<CR>
 
 vnoremap <Space>R <ESC>:call LjyatVSearchStrCurBuf()<CR>
 vnoremap <Space>r <ESC>:call LjyatVSearchStrInFiles()<CR>
