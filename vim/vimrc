@@ -1214,7 +1214,7 @@ function! PromptJumpTag(line)
     if bufname('%') == g:Prompt_Title
         exe "wincmd p"
     endif
-    call LjyatShowTags(a:line, 0)
+    call LjyatShowTags(a:line, 1)
 endfunction
 
 function! PromptJumpFile(file)
