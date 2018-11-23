@@ -1341,7 +1341,7 @@ function! s:Prompt_SearchTag(tag)
     endif
 
     let pattern = "'" . a:tag . "'"
-    let real_cmd = 'grep -a -h -E ' . ((&ignorecase == 1)? " -i ": " ") . pattern . ' ' . substitute(&dict, ',', ' ', '')
+    let real_cmd = 'grep -a -h -E ' . ((&ignorecase == 1)? " -i ": " ") . pattern . ' ' . substitute(&dict, ',', ' ', 'g')
     let match_files = system(real_cmd)
     if match_files == ""
         call s:EchoWarningMsg("No match tag: " . pattern)
