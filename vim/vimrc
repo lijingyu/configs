@@ -1253,6 +1253,7 @@ function! s:CtrlKeyHandler(key, type)
     elseif a:key == 18 "Ctrl-R register
         let s:prompt_register_mark = 1
     elseif a:key == "\<MiddleMouse>"
+        call s:PromptClearSearchFileInit()
         call s:Prompt_InputAppend(getreg('*'))
         call s:PromptUpdateMsg(a:type)
     elseif a:key == "\<MiddleRelease>"
@@ -1472,6 +1473,13 @@ function! s:PromptGetCurrentTagWord()
     return word
 endfunction
 
+function! s:PromptClearSearchFileInit()
+    if s:prompt_search_file_init == 1
+        let s:prompt_search_file_init = 0
+        call s:Prompt_InputClear()
+    endif
+endfunction
+
 function! s:Prompt_Window_Init(type)
     setlocal noreadonly
     silent! setlocal nowrap
@@ -1505,11 +1513,7 @@ function! s:Prompt_Window_Init(type)
         let nr = getchar()
         call s:TimerStop(s:prompt_timer)
         if (nr >= 0x20) &&  nr <= 0x7f "normal char
-            if s:prompt_search_file_init == 1
-                let s:prompt_search_file_init = 0
-                call s:Prompt_InputClear()
-            endif
-
+            call s:PromptClearSearchFileInit()
             let c = nr2char(nr)
             if s:prompt_register_mark
                 call s:Prompt_InputAppend(getreg(c))
