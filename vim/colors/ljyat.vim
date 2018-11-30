@@ -34,12 +34,12 @@ hi NonText         guifg=#BCBCBC guibg=#232526
 hi StatusLine      guifg=black   guibg=#C2BFA5 gui=bold
 hi Search          gui=bold guifg=black guibg=#00AF5F
 hi String          guifg=#FF80FF
+hi Directory       guifg=yellow
 hi DefinedName     guifg=#FFCC00
 hi WarningMsg      term=standout ctermfg=0 ctermbg=11 guifg=Blue guibg=Yellow
 hi clear Constant
 
 hi! def link User1 Search
-hi! def link Directory   Function
 hi! def link CursorLine  Search
 hi! def link ModeMsg     Directory
 hi! def link Typedef        Structure
