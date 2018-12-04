@@ -104,7 +104,6 @@ let html_wrong_comments = 1
 let Tlist_Inc_Winwidth = 0
 let NERDTreeWinPos = "right"
 let s:searchhistory = 5
-let s:SearchList = []
 let g:SearchLimit = 5000
 let g:SearchPattern = ''
 
@@ -926,37 +925,7 @@ function! LjyatSearchStrCurBuf()
     endif
 
     echohl Question
-
-    if len(s:SearchList) == 0
-        let pattern = input("  Search cur-str: ", expand("<cword>"))
-        if match(pattern, "\|")  != -1
-            call insert(s:SearchList, pattern)
-        endif
-    else
-        let outputlist = []
-        call add(outputlist, '0. ' . expand("<cword>"))
-        let idx = 1
-        for item in s:SearchList
-            let outputitem = idx . '. ' . item
-            call add(outputlist, outputitem)
-            let idx += 1
-        endfor
-
-        let l:sel_idx = inputlist(outputlist)
-        if l:sel_idx == 0
-            let pattern = input("  Search cur-str: ", expand("<cword>"))
-        else
-            let pattern = input("  Search cur-str: ", s:SearchList[l:sel_idx - 1])
-        endif
-        if match(pattern, "\|")  != -1
-            call insert(s:SearchList, pattern)
-            let s:SearchList = uniq(copy(s:SearchList))
-            if len(s:SearchList) > s:searchhistory
-                call remove(s:SearchList, -1)
-            endif
-        endif
-    endif
-
+    let pattern = input("  Search cur-str: ", expand("<cword>"))
     echohl None
 
     if pattern == ""
