@@ -21,5 +21,6 @@ endif
 let colors_name = "light"
 
 hi Normal guibg=grey80
+hi MoreMsg guifg=blue
 
 " vim: sw=2
