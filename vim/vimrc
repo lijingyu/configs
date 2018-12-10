@@ -25,6 +25,8 @@ function! s:CheckAddSetDefaultVal(var_name, val)
     endif
 endfunction
 
+let g:FontName = 'Consolas'
+
 "custume font size for you computer screen size
 "right font size will make eyes comfortable. no too big or too small
 let g:normal_guibg = ["#272822", "#2b3032", "#1b1b1b", "#002b36"]
@@ -34,6 +36,7 @@ call s:CheckAddSetDefaultVal("g:normal_guibg_idx", 3)
 if filereadable(expand("~/.local.vim"))
     source ~/.local.vim
 endif
+
 
 if has("gui_running")
     set guioptions-=m
@@ -48,7 +51,7 @@ if has("gui_running")
         set guifont=Monaco:h13
         colorscheme ljyat
     else
-        let &guifont='Inconsolata ' . g:default_linux_font_size
+        let &guifont=g:FontName . ' ' . g:default_linux_font_size
         set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
         colorscheme ljyat
     endif
@@ -326,7 +329,7 @@ function! LjyatSwitchLanguageMode()
             call s:EchoWarningMsg("Englist Mode")
             return
         endif
-        let &guifont='Inconsolata ' . g:default_linux_font_size
+        let &guifont=g:FontName . ' ' . g:default_linux_font_size
         call s:EchoWarningMsg("Englist Mode")
     endif
 endfunction
@@ -1562,6 +1565,7 @@ hi MarkWord4  ctermbg=Red      ctermfg=Black  guibg=#FF7272    guifg=Black
 hi MarkWord5  ctermbg=Magenta  ctermfg=Black  guibg=#FFB3FF    guifg=Black
 hi MarkWord6  ctermbg=Blue     ctermfg=Black  guibg=#9999FF    guifg=Black
 
+call LoopNormalBG()
 if filereadable('projs.vim')
     source projs.vim
 endif
