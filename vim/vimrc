@@ -630,7 +630,7 @@ function! AddTagDirs(predirs)
 endfunction
 
 function! LjyatSearchTags()
-    echohl Question
+    echohl MoreMsg
     let pattern = input("  Search tag: ")
     echohl None
 
@@ -768,7 +768,7 @@ function! LjyatSearchStrCmd()
         return
     endif
 
-    echohl Question
+    echohl MoreMsg
     let pattern = input("  Search str: ", escape(expand("<cword>"), '#'))
     echohl None
     call LjyatSearchStr(pattern, s:tmpcscope_files)
@@ -829,7 +829,7 @@ function! LjyatSearchStrInFileListCmd()
         call s:EchoWarningMsg("matchfilelist is empty")
         return
     endif
-    echohl Question
+    echohl MoreMsg
     let pattern = input("  Search str in match file: ", escape(expand("<cword>"), '#'))
     echohl None
     call LjyatSearchStrInFileList(pattern, s:tmpmatchfilelist)
@@ -879,7 +879,7 @@ function! LjyatSearchFileCmd()
         return
     endif
 
-    echohl Question
+    echohl MoreMsg
     let pattern = input("  Search file: ")
     echohl None
 
@@ -924,7 +924,7 @@ function! LjyatSearchStrCurBuf()
         return
     endif
 
-    echohl Question
+    echohl MoreMsg
     let pattern = input("  Search cur-str: ", expand("<cword>"))
     echohl None
 

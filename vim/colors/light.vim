@@ -20,6 +20,6 @@ endif
 
 let colors_name = "light"
 
-hi Normal guibg=grey90
+hi Normal guibg=grey80
 
 " vim: sw=2
