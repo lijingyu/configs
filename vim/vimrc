@@ -31,7 +31,7 @@ let g:FontName = 'Consolas'
 "right font size will make eyes comfortable. no too big or too small
 let g:normal_guibg = ["#272822", "#2b3032", "#1b1b1b", "#002b36"]
 call s:CheckAddSetDefaultVal("g:default_linux_font_size", 17)
-call s:CheckAddSetDefaultVal("g:normal_guibg_idx", 3)
+call s:CheckAddSetDefaultVal("g:normal_guibg_idx", 2)
 
 if filereadable(expand("~/.local.vim"))
     source ~/.local.vim
@@ -54,6 +54,7 @@ if has("gui_running")
         let &guifont=g:FontName . ' ' . g:default_linux_font_size
         set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
         colorscheme ljyat
+        set linespace=3
     endif
 endif
 
