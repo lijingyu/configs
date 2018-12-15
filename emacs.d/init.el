@@ -1,13 +1,13 @@
 ;;put next two line in ~/.emacs.el
-;;(set-frame-font "-CYRE-Inconsolata-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1" t t)
+;;(set-frame-font "-MS  -Consolas-normal-normal-normal-*-21-*-*-*-m-0-iso10646-1" t t)
 ;;(load-file "~/bin/emacs.d/init.el")
 
 (add-to-list 'load-path "~/bin/emacs.d/lisp")
 (setq inhibit-startup-message t)
 (setq  initial-scratch-message nil)
 
-(set-background-color "#002b36")
-(set-foreground-color "#FFFFFF")
+(set-background-color "#1b1b1b")
+(set-foreground-color "#e5d5d5")
 
 (show-paren-mode t)
 (setq dired-recursive-deletes 'always)
