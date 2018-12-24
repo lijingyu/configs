@@ -32,6 +32,8 @@
 (add-to-list 'load-path "~/bin/emacs.d/lisp/elpa/company-0.9.3")
 (load-file "~/bin/emacs.d/lisp/elpa/company-0.9.3/company.el")
 (autoload 'company-mode "company" nil t)
+(autoload 'markdown-mode "markdown-mode"
+   "Major mode for editing Markdown files" t)
 (add-hook 'after-init-hook 'global-company-mode)
 (global-set-key (kbd "\t") 'company-complete)
 (custom-set-variables
