@@ -187,7 +187,7 @@ nnoremap <silent> <M-/> :call Prompt_Window_Create("tag")<CR>
 "move
 nnoremap <silent> <M-j> 3<C-e>
 nnoremap <silent> <M-k> 3<C-y>
-nnoremap <silent> <M-c> :MarkClear<CR>
+nnoremap <silent> <M-c> :call g:DoMarkClear()<CR>
 nnoremap <silent> <M-q> <C-q>
 "copy and paste
 vmap <C-c> "+y
@@ -201,7 +201,7 @@ nnoremap <silent> <M-]> :call LjyatShowTags(expand("<cword>"), 0)<CR>
 nmap <M-LeftMouse> <LeftMouse><leader>m
 nnoremap <silent> <RightMouse> <C-o>
 nmap <S-LeftMouse> <LeftMouse>:MarkClear<CR><leader>m
-nmap <M-RightMouse> :MarkClear<CR>
+nmap <M-RightMouse> :call g:DoMarkClear()<CR>
 nnoremap <silent> <M-l> :LjyatShowBookMarks<CR>
 nnoremap <silent> C :LjyatBookMarkClear<CR>
 nnoremap <silent> B :LjyatAddBookMark<CR>
@@ -221,7 +221,7 @@ nnoremap <silent> <silent> <Space>1 :call ClosePreAndQuickWin()<CR>
 nnoremap <silent> <Space>a 0
 nnoremap <silent> <Space>e g_
 nnoremap <silent> <Space>q <C-q>
-nnoremap <silent> <Space>c :MarkClear<CR>
+nnoremap <silent> <Space>c :call g:DoMarkClear()<CR>
 nnoremap <silent> <Space>k 3<C-y>
 nnoremap <silent> <Space>j 3<C-e>
 nnoremap <silent> <Space>/ :call Prompt_Window_Create("tag")<CR>
@@ -232,7 +232,7 @@ nnoremap <silent> <Space>\ :cs find s <C-R>=expand("<cword>")<CR><CR>:call OpenQ
 nnoremap <silent> <Space>[ :cs find c <C-R>=expand("<cword>")<CR><CR>:call OpenQuickFixWin(&window/2)<CR>
 nnoremap <silent> <Space>f :LjyatSearchFileCmd<CR>
 nnoremap <silent> <Space>] :call LjyatShowTags(expand("<cword>"), 0)<CR>
-nmap <Space><RightMouse> :MarkClear<CR>
+nmap <Space><RightMouse> :call g:DoMarkClear()<CR>
 nmap <Space><LeftMouse> <LeftMouse><leader>m
 nnoremap <silent> <Space>l :LjyatShowBookMarks<CR>
 
@@ -647,6 +647,11 @@ function! LjyatSearchTags()
     catch /^Vim\%((\a\+)\)\=:E/
         call s:EchoWarningMsg("not found tag: " . pattern)
     endtry
+endfunction
+
+function! g:DoMarkClear()
+    MarkClear
+    call s:EchoWarningMsg("Mark Clear")
 endfunction
 
 function! Arggrep(pattern_arg)
