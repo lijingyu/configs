@@ -1562,7 +1562,6 @@ augroup end
 " => Set OminComplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-call LoopNormalBG()
 if filereadable('projs.vim')
     source projs.vim
 endif
