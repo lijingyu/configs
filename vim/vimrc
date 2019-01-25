@@ -279,29 +279,36 @@ function! Trace(prefix)
     put =a:prefix . \"# [\" . expand('%:t') . ': ' . (line('.') + 1) . ']\"' .\");\"
 endfunction
 
-function! ShowCurrentMode(timer)
-    if s:kernel_mode == "TRUE"
-        call s:EchoWarningMsg("Kernel Code Mode")
-    else
-        call s:EchoWarningMsg( "Normal Code Mode")
+function! s:SetMsgLater(msg)
+    if a:msg == ''
+        return
     endif
+    let s:later_msg = a:msg
+    call timer_start(300, "ShowMsgLater")
+endfunction
+
+function! ShowMsgLater(timer)
+    call s:EchoWarningMsg(s:later_msg)
 endfunction
 
 function! LjyatSwitchKernelCodeMode()
     let winview = winsaveview()
     let buf_num = bufnr('%')
+    let msg = ''
     if s:kernel_mode == "TRUE"
         bufdo set expandtab tabstop=4 shiftwidth=4
+        let msg = 'Normal Code Mode'
         let s:kernel_mode = "FALSE"
     else
         bufdo set noexpandtab tabstop=8 shiftwidth=8
+        let msg = 'Kernel Code Mode'
         let s:kernel_mode = "TRUE"
     endif
     if buf_num != -1
         exe "b" . buf_num
     endif
     call winrestview(winview)
-    call timer_start(300, "ShowCurrentMode")
+    call s:SetMsgLater(msg)
 endfunction
 
 function! LjyatSwitchLanguageMode()
