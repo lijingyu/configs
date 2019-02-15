@@ -78,6 +78,7 @@ set previewheight=13
 set autoindent
 set smartindent
 set nocindent
+set cino=l1
 set expandtab tabstop=4 shiftwidth=4
 set nohlsearch
 set smarttab
