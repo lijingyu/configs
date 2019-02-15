@@ -208,10 +208,10 @@ nnoremap <silent> B :LjyatAddBookMark<CR>
 
 "grep -E
 nnoremap <silent> <M-s> :LjyatSearchStrCmd<CR>
-nnoremap <silent> <C-p> :cp<CR>
-nnoremap <silent> <C-n> :cn<CR>
-nnoremap <silent> <M-p> :cp<CR>
-nnoremap <silent> <M-n> :cn<CR>
+nnoremap <silent> <C-p> :cp<CR>zz
+nnoremap <silent> <C-n> :cn<CR>zz
+nnoremap <silent> <M-p> :cp<CR>zz
+nnoremap <silent> <M-n> :cn<CR>zz
 nnoremap <silent> <F10> :edit ++ff=dos<CR>
 
 "vim nnoremap
