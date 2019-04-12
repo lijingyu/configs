@@ -1370,11 +1370,11 @@ function! s:Prompt_SearchFile(pattern, cscope_files)
     let real_cmd = ''
     if a:pattern =~ "^f: "
         let pattern = a:pattern[3:]
-        let filter_cmd = 'substitute(v:val, ".*/", "","") =~? pattern'
-        let real_cmd = 'grep -a -i -h -E ' . a:pattern[3:] . ' ' . a:cscope_files
+        let pattern = "'" . pattern . "'"
+        let real_cmd = 'grep -a -i -h -E ' . pattern . ' ' . a:cscope_files
     else
-        let filter_cmd = 'v:val =~? a:pattern'
-        let real_cmd = 'grep -a -i -h -E ' . a:pattern . ' ' . a:cscope_files
+        let pattern = "'" . pattern . "'"
+        let real_cmd = 'grep -a -i -h -E ' . pattern . ' ' . a:cscope_files
     endif
 
     let match_files = system(real_cmd)
