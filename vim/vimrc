@@ -165,7 +165,7 @@ nmap n <leader>/
 nmap N <leader>?
 nmap M :MarkClear<CR><leader>m
 nmap S :LjyatSearchStrInFileListCmd<CR>
-nmap <leader>] :call LjyatShowTagInPreview(expand("<cword>"))<CR>
+nmap <leader>] :call LjyatShowTagInPreview(LjyatGetJumpTag())<CR>
 
 nnoremap <silent> <Space> <Nop>
 nnoremap <silent> <silent> <M-f> :LjyatSearchFileCmd<CR>
