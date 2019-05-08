@@ -944,7 +944,7 @@ endfunction
 
 "<C-s> not work in terminal. so should use <F4>
 function! LjyatSearchStrCurBuf()
-    call LjyatGotoNormalWin()
+    call LjyatGotoWin(s:prompt_workbuf)
     let curfilename = expand("%")
     if curfilename == ""
         call s:EchoWarningMsg("buffer name is NULL")
@@ -1166,6 +1166,7 @@ let s:prompt_prefix_min = 3
 let s:prompt_tagwidth = 15
 let s:prompt_taglist = []
 let s:prompt_keyloop = 0
+let s:prompt_workbuf = ''
 let s:prompt_search_file_init = 0
 let s:prompt_match_len = 0
 let s:prompt_timer = 0
@@ -1201,20 +1202,20 @@ function! PromptClose()
     let s:prompt_register_mark = 0
     let s:prompt_search_file_init = 0
     silent! call matchdelete(s:PromptGroupID)
-    call LjyatGotoNormalWin()
+    call LjyatGotoWin(s:prompt_workbuf)
     silent! call matchdelete(s:PromptNormalGroupID)
     redraw!
 endfunction
 
 function! PromptJumpCurStr(line)
-    call LjyatGotoNormalWin()
+    call LjyatGotoWin(s:prompt_workbuf)
     let lnu = matchstr(a:line,':\zs\d\+\ze:')
     exe lnu
     call LjyatGotoWin(g:Prompt_Title)
 endfunction
 
 function! PromptJumpTag(line)
-    call LjyatGotoNormalWin()
+    call LjyatGotoWin(s:prompt_workbuf)
     if bufname('%') == g:Prompt_Title
         exe "wincmd p"
     endif
@@ -1226,7 +1227,7 @@ function! PromptJumpFile(file)
         return
     endif
 
-    call LjyatGotoNormalWin()
+    call LjyatGotoWin(s:prompt_workbuf)
     if bufname('%') == g:Prompt_Title
         exe "wincmd p"
     endif
@@ -1355,7 +1356,7 @@ function! s:Prompt_SearchCurStr(pat)
     0put =matchlist
     normal! gg
 
-    call LjyatGotoNormalWin()
+    call LjyatGotoWin(s:prompt_workbuf)
     silent! call matchdelete(s:PromptNormalGroupID)
     let s:PromptNormalGroupID = matchadd('PromptGroup', pattern . '\c')
     call LjyatGotoWin(g:Prompt_Title)
@@ -1476,7 +1477,7 @@ endfunction
 
 "nameonly flag mean include path
 function! s:PromptGetCurrentFileName(nameonly)
-    if LjyatGotoNormalWin() != 0
+    if LjyatGotoWin(s:prompt_workbuf) == -1
         call LjyatGotoWin(g:Prompt_Title)
         return ''
     endif
@@ -1495,7 +1496,7 @@ endfunction
 
 function! s:PromptGetCurrentTagWord()
     let word = ''
-    if LjyatGotoNormalWin() != 0
+    if LjyatGotoWin(s:prompt_workbuf) == -1
         call LjyatGotoWin(g:Prompt_Title)
         return word
     endif
@@ -1515,6 +1516,16 @@ function! s:PromptClearSearchFileInit()
     if s:prompt_search_file_init == 1
         let s:prompt_search_file_init = 0
         call s:Prompt_InputClear()
+    endif
+endfunction
+
+function! s:PromptSetWorkBuf()
+    let s:prompt_workbuf = ''
+    if &buftype == ''
+        let s:prompt_workbuf = bufname('%')
+    else
+        call LjyatGotoNormalWin()
+        let s:prompt_workbuf = bufname('%')
     endif
 endfunction
 
@@ -1579,6 +1590,7 @@ function! Prompt_Window_Create(type)
     endif
 
     execute "cclose"
+    call s:PromptSetWorkBuf()
     exe 'silent! keepalt botright ' . &window/2 . ' split +buffer ' . g:Prompt_Title
     call s:Prompt_Window_Init(a:type)
 endfunction
