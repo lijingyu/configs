@@ -128,8 +128,10 @@ call s:CheckAddSetDefaultVal("s:ignore_match_tag", "'EXPORT_SYMBOL'")
 
 if exists("s:PromptGroupID")
     silent! call matchdelete(s:PromptGroupID)
+    silent! call matchdelete(s:PromptNormalGroupID)
 else
     let s:PromptGroupID = -1
+    let s:PromptNormalGroupID = -1
 endif
 if exists("s:PreviewTagID")
     silent! call matchdelete(s:PreviewTagID)
@@ -157,7 +159,7 @@ map <C-l> <C-w>l
 nnoremap <silent> <M-=> :call IncreaseFontSize()<CR>
 nnoremap <silent> <M--> :call DecreaseFontSize()<CR>
 nnoremap <silent> <F4> :LjyatSearchStrCurBuf<CR>
-nnoremap <silent> <C-s> :LjyatSearchStrCurBuf<CR>
+nnoremap <silent> <C-s> :call Prompt_Window_Create("cur-str")<CR>
 
 "color set
 nmap / <leader>r
@@ -1178,14 +1180,14 @@ function! PromptSearchTrigger(str_in, type)
 endfunction
 
 function! PromptGetPrefixMin(str_in, type)
-    if a:type == "tag"
-        return (len(a:str_in) >= s:prompt_prefix_min)?1:0
-    elseif a:type == "file"
+    if a:type == "file"
         if a:str_in =~ "^f: "
             return (len(a:str_in) >= s:prompt_prefix_min + 3)?1:0
         else
             return (len(a:str_in) >= s:prompt_prefix_min)?1:0
         endif
+    else
+        return (len(a:str_in) >= s:prompt_prefix_min)?1:0
     endif
 endfunction
 
@@ -1200,7 +1202,15 @@ function! PromptClose()
     let s:prompt_search_file_init = 0
     silent! call matchdelete(s:PromptGroupID)
     call LjyatGotoNormalWin()
+    silent! call matchdelete(s:PromptNormalGroupID)
     redraw!
+endfunction
+
+function! PromptJumpCurStr(line)
+    call LjyatGotoNormalWin()
+    let lnu = matchstr(a:line,':\zs\d\+\ze:')
+    exe lnu
+    call LjyatGotoWin(g:Prompt_Title)
 endfunction
 
 function! PromptJumpTag(line)
@@ -1269,6 +1279,8 @@ function! s:CtrlKeyHandler(key, type)
             call PromptJumpFile(getline('.'))
         elseif a:type == "tag"
             call PromptJumpTag(getline('.'))
+        elseif a:type == "cur-str"
+            call PromptJumpCurStr(getline('.'))
         endif
         call PromptClose()
         return
@@ -1283,6 +1295,9 @@ function! s:CtrlKeyHandler(key, type)
         normal 10j
     elseif a:key == "\<PageUp>" || a:key == 2 || a:key == 21
         normal 10k
+    endif
+    if a:type == "cur-str"
+        call PromptJumpCurStr(getline('.'))
     endif
     call s:PromptUpdateMsg(a:type)
 endfunction
@@ -1320,6 +1335,30 @@ endfunction
 
 function! s:Prompt_getInput()
     return s:str_in
+endfunction
+
+function! s:Prompt_SearchCurStr(pat)
+    sil! exe '%d _'
+    let cur_file = s:PromptGetCurrentFileName(0)
+    if cur_file == ''
+        return
+    endif
+    "let pattern = "'" . a:pat. "'"
+    let pattern = a:pat
+    let real_cmd = 'grep -a -n -H -E ' . ((&ignorecase == 1)? " -i ": " ") .  pattern . ' ' . cur_file
+    let match_files = system(real_cmd)
+    let matchlist = split(match_files, '\n')
+    let s:prompt_match_len = len(matchlist)
+    silent! call matchdelete(s:PromptGroupID)
+    let s:PromptGroupID = matchadd('PromptGroup', pattern . '\c')
+    normal! gg
+    0put =matchlist
+    normal! gg
+
+    call LjyatGotoNormalWin()
+    silent! call matchdelete(s:PromptNormalGroupID)
+    let s:PromptNormalGroupID = matchadd('PromptGroup', pattern . '\c')
+    call LjyatGotoWin(g:Prompt_Title)
 endfunction
 
 function! s:Prompt_SearchTag(tag)
@@ -1407,7 +1446,7 @@ function! s:PromptUpdateMsg(type)
                 redr | echoh MoreMsg | echon 'Find '. s:prompt_match_len .' file: ' . s:Prompt_getInput() | echoh None
             endif
         else
-            redr | echoh MoreMsg | echon 'Find ' . s:prompt_match_len.' tag: ' . s:Prompt_getInput() | echoh None
+            redr | echoh MoreMsg | echon 'Find ' . s:prompt_match_len.' ' . a:type . ': ' . s:Prompt_getInput() | echoh None
         endif
     endif
 endfunction
@@ -1417,6 +1456,8 @@ function! s:PromptTimerHandler(timer)
         call s:Prompt_SearchFile(s:Prompt_getInput(), s:tmpcscope_files)
     elseif s:type == "tag"
         call s:Prompt_SearchTag(s:Prompt_getInput())
+    elseif s:type == "cur-str"
+        call s:Prompt_SearchCurStr(s:Prompt_getInput())
     else
         call EchoWarningMsg("no support type search")
         call PromptClose()
@@ -1433,16 +1474,19 @@ function! s:TimerStop(timerid)
     endif
 endfunction
 
-function! s:PromptGetCurrentFileName()
+"nameonly flag mean include path
+function! s:PromptGetCurrentFileName(nameonly)
     if LjyatGotoNormalWin() != 0
         call LjyatGotoWin(g:Prompt_Title)
         return ''
     endif
     let filename = getreg("%")
     if filename != ''
-        let filename = system("basename ". filename)
-        if filename != ''
-            let filename = split(filename, '\.')[0]
+        if a:nameonly
+            let filename = system("basename ". filename)
+            if filename != ''
+                let filename = split(filename, '\.')[0]
+            endif
         endif
     endif
     call LjyatGotoWin(g:Prompt_Title)
@@ -1488,10 +1532,10 @@ function! s:Prompt_Window_Init(type)
     sil! exe '%d _'
     call s:Prompt_InputClear()
     if a:type == "file"
-        let cur_file = s:PromptGetCurrentFileName()
+        let cur_file = s:PromptGetCurrentFileName(1)
         if cur_file != ""
             let s:prompt_search_file_init = 1
-            call s:Prompt_InputAppend(s:PromptGetCurrentFileName())
+            call s:Prompt_InputAppend(s:PromptGetCurrentFileName(1))
         endif
     endif
 
@@ -1523,9 +1567,11 @@ function! s:Prompt_Window_Init(type)
 endfunction
 
 function! Prompt_Window_Create(type)
-    if !filereadable(s:tmpcscope_files)
-        call s:EchoWarningMsg("cscope.files not exist")
-        return
+    if a:type != "cur-str"
+        if !filereadable(s:tmpcscope_files)
+            call s:EchoWarningMsg("cscope.files not exist")
+            return
+        endif
     endif
 
     if LjyatGotoWin(g:Prompt_Title) == 0
