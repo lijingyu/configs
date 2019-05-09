@@ -1541,7 +1541,11 @@ function! s:PromptSetWorkBuf()
         let s:prompt_workbuf = bufname('%')
     else
         call LjyatGotoNormalWin()
-        let s:prompt_workbuf = bufname('%')
+        if &buftype != ''
+            return
+        else
+            let s:prompt_workbuf = bufname('%')
+        endif
     endif
 endfunction
 
@@ -1607,6 +1611,12 @@ function! Prompt_Window_Create(type)
 
     execute "cclose"
     call s:PromptSetWorkBuf()
+
+    if s:PromptGetWorkBuf() == ''
+        call s:EchoWarningMsg("no found normal buf")
+        return
+    endif
+
     exe 'silent! keepalt botright 1 split +buffer ' . g:Prompt_Title
     call s:Prompt_Window_Init(a:type)
 endfunction
