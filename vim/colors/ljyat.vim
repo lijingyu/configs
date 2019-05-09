@@ -29,6 +29,7 @@ hi Visual          guifg=black   guibg=white
 hi Normal          guifg=grey90 guibg=#1b1b1b
 hi CursorColumn                  guibg=#293739
 hi Cursor          guifg=white guibg=red
+hi CursorLine           guibg=#003355
 hi LineNr          guifg=#606060 guibg=#222222
 hi NonText         guifg=#BCBCBC guibg=#232526
 hi StatusLine      guifg=black   guibg=#C2BFA5 gui=bold
@@ -40,7 +41,6 @@ hi WarningMsg      term=standout ctermfg=0 ctermbg=11 guifg=Blue guibg=Yellow
 hi clear Constant
 
 hi! def link User1 Search
-hi! def link CursorLine  Search
 hi! def link ModeMsg     Directory
 hi! def link Typedef        Structure
 hi! def link CTagsType        Structure
