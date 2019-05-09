@@ -83,7 +83,7 @@ function create_dict()
 {
     echo_msg "create dict"
     if [ -s "tags" ]; then
-        sed 's/\s.*$//g' tags | uniq >  dict
+        awk -F ' ' '{ print $1 }' tags | uniq >  dict
     else
         echo_msg "need tags"
     fi
