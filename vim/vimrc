@@ -944,7 +944,7 @@ endfunction
 
 "<C-s> not work in terminal. so should use <F4>
 function! LjyatSearchStrCurBuf()
-    call LjyatGotoWin(s:prompt_workbuf)
+    call LjyatGotoWin(s:PromptGetWorkBuf())
     let curfilename = expand("%")
     if curfilename == ""
         call s:EchoWarningMsg("buffer name is NULL")
@@ -1202,20 +1202,21 @@ function! PromptClose()
     let s:prompt_register_mark = 0
     let s:prompt_search_file_init = 0
     silent! call matchdelete(s:PromptGroupID)
-    call LjyatGotoWin(s:prompt_workbuf)
+    call LjyatGotoWin(s:PromptGetWorkBuf())
     silent! call matchdelete(s:PromptNormalGroupID)
+    set nocursorline
     redraw!
 endfunction
 
 function! PromptJumpCurStr(line)
-    call LjyatGotoWin(s:prompt_workbuf)
+    call LjyatGotoWin(s:PromptGetWorkBuf())
     let lnu = matchstr(a:line,':\zs\d\+\ze:')
     exe lnu
     call LjyatGotoWin(g:Prompt_Title)
 endfunction
 
 function! PromptJumpTag(line)
-    call LjyatGotoWin(s:prompt_workbuf)
+    call LjyatGotoWin(s:PromptGetWorkBuf())
     if bufname('%') == g:Prompt_Title
         exe "wincmd p"
     endif
@@ -1227,7 +1228,7 @@ function! PromptJumpFile(file)
         return
     endif
 
-    call LjyatGotoWin(s:prompt_workbuf)
+    call LjyatGotoWin(s:PromptGetWorkBuf())
     if bufname('%') == g:Prompt_Title
         exe "wincmd p"
     endif
@@ -1356,9 +1357,10 @@ function! s:Prompt_SearchCurStr(pat)
     0put =matchlist
     normal! gg
 
-    call LjyatGotoWin(s:prompt_workbuf)
+    call LjyatGotoWin(s:PromptGetWorkBuf())
     silent! call matchdelete(s:PromptNormalGroupID)
     let s:PromptNormalGroupID = matchadd('PromptGroup', pattern . '\c')
+    set cursorline
     call LjyatGotoWin(g:Prompt_Title)
 endfunction
 
@@ -1440,6 +1442,16 @@ function! s:PromptUpdateMsg(type)
     if s:prompt_match_len > g:SearchLimit
         redr | echoh MoreMsg | echon a:type .'   [>' . g:SearchLimit.'] >>> ' . s:Prompt_getInput() | echoh None
     else
+        if s:prompt_match_len >= &window/2
+            exe "resize " . &window/2
+        else
+            if s:prompt_match_len == 0
+                resize 1
+            else
+                exe "resize " . s:prompt_match_len
+            endif
+        endif
+
         if a:type == "file"
             if s:prompt_search_file_init
                 redr | echoh MoreMsg | echon 'Find '. s:prompt_match_len .' file: ' | echoh None
@@ -1477,7 +1489,7 @@ endfunction
 
 "nameonly flag mean include path
 function! s:PromptGetCurrentFileName(nameonly)
-    if LjyatGotoWin(s:prompt_workbuf) == -1
+    if LjyatGotoWin(s:PromptGetWorkBuf()) == -1
         call LjyatGotoWin(g:Prompt_Title)
         return ''
     endif
@@ -1496,7 +1508,7 @@ endfunction
 
 function! s:PromptGetCurrentTagWord()
     let word = ''
-    if LjyatGotoWin(s:prompt_workbuf) == -1
+    if LjyatGotoWin(s:PromptGetWorkBuf()) == -1
         call LjyatGotoWin(g:Prompt_Title)
         return word
     endif
@@ -1517,6 +1529,10 @@ function! s:PromptClearSearchFileInit()
         let s:prompt_search_file_init = 0
         call s:Prompt_InputClear()
     endif
+endfunction
+
+function! s:PromptGetWorkBuf()
+    return s:prompt_workbuf
 endfunction
 
 function! s:PromptSetWorkBuf()
@@ -1591,7 +1607,7 @@ function! Prompt_Window_Create(type)
 
     execute "cclose"
     call s:PromptSetWorkBuf()
-    exe 'silent! keepalt botright ' . &window/2 . ' split +buffer ' . g:Prompt_Title
+    exe 'silent! keepalt botright 1 split +buffer ' . g:Prompt_Title
     call s:Prompt_Window_Init(a:type)
 endfunction
 
