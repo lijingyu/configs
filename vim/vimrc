@@ -1570,7 +1570,7 @@ function! s:Prompt_Window_Init(type)
         endif
     elseif a:type == "tag"
         call LjyatGotoWin(s:PromptGetWorkBuf())
-        call s:Prompt_InputAppend(expand("<cword>"))
+        call s:Prompt_InputAppend('\<' . expand("<cword>") . '\>')
         call LjyatGotoWin(g:Prompt_Title)
     endif
 
