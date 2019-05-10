@@ -1568,6 +1568,10 @@ function! s:Prompt_Window_Init(type)
             let s:prompt_search_file_init = 1
             call s:Prompt_InputAppend(s:PromptGetCurrentFileName(1))
         endif
+    elseif a:type == "tag"
+        call LjyatGotoWin(s:PromptGetWorkBuf())
+        call s:Prompt_InputAppend(expand("<cword>"))
+        call LjyatGotoWin(g:Prompt_Title)
     endif
 
     if len(s:Prompt_getInput()) >= s:prompt_prefix_min
