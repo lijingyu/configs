@@ -373,6 +373,10 @@ function! LjyatShowTags(word, cscope_tag)
     let word = a:word
     let use_cscope = a:cscope_tag
 
+    if word == ''
+        return
+    endif
+
     call PromptClose()
     if use_cscope
         if LjyatShowCscopeTags(word) == -1
@@ -1217,9 +1221,6 @@ endfunction
 
 function! PromptJumpTag(line)
     call LjyatGotoWin(s:PromptGetWorkBuf())
-    if bufname('%') == g:Prompt_Title
-        exe "wincmd p"
-    endif
     call LjyatShowTags(a:line, 1)
 endfunction
 
@@ -1570,7 +1571,10 @@ function! s:Prompt_Window_Init(type)
         endif
     elseif a:type == "tag"
         call LjyatGotoWin(s:PromptGetWorkBuf())
-        call s:Prompt_InputAppend('\<' . expand("<cword>") . '\>')
+        let curword = expand("<cword>")
+        if curword != ''
+            call s:Prompt_InputAppend('\<' . curword . '\>')
+        endif
         call LjyatGotoWin(g:Prompt_Title)
     endif
 
