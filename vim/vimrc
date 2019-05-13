@@ -3,7 +3,6 @@ set nocompatible
 if has("syntax")
     syntax on
 endif
-abc
 
 filetype plugin indent on
 
