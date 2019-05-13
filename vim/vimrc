@@ -3,6 +3,7 @@ set nocompatible
 if has("syntax")
     syntax on
 endif
+abc
 
 filetype plugin indent on
 
@@ -1355,8 +1356,8 @@ function! s:Prompt_SearchCurStr(pat)
     silent! call matchdelete(s:PromptGroupID)
     let s:PromptGroupID = matchadd('PromptGroup', pattern . '\c')
     normal! gg
-    0put =matchlist
-    normal! gg
+    put =matchlist
+    normal! ggdd
 
     call LjyatGotoWin(s:PromptGetWorkBuf())
     silent! call matchdelete(s:PromptNormalGroupID)
@@ -1398,7 +1399,8 @@ function! s:Prompt_SearchTag(tag)
     let idx = 0
     for tagitem in s:prompt_taglist
         if idx == 0
-            0put =tagitem
+            put =tagitem
+            normal! ggdd
         else
             put =tagitem
         endif
@@ -1434,8 +1436,8 @@ function! s:Prompt_SearchFile(pattern, cscope_files)
     silent! call matchdelete(s:PromptGroupID)
     let s:PromptGroupID = matchadd('PromptGroup', pattern . '\c')
     normal! gg
-    0put =matchlist
-    normal! gg
+    put =matchlist
+    normal! ggdd
 endfunction
 
 function! s:PromptUpdateMsg(type)
