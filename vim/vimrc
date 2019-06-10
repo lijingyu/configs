@@ -1174,7 +1174,7 @@ let s:prompt_workbuf = ''
 let s:prompt_search_file_init = 0
 let s:prompt_match_len = 0
 let s:prompt_timer = 0
-let s:prompt_keywait = 200
+let s:prompt_keywait = 400
 let s:prompt_register_mark = 0
 
 function! PromptSearchTrigger(str_in, type)
