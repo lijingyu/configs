@@ -1433,7 +1433,7 @@ function! s:Prompt_SearchFile(pattern, cscope_files)
     let matchlist = split(match_files, '\n')
     let s:prompt_match_len = len(matchlist)
     silent! call matchdelete(s:PromptGroupID)
-    let s:PromptGroupID = matchadd('PromptGroup', pattern . '\c')
+    let s:PromptGroupID = matchadd('PromptGroup', a:pattern . '\c')
     normal! gg
     put =matchlist
     normal! ggdd
