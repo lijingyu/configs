@@ -362,10 +362,10 @@ function! LjyatShowCscopeTags(tag)
 endfunction
 
 function! LjyatGetJumpTag()
-    let keyword = &iskeyword
-    set iskeyword+=:
+    "let keyword = &iskeyword
+    "set iskeyword+=:
     let tag = expand("<cword>")
-    let &iskeyword=keyword
+    "let &iskeyword=keyword
     return tag
 endfunction
 
