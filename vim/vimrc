@@ -1346,8 +1346,8 @@ function! s:Prompt_SearchCurStr(pat)
     if cur_file == ''
         return
     endif
-    "let pattern = "'" . a:pat. "'"
-    let pattern = a:pat
+    let pattern = "'" . a:pat. "'"
+    "let pattern = a:pat
     let real_cmd = 'grep -a -n -H -E ' . ((&ignorecase == 1)? " -i ": " ") .  pattern . ' ' . cur_file
     let match_files = system(real_cmd)
     let matchlist = split(match_files, '\n')
