@@ -10,7 +10,6 @@ if has("unix")
     " this is default set for terminal,
     " change option if needed in gui
     set shell=/bin/bash
-    set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
     colorscheme mycterm
     set mouse=""
 endif
@@ -46,13 +45,11 @@ if has("gui_running")
 
     if has("win32")
         set guifont=Courier_New:h13:cANSI:qDRAFT
-        set fileencodings=
     elseif has("mac")
         set guifont=Monaco:h13
         colorscheme ljyat
     else
         let &guifont=g:FontName . ' ' . g:default_linux_font_size
-        set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
         colorscheme ljyat
         set linespace=3
     endif
@@ -63,6 +60,8 @@ endif
 "vimrc is not usefull for gvim
 "set vb t_vb=
 """"""""""""""""""""""""""""""""""""""""""""""
+set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
+set encoding=utf-8
 set t_Co=256
 set showmatch        " Show matching brackets.
 set incsearch        " Incremental search
