@@ -3,6 +3,35 @@ config
 this file is config for debian system, like ubuntu or linux mint. contain gvim, dwm, dmenu, source list, 
 cscope and tag create function...
 
+why gvim?
+========
+gvim can set font, linespace and color support  better than vim. support alt map
+
+why gtags?
+==========
+gtags have better support c++ than cscope
+
+usage
+======
+1. $ source setup.sh
+2. create tags cscope.file and GTAGS 
+   $ cssetl "source_dir"
+   tags:         create by ctags
+   cscope.files: contain filelist we interest
+   GPATH  GRTAGS  GTAGS: gtags file
+3. open gvim
+    ：A source_dir1 source_dir2 ...
+     add dir to work space
+     :R 
+     remove all added dirs
+4. vim operates
+---------------
+    4.1 search tag
+    "alt-/" 
+    4.2 search search file
+    "alt-f"
+   
+
 setup.sh
 ========
 create cscope and tags for diff directory
