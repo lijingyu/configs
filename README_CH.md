@@ -68,14 +68,18 @@ gvim中执行
 
 14.高亮查找?
 ==========
+----
 M
 <M-mounse>
 <S-LeftMouse>
  还有看vimrc map
+----
   
 15.直接跳转到tag？
 ===================
+----
 <M-]>
+----
 
 16.mouse下tag在preview window中显示？
 ===========
