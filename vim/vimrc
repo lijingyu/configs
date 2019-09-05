@@ -157,8 +157,9 @@ map <C-h> <C-w>h
 map <C-l> <C-w>l
 nnoremap <silent> <M-=> :call IncreaseFontSize()<CR>
 nnoremap <silent> <M--> :call DecreaseFontSize()<CR>
+nnoremap <silent> <C-s> :LjyatSearchStrCurBuf<CR>
 nnoremap <silent> <F4> :LjyatSearchStrCurBuf<CR>
-nnoremap <silent> <C-s> :call Prompt_Window_Create("cur-str")<CR>
+"nnoremap <silent> <C-s> :call Prompt_Window_Create("cur-str")<CR>
 
 "color set
 nmap / <leader>r
