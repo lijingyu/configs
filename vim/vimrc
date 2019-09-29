@@ -1662,7 +1662,7 @@ augroup LjyatAutoCmds
     autocmd BufWritePost * call LjyatUpdateGTAGS(bufname("%"))
     autocmd BufNewFile,BufRead *.aidl setf java
     autocmd BufNewFile,BufRead *.hal setf c
-    autocmd BufNewFile,BufRead *.cu setf cpp
+    autocmd BufEnter *.cu set ft=cpp
 augroup end
 " => Set OminComplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
