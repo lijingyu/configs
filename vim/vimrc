@@ -299,10 +299,12 @@ function! LjyatSwitchKernelCodeMode()
     let buf_num = bufnr('%')
     let msg = ''
     if s:kernel_mode == "TRUE"
+        set expandtab tabstop=4 shiftwidth=4
         bufdo set expandtab tabstop=4 shiftwidth=4
         let msg = 'Normal Code Mode'
         let s:kernel_mode = "FALSE"
     else
+        set noexpandtab tabstop=8 shiftwidth=8
         bufdo set noexpandtab tabstop=8 shiftwidth=8
         let msg = 'Kernel Code Mode'
         let s:kernel_mode = "TRUE"
