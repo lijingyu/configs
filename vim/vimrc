@@ -24,7 +24,7 @@ function! s:CheckAddSetDefaultVal(var_name, val)
     endif
 endfunction
 
-let g:FontName = 'Consolas'
+let g:FontName = 'Inconsolata'
 
 "custume font size for you computer screen size
 "right font size will make eyes comfortable. no too big or too small
@@ -51,7 +51,7 @@ if has("gui_running")
     else
         let &guifont=g:FontName . ' ' . g:default_linux_font_size
         colorscheme ljyat
-        set linespace=3
+        set linespace=0
     endif
 endif
 
