@@ -20,7 +20,9 @@ endif
 
 let colors_name = "light"
 
-hi Normal guibg=grey80
+hi Normal guibg=grey70
+hi String guifg=red
+hi! def link Constant String
 hi MoreMsg guifg=blue
 
 " vim: sw=2
