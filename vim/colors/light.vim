@@ -24,5 +24,6 @@ hi Normal guibg=grey70
 hi String guifg=red
 hi! def link Constant String
 hi MoreMsg guifg=blue
+hi Comment gui=italic
 
 " vim: sw=2
