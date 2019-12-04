@@ -61,6 +61,7 @@ def Filter(FileSource, FileObj, TypesPattern, IgDir):
             break
 
         # match type
+        line = line.replace('+','\+')
         if re.search("\.("+TypesPattern +")", line):
             if IgDir:
                line = os.path.basename(line)
