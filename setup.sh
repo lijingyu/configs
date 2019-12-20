@@ -72,7 +72,7 @@ function create_tags()
             echo_msg "  KERNEL TAGS"
             exuberant "$CTAGS_PARAM"
         else
-            ctags $CTAGS_PARAM
+            /usr/bin/ctags $CTAGS_PARAM
         fi
     else
         echo_msg "need cscope.files"
