@@ -18,7 +18,7 @@ elif [ -e "/usr/local/share/gtags/gtags.conf" ]; then
     export GTAGSCONF="/usr/local/share/gtags/gtags.conf"
 fi
 
-export GTAGSLABEL=new-ctags
+export GTAGSLABEL=native-pygments
 
 function csset_usage()
 {
