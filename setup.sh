@@ -12,6 +12,14 @@ GTAGS_MODE=1
 CTAGS_PARAM_H_AS_C=" --c-kinds=-m --c++-kinds=-m --python-kinds=-i --fields=+iaS --langmap=c++:+.cu,c:.c.h,java:+.aidl -L cscope.files"
 CTAGS_PARAM_DEF=" --c-kinds=-m --c-kinds=+m --python-kinds=-i --fields=+iaS --langmap=c++:+.cu,java:+.aidl --extra=+q -L cscope.files"
 
+if [ -e "/usr/share/gtags/gtags.conf" ]; then
+    export GTAGSCONF="/usr/share/gtags/gtags.conf"
+elif [ -e "/usr/local/share/gtags/gtags.conf" ]; then
+    export GTAGSCONF="/usr/local/share/gtags/gtags.conf"
+fi
+
+export GTAGSLABEL=new-ctags
+
 function csset_usage()
 {
     echo_msg "csset/cssetl:

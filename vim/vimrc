@@ -611,7 +611,13 @@ function! AddTagDirs(predirs)
 
         if filereadable(new_global_path)
             let new_cscope_path = new_global_path
-            set csprg=/usr/bin/gtags-cscope
+
+            if filereadable("/usr/bin/gtags-cscope")
+                set csprg=/usr/bin/gtags-cscope
+            elseif filereadable("/usr/local/bin/gtags-cscope")
+                set csprg=/usr/local/bin/gtags-cscope
+            endif
+
             let g:global_mode = 1
         elseif filereadable(new_cscope_path)
             let g:global_mode = 0

@@ -52,5 +52,6 @@
   
   when compile global
   ./configure --with-exuberant-ctags=/usr/bin/ctags --with-universal-ctags=/usr/local/bin/ctags
-  
+
+  if want use universal ctags should set GTAGSCONF and GTAGSLABEL
   but if you just want create tags, need exeuberant-ctags, it work better
