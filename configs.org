@@ -1,28 +1,28 @@
-* --------------------bashrc---------------------------
+* bashrc
   if [ -f ~/.bash_aliases ]; then
   . ~/.bash_aliases
   fi
-  
+
   # enable programmable completion features (you don't need to enable
   # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
   # sources /etc/bash.bashrc).
   if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
   . /etc/bash_completion
   fi
-  
+
   stty stop ""
-  
+
   export JAVA_HOME=$HOME/jdk1.6.0_26
   #java 1.5
   #export JAVA_HOME=$HOME/jdk1.5.0_22
   #
   export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
-  
+
   export PATH=$JAVA_HOME/bin:$PATH
   export ANT_HOME=/usr/local/ant/apache-ant-1.8.1
   export PATH=$PATH:$HOME/bin:$ANT_HOME/bin
   export CLASSPATH=.:$CLASSPATH:$JAVA_HOME/lib:$JAVA_HOME/lib
-  
+
   source ~/bin/setup.sh
   PATH=$PATH:~/bin
   #PATH=$PATH:/home/lijy/android-sdk_eng.lijy_linux-x86/tools/:/home/lijy/android-sdk_eng.lijy_linux-x86/platform-tools
@@ -30,28 +30,32 @@
   alias work='source ~/bin/cygenv.sh'
   alias cdt='cd $ANDROID_BUILD_TOP'
   export LD_LIBRARY_PATH=/home/lijy/workspace/rda/compile/lib:$QTDIR/lib:/home/lijy/workspace/rda/compile:$LD_LIBRARY_PATH
---------------------bashrc---------------------------
 
-* -----terminal color-------------
+* terminal color
   terminal color bg=#002b36 fg=#839496
-  -----terminal color-------------
-  
-* ==========fcitx=================
+
+* fcitx
   export XMODIFIERS="@im=fcitx"
   export XIM=fcitx
   export XIM_PROGRAM=fcitx
   export GTK_IM_MODULE=fcitx
   export QT_IM_MODULE=fcitx
-  ==========fcitx=================
-* Host xxxxxx
+
+* Host ssh config
   KexAlgorithms +diffie-hellman-group1-sha1
+
 * exuberant-ctags universal-ctags global config
   global will use both exuberant-tag and universal-ctags
   exuberant-ctags locate in /usr/bin/ctags
   universal-ctags locate in /usr/local/bin/ctags
-  
+
   when compile global
   ./configure --with-exuberant-ctags=/usr/bin/ctags --with-universal-ctags=/usr/local/bin/ctags
 
   if want use universal ctags should set GTAGSCONF and GTAGSLABEL
   but if you just want create tags, need exeuberant-ctags, it work better
+
+  in /usr/local/share/gtags/gtags.conf define
+  exuberant-ctags is /usr/bin/ctags
+  universa-ctags is /usr/local/bin/ctags
+
