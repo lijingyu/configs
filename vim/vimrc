@@ -200,7 +200,7 @@ nnoremap <silent> <M-e> g_
 nnoremap <silent> <M-a> 0
 nnoremap <silent> <silent> <M-1> :call ClosePreAndQuickWin()<CR>
 nmap <M-m> <leader>m
-nnoremap <silent> <M-]> :call LjyatShowTags(LjyatGetJumpTag(), 0)<CR>
+nnoremap <silent> <M-]> :call LjyatShowTags(LjyatGetJumpTag(), 1)<CR>
 nmap <M-LeftMouse> <LeftMouse><leader>m
 nnoremap <silent> <RightMouse> <C-o>
 nmap <S-LeftMouse> <LeftMouse>:MarkClear<CR><leader>m
@@ -234,7 +234,7 @@ nnoremap <silent> <Space>t :cs f t
 nnoremap <silent> <Space>\ :cs find s <C-R>=expand("<cword>")<CR><CR>:call OpenQuickFixWin(&window/2)<CR>
 nnoremap <silent> <Space>[ :cs find c <C-R>=expand("<cword>")<CR><CR>:call OpenQuickFixWin(&window/2)<CR>
 nnoremap <silent> <Space>f :LjyatSearchFileCmd<CR>
-nnoremap <silent> <Space>] :call LjyatShowTags(LjyatGetJumpTag(), 0)<CR>
+nnoremap <silent> <Space>] :call LjyatShowTags(LjyatGetJumpTag(), 1)<CR>
 nmap <Space><RightMouse> :call g:DoMarkClear()<CR>
 nmap <Space><LeftMouse> <LeftMouse><leader>m
 nnoremap <silent> <Space>l :LjyatShowBookMarks<CR>
@@ -1381,13 +1381,13 @@ function! s:Prompt_SearchTag(tag)
 
     sil! exe '%d _'
 
-    let s:prompt_match_len = s:PatternNumInDictDirs(a:tag, s:cscope_tag_dir_list)
-    if s:prompt_match_len > g:SearchLimit
-        return
-    endif
+"    let s:prompt_match_len = s:PatternNumInDictDirs(a:tag, s:cscope_tag_dir_list)
+"    if s:prompt_match_len > g:SearchLimit
+"        return
+"    endif
 
     let pattern = "'" . a:tag . "'"
-    let real_cmd = 'grep -a -h -E ' . ((&ignorecase == 1)? " -i ": " ") . pattern . ' ' . substitute(&dict, ',', ' ', 'g')
+    let real_cmd = 'global -c ' . pattern
     let match_files = system(real_cmd)
     if match_files == ""
         call s:EchoWarningMsg("No match tag: " . pattern)
@@ -1582,7 +1582,7 @@ function! s:Prompt_Window_Init(type)
         call LjyatGotoWin(s:PromptGetWorkBuf())
         let curword = expand("<cword>")
         if curword != ''
-            call s:Prompt_InputAppend('\<' . curword . '\>')
+            call s:Prompt_InputAppend(curword)
         endif
         call LjyatGotoWin(g:Prompt_Title)
     endif
