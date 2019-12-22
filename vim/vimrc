@@ -382,7 +382,7 @@ function! LjyatShowTags(word, cscope_tag)
     call PromptClose()
     if use_cscope
         if LjyatShowCscopeTags(word) == -1
-            exe "tjump " . word
+            "exe "tjump " . word
             return
         endif
     else
