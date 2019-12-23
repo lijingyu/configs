@@ -382,7 +382,9 @@ function! LjyatShowTags(word, cscope_tag)
     call PromptClose()
     if use_cscope
         if LjyatShowCscopeTags(word) == -1
-            "exe "tjump " . word
+            try
+                exe "tjump " . word
+            endtry
             return
         endif
     else
@@ -1381,13 +1383,14 @@ function! s:Prompt_SearchTag(tag)
 
     sil! exe '%d _'
 
-"    let s:prompt_match_len = s:PatternNumInDictDirs(a:tag, s:cscope_tag_dir_list)
-"    if s:prompt_match_len > g:SearchLimit
-"        return
-"    endif
+    let s:prompt_match_len = s:PatternNumInDictDirs(a:tag, s:cscope_tag_dir_list)
+    if s:prompt_match_len > g:SearchLimit
+        return
+    endif
 
     let pattern = "'" . a:tag . "'"
-    let real_cmd = 'global -c ' . pattern
+    "let real_cmd = 'global -c ' . pattern
+    let real_cmd = 'grep -a -h -E ' . ((&ignorecase == 1)? " -i ": " ") . pattern . ' ' . substitute(&dict, ',', ' ', 'g')
     let match_files = system(real_cmd)
     if match_files == ""
         call s:EchoWarningMsg("No match tag: " . pattern)
@@ -1582,7 +1585,7 @@ function! s:Prompt_Window_Init(type)
         call LjyatGotoWin(s:PromptGetWorkBuf())
         let curword = expand("<cword>")
         if curword != ''
-            call s:Prompt_InputAppend(curword)
+            call s:Prompt_InputAppend('\<' . curword . '\>')
         endif
         call LjyatGotoWin(g:Prompt_Title)
     endif

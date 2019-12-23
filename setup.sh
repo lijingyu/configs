@@ -18,7 +18,8 @@ elif [ -e "/usr/local/share/gtags/gtags.conf" ]; then
     export GTAGSCONF="/usr/local/share/gtags/gtags.conf"
 fi
 
-export GTAGSLABEL=pygments
+export GTAGSFORCECPP=1
+export GTAGSLABEL=native-pygments
 
 function csset_usage()
 {
@@ -190,9 +191,9 @@ function exe_process()
         return
     fi
 
-    #create_tags
+    create_tags
     create_cscope
-    #create_dict
+    create_dict
     echo_msg "create  success"
 
     if [ "$CTAGS_PARAM" == "$CTAGS_PARAM_DEF" ]; then
