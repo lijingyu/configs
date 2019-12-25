@@ -384,6 +384,8 @@ function! LjyatShowTags(word, cscope_tag)
         if LjyatShowCscopeTags(word) == -1
             try
                 exe "tjump " . word
+            catch /^Vim\%((\a\+)\)\=:E/
+                call s:EchoWarningMsg("No find tag")
             endtry
             return
         endif
