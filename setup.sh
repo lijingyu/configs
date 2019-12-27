@@ -8,18 +8,14 @@ SKIP_CREATE_CSCOPE_FILES=0
 ONLY_CREATE_CSCOPE_FILES=0
 #cscope mode or gtags mode
 GTAGS_MODE=1
+CTAGS_CMD=/usr/bin/ctags
 
 CTAGS_PARAM_H_AS_C=" --c-kinds=-m --c++-kinds=-m --python-kinds=-i --fields=+iaS --langmap=c++:+.cu,c:.c.h,java:+.aidl -L cscope.files"
 CTAGS_PARAM_DEF=" --c-kinds=-m --c-kinds=+m --python-kinds=-i --fields=+iaS --langmap=c++:+.cu,java:+.aidl --extra=+q -L cscope.files"
 
-if [ -e "/usr/share/gtags/gtags.conf" ]; then
-    export GTAGSCONF="/usr/share/gtags/gtags.conf"
-elif [ -e "/usr/local/share/gtags/gtags.conf" ]; then
-    export GTAGSCONF="/usr/local/share/gtags/gtags.conf"
-fi
-
+export GTAGSCONF="/usr/local/share/gtags/gtags.conf"
 export GTAGSFORCECPP=1
-export GTAGSLABEL=native-pygments
+export GTAGSLABEL=new-ctags
 
 function csset_usage()
 {
@@ -81,7 +77,7 @@ function create_tags()
             echo_msg "  KERNEL TAGS"
             exuberant "$CTAGS_PARAM"
         else
-            /usr/bin/ctags $CTAGS_PARAM
+            $CTAGS_CMD $CTAGS_PARAM
         fi
     else
         echo_msg "need cscope.files"
@@ -299,7 +295,7 @@ function cstag()
         echo_msg "create cscope"
         cscope -bki cscope.files
         echo_msg "create tags"
-        ctags --c-kinds=-m --c++-kinds=-m --fields=+iaS  -L cscope.files
+        $CTAGS_CMD --c-kinds=-m --c++-kinds=-m --fields=+iaS  -L cscope.files
         sed 's/\s.*$//g' tags | uniq >  dict
     else
         echo_msg "no cscope.files"
@@ -437,7 +433,7 @@ setup_regex()
 exuberant()
 {
 	setup_regex exuberant asm c
-	ctags  $1                                      \
+	$CTAGS_CMD  $1                                      \
 	-I __initdata,__exitdata,__initconst,			\
 	-I __initdata_memblock					\
 	-I __refdata,__attribute,__maybe_unused,__always_unused \
