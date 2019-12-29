@@ -15,7 +15,7 @@ CTAGS_PARAM_DEF=" --c-kinds=-m --c-kinds=+m --python-kinds=-i --fields=+iaS --la
 
 export GTAGSCONF="/usr/local/share/gtags/gtags.conf"
 export GTAGSFORCECPP=1
-export GTAGSLABEL=new-ctags
+export GTAGSLABEL=native
 
 function csset_usage()
 {
