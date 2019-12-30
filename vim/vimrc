@@ -200,7 +200,7 @@ nnoremap <silent> <M-e> g_
 nnoremap <silent> <M-a> 0
 nnoremap <silent> <silent> <M-1> :call ClosePreAndQuickWin()<CR>
 nmap <M-m> <leader>m
-nnoremap <silent> <M-]> :call LjyatShowTags(LjyatGetJumpTag(), 1)<CR>
+nnoremap <silent> <M-]> :call LjyatShowTags(LjyatGetJumpTag(), 0)<CR>
 nmap <M-LeftMouse> <LeftMouse><leader>m
 nnoremap <silent> <RightMouse> <C-o>
 nmap <S-LeftMouse> <LeftMouse>:MarkClear<CR><leader>m
@@ -234,7 +234,7 @@ nnoremap <silent> <Space>t :cs f t
 nnoremap <silent> <Space>\ :cs find s <C-R>=expand("<cword>")<CR><CR>:call OpenQuickFixWin(&window/2)<CR>
 nnoremap <silent> <Space>[ :cs find c <C-R>=expand("<cword>")<CR><CR>:call OpenQuickFixWin(&window/2)<CR>
 nnoremap <silent> <Space>f :LjyatSearchFileCmd<CR>
-nnoremap <silent> <Space>] :call LjyatShowTags(LjyatGetJumpTag(), 1)<CR>
+nnoremap <silent> <Space>] :call LjyatShowTags(LjyatGetJumpTag(), 0)<CR>
 nmap <Space><RightMouse> :call g:DoMarkClear()<CR>
 nmap <Space><LeftMouse> <LeftMouse><leader>m
 nnoremap <silent> <Space>l :LjyatShowBookMarks<CR>
