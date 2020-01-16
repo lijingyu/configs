@@ -59,3 +59,7 @@
   exuberant-ctags is /usr/bin/ctags
   universa-ctags is /usr/local/bin/ctags
 
+* install system
+  sudo apt-get install git vim-gtk3 global cscope ibus ibus-pinyin net-tools volumeicon-alsa feh
+  cmake gcc make 
+  feh --bg-scale /usr/share/backgrounds/Manhattan_Sunset_by_Giacomo_Ferroni.jpg 

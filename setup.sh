@@ -13,7 +13,7 @@ CTAGS_CMD=/usr/bin/ctags
 CTAGS_PARAM_H_AS_C=" --c-kinds=-m --c++-kinds=-m --python-kinds=-i --fields=+iaS --langmap=c++:+.cu,c:.c.h,java:+.aidl -L cscope.files"
 CTAGS_PARAM_DEF=" --c-kinds=-m --c-kinds=+m --python-kinds=-i --fields=+iaS --langmap=c++:+.cu,java:+.aidl --extra=+q -L cscope.files"
 
-export GTAGSCONF="/usr/local/share/gtags/gtags.conf"
+#export GTAGSCONF="/usr/local/share/gtags/gtags.conf"
 export GTAGSFORCECPP=1
 export GTAGSLABEL=native
 
