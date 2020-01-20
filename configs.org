@@ -63,3 +63,6 @@
   sudo apt-get install git vim-gtk3 global cscope ibus ibus-pinyin net-tools volumeicon-alsa feh
   cmake gcc make 
   feh --bg-scale /usr/share/backgrounds/Manhattan_Sunset_by_Giacomo_Ferroni.jpg 
+
+  32bit
+  sudo apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386

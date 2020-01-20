@@ -76,7 +76,7 @@ task_urgent_icon_asb = 100 0 0
 task_iconified_icon_asb = 70 0 0
 
 # Fonts
-task_font = Serif 12
+task_font = sans serif 12
 task_font_color = #FFFFFF 68
 task_active_font_color = #66ffff 100
 task_urgent_font_color = #FFFFFF 83
