@@ -44,15 +44,14 @@ if has("gui_running")
     set mouse=a        "Enable mouse in gui
 
     if has("win32")
-        set guifont=Courier_New:h13:cANSI:qDRAFT
+        set guifont=Consolas:h13:cANSI:qDRAFT
     elseif has("mac")
         set guifont=Monaco:h13
-        colorscheme ljyat
     else
         let &guifont=g:FontName . ' ' . g:default_linux_font_size
-        colorscheme ljyat
         set linespace=0
     endif
+    colorscheme ljyat
 endif
 
 """"""""Special in Gvim"""""""""""""""""""""""
