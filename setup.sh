@@ -187,16 +187,16 @@ function exe_process()
         return
     fi
 
-    create_tags
-    create_cscope
-    create_dict
-    echo_msg "create  success"
-
     if [ "$CTAGS_PARAM" == "$CTAGS_PARAM_DEF" ]; then
         echo_msg "    c++ mode    "
     elif [ "$CTAGS_PARAM" == "$CTAGS_PARAM_H_AS_C" ]; then
         echo_msg "    c mode    "
     fi
+
+    create_tags
+    create_cscope
+    create_dict
+    echo_msg "create  success"
 }
 
 function csset()
