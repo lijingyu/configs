@@ -917,23 +917,6 @@ function! LjyatSearchFile(pattern, cscope_files)
     return matchlist
 endfunction
 
-function! LjyatSearchFileCmd()
-    if !filereadable(s:tmpcscope_files)
-        call s:EchoWarningMsg("cscope.files not exist")
-        return
-    endif
-
-    echohl MoreMsg
-    let pattern = input("  Search file: ")
-    echohl None
-
-    if pattern == ""
-        return
-    endif
-
-    let s:tmpmatchfilelist = LjyatSearchFile(pattern, s:tmpcscope_files)
-endfunction
-
 function! LjyatGotoNormalWin()
     let win_count = winnr('$') "loop back to this window again
     let win_pos = 0
