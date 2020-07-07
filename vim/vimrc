@@ -703,7 +703,7 @@ function! Arggrep(pattern_arg)
     execute "silent! MarkClear|silent! Mark " . a:pattern_arg
 
     let pattern = "'" . a:pattern_arg . "'"
-    let real_cmd = 'xargs grep -a -n -H -E ' . pattern . ' < ' . s:tmpcscope_files
+    let real_cmd = LjyatBuildGrepCmd(pattern, s:tmpcscope_files, 0)
     call s:EchoMoreMsg("Searching String ". pattern . " ...")
 
     let match_string = system(real_cmd)
@@ -744,7 +744,7 @@ function! LjyatSearchFunctionCaller()
 
     let pattern = '=\s*\<' . pattern . '\>|\<' . pattern . '\>\s*\('
     let pattern = "'" . pattern . "'"
-    let real_cmd = 'xargs grep  -a -n -H -E ' . pattern . ' < ' . s:tmpcscope_files
+    let real_cmd = LjyatBuildGrepCmd(pattern, s:tmpcscope_files, 0)
     call s:EchoMoreMsg("Searching called " . pattern . " ...")
     let match_string = system(real_cmd, "\n")
     if match_string == ""
@@ -762,6 +762,10 @@ function! LjyatSearchFunctionCaller()
     redraw
 endfunction
 
+function! LjyatBuildGrepCmd(pattern, cscope_files, ignore)
+    return 'while read filename;do grep -a -n -H -E '. ((a:ignore == 1)? " -i ": " ") . a:pattern . ' "$filename"; done < ' . a:cscope_files
+endfunction
+
 function! LjyatSearchStr(pattern, cscope_files)
     if !filereadable(a:cscope_files)
         call s:EchoWarningMsg("cscope.files not exist")
@@ -773,7 +777,8 @@ function! LjyatSearchStr(pattern, cscope_files)
     endif
 
     let pattern = "'" . a:pattern . "'"
-    let real_cmd = 'xargs grep -a -n -H -E ' . ((&ignorecase == 1)? " -i ": " ")  . escape(pattern, "()") . ' < ' . a:cscope_files
+
+    let real_cmd = LjyatBuildGrepCmd(escape(pattern, "()"), s:tmpcscope_files, &ignorecase)
     call s:EchoMoreMsg("Searching String " . pattern . " ...")
     let match_string = system(real_cmd, "\n")
     if match_string == ""
