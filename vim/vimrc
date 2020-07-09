@@ -29,7 +29,7 @@ let g:FontName = 'Inconsolata'
 "custume font size for you computer screen size
 "right font size will make eyes comfortable. no too big or too small
 let g:normal_guibg = ["#272822", "#2b3032", "#1b1b1b", "#002b36"]
-call s:CheckAddSetDefaultVal("g:default_linux_font_size", 17)
+call s:CheckAddSetDefaultVal("g:default_linux_font_size", 15)
 call s:CheckAddSetDefaultVal("g:normal_guibg_idx", 2)
 
 if filereadable(expand("~/.local.vim"))
@@ -109,6 +109,7 @@ let NERDTreeWinPos = "right"
 let s:searchhistory = 5
 let g:SearchLimit = 5000
 let g:SearchPattern = ''
+let g:QFlistPattern = ''
 
 if exists('&breakindent')
     set breakindent
@@ -166,6 +167,7 @@ nmap n <leader>/
 nmap N <leader>?
 nmap M :MarkClear<CR><leader>m
 nmap S :LjyatSearchStrInFileListCmd<CR>
+nmap F :call LjyatQFListFilterFile(getqflist(), input("qflist filter: "))<CR>
 nmap <leader>] :call LjyatShowTagInPreview(LjyatGetJumpTag())<CR>
 
 nnoremap <silent> <Space> <Nop>
@@ -995,6 +997,18 @@ function! LjyatVSearchStrCurBuf()
     execute "silent! " . real_cmd
     call OpenQuickFixWin(&window/2)
     redraw!
+endfunction
+
+func! FilterProcess(idx, val)
+    let name = bufname(a:val['bufnr'])
+    return name =~ g:QFlistPattern
+endfunc
+
+function! LjyatQFListFilterFile(qflist, f_pattern)
+    let g:QFlistPattern = a:f_pattern
+    let outlist = filter(copy(a:qflist), function('FilterProcess')) 
+    call setqflist(outlist)
+    call OpenQuickFixWin(&window/2)
 endfunction
 
 function! LjyatVSearchStrInFiles()
