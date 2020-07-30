@@ -765,7 +765,8 @@ function! LjyatSearchFunctionCaller()
 endfunction
 
 function! LjyatBuildGrepCmd(pattern, cscope_files, ignore)
-    return 'while read filename;do grep -a -n -H -E '. ((a:ignore == 1)? " -i ": " ") . a:pattern . ' "$filename"; done < ' . a:cscope_files
+    "return 'while read filename;do grep -a -n -H -E '. ((a:ignore == 1)? " -i ": " ") . a:pattern . ' "$filename"; done < ' . a:cscope_files
+    return 'xargs grep -a -n -H -E '. ((a:ignore == 1)? " -i ": " ") . a:pattern . ' < ' . a:cscope_files
 endfunction
 
 function! LjyatSearchStr(pattern, cscope_files)
