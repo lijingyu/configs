@@ -705,11 +705,9 @@ function! Arggrep(pattern_arg)
     execute "silent! MarkClear|silent! Mark " . a:pattern_arg
 
     let pattern = "'" . a:pattern_arg . "'"
-    let real_cmd = LjyatBuildGrepCmd(pattern, s:tmpcscope_files, 0)
     call s:EchoMoreMsg("Searching String ". pattern . " ...")
-
-    let match_string = system(real_cmd)
-    if match_string == ""
+    let matchlist = LjyatBuildGrepCmd(pattern, s:tmpcscope_files, 0)
+    if matchlist == []
         call s:EchoWarningMsg("No match string: " . pattern)
         return
     endif
@@ -717,7 +715,7 @@ function! Arggrep(pattern_arg)
     let old = ''
     let new = ''
     let match_files = ''
-    for line in split(match_string, '\n')
+    for line in matchlist
         let new = substitute(line, ':.*', '', 'g')
         if old != new
             let match_files = match_files . " " . new
@@ -729,7 +727,6 @@ function! Arggrep(pattern_arg)
     let ef = &errorformat
     set efm=%f:%l:%m
 
-    let matchlist = split(match_string, '\n')
     let matchlen = len(matchlist)
     let g:SearchPattern = pattern
     execute "silent! cexpr matchlist"
@@ -746,10 +743,9 @@ function! LjyatSearchFunctionCaller()
 
     let pattern = '=\s*\<' . pattern . '\>|\<' . pattern . '\>\s*\('
     let pattern = "'" . pattern . "'"
-    let real_cmd = LjyatBuildGrepCmd(pattern, s:tmpcscope_files, 0)
     call s:EchoMoreMsg("Searching called " . pattern . " ...")
-    let match_string = system(real_cmd, "\n")
-    if match_string == ""
+    let match_list = LjyatBuildGrepCmd(pattern, s:tmpcscope_files, 0)
+    if match_list == []
         call s:EchoWarningMsg("No match string: " . pattern)
         return
     endif
@@ -758,15 +754,33 @@ function! LjyatSearchFunctionCaller()
     set efm=%f:%l:%m
 
     let g:SearchPattern = pattern
-    execute "silent! cexpr match_string"
+    execute "silent! cexpr match_list"
     call OpenQuickFixWin(&window/2)
     let &errorformat=ef
     redraw
 endfunction
 
 function! LjyatBuildGrepCmd(pattern, cscope_files, ignore)
+    let lines = readfile(a:cscope_files)
+    let left = len(lines)
+    let pos = 0
+    let step = 0
+    let result = []
+    while left > 0
+        if left > 100000
+            let step = 100000
+        else
+            let step = left
+        endif
+        let exe_file_string = join(lines[pos:(pos+step)])
+        let real_cmd = 'grep -a -n -H -E '. ((a:ignore == 1)? " -i ": " ") . a:pattern . '  ' . exe_file_string
+        let result = result + split(system(real_cmd, "\n"), '\n')
+        let left = left - step
+        let pos = pos + step
+    endwhile
+    return result
     "return 'while read filename;do grep -a -n -H -E '. ((a:ignore == 1)? " -i ": " ") . a:pattern . ' "$filename"; done < ' . a:cscope_files
-    return 'xargs grep -a -n -H -E '. ((a:ignore == 1)? " -i ": " ") . a:pattern . ' < ' . a:cscope_files
+    "return 'xargs grep -a -n -H -E '. ((a:ignore == 1)? " -i ": " ") . a:pattern . ' < ' . a:cscope_files
 endfunction
 
 function! LjyatSearchStr(pattern, cscope_files)
@@ -781,15 +795,13 @@ function! LjyatSearchStr(pattern, cscope_files)
 
     let pattern = "'" . a:pattern . "'"
 
-    let real_cmd = LjyatBuildGrepCmd(escape(pattern, "()"), s:tmpcscope_files, &ignorecase)
     call s:EchoMoreMsg("Searching String " . pattern . " ...")
-    let match_string = system(real_cmd, "\n")
-    if match_string == ""
+    let matchlist = LjyatBuildGrepCmd(escape(pattern, "()"), s:tmpcscope_files, &ignorecase)
+    if len(matchlist) == 0
         call s:EchoWarningMsg("No match string: " . pattern)
         return
     endif
 
-    let matchlist = split(match_string, '\n')
     let filterlist = []
     for item in matchlist
         if matchstr(split(item, ':')[2], '^\s*//') == ""
