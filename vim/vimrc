@@ -761,26 +761,27 @@ function! LjyatSearchFunctionCaller()
 endfunction
 
 function! LjyatBuildGrepCmd(pattern, cscope_files, ignore)
-    let lines = readfile(a:cscope_files)
-    let left = len(lines)
-    let pos = 0
-    let step = 0
-    let result = []
-    while left > 0
-        if left > 100000
-            let step = 100000
-        else
-            let step = left
-        endif
-        let exe_file_string = join(lines[pos:(pos+step)])
-        let real_cmd = 'grep -a -n -H -E '. ((a:ignore == 1)? " -i ": " ") . a:pattern . '  ' . exe_file_string
-        let result = result + split(system(real_cmd, "\n"), '\n')
-        let left = left - step
-        let pos = pos + step
-    endwhile
-    return result
+"    let lines = readfile(a:cscope_files)
+"    let left = len(lines)
+"    let pos = 0
+"    let step = 0
+"    let result = []
+"    while left > 0
+"        if left > 1000
+"            let step = 1000
+"        else
+"            let step = left
+"        endif
+"        let exe_file_string = join(lines[pos:(pos+step-1)])
+"        let real_cmd = 'grep -a -n -H -E '. ((a:ignore == 1)? " -i ": " ") . a:pattern . '  ' . exe_file_string
+"        let result = result + systemlist(real_cmd, "\n")
+"        let left = left - step
+"        let pos = pos + step
+"    endwhile
+"    return result
     "return 'while read filename;do grep -a -n -H -E '. ((a:ignore == 1)? " -i ": " ") . a:pattern . ' "$filename"; done < ' . a:cscope_files
-    "return 'xargs grep -a -n -H -E '. ((a:ignore == 1)? " -i ": " ") . a:pattern . ' < ' . a:cscope_files
+    let real_cmd =  'xargs grep -a -n -H -E '. ((a:ignore == 1)? " -i ": " ") . a:pattern . ' < ' . a:cscope_files
+    return systemlist(real_cmd, "\n")
 endfunction
 
 function! LjyatSearchStr(pattern, cscope_files)
