@@ -488,6 +488,7 @@ endfunction
 
 function! LjyatNERDTreeOpenBufDir()
     call LjyatGotoNormalWin()
+    set nowinfixwidth
     if (exists("t:NERDTreeBufName"))
         if (bufwinnr(t:NERDTreeBufName) != -1)
             execute "silent! NERDTreeClose"
