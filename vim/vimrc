@@ -761,27 +761,34 @@ function! LjyatSearchFunctionCaller()
 endfunction
 
 function! LjyatBuildGrepCmd(pattern, cscope_files, ignore)
-"    let lines = readfile(a:cscope_files)
-"    let left = len(lines)
-"    let pos = 0
-"    let step = 0
-"    let result = []
-"    while left > 0
-"        if left > 1000
-"            let step = 1000
-"        else
-"            let step = left
-"        endif
-"        let exe_file_string = join(lines[pos:(pos+step-1)])
-"        let real_cmd = 'grep -a -n -H -E '. ((a:ignore == 1)? " -i ": " ") . a:pattern . '  ' . exe_file_string
-"        let result = result + systemlist(real_cmd, "\n")
-"        let left = left - step
-"        let pos = pos + step
-"    endwhile
-"    return result
+    let lines = readfile(a:cscope_files)
+    let left = len(lines)
+    let pos = 0
+    let step = 0
+    let fix_step = 100000
+    let result = []
+    let tmp_search_files = "/tmp/cscope.files." . getpid() . "_search"
+    while left > 0
+        if left > fix_step
+            let step = fix_step
+        else
+            let step = left
+        endif
+
+        let exe_file_string = join(lines[pos:(pos+step-1)])
+        call writefile(lines[pos:(pos+step-1)], tmp_search_files, "b")
+        let real_cmd =  'xargs grep -a -n -H -E '. ((a:ignore == 1)? " -i ": " ") . a:pattern . ' < ' . tmp_search_files
+        let result = result + systemlist(real_cmd, "\n")
+        let left = left - step
+        let pos = pos + step
+    endwhile
+    if tmp_search_files != ''
+        call delete(tmp_search_files)
+    endif
+    return result
     "return 'while read filename;do grep -a -n -H -E '. ((a:ignore == 1)? " -i ": " ") . a:pattern . ' "$filename"; done < ' . a:cscope_files
-    let real_cmd =  'xargs grep -a -n -H -E '. ((a:ignore == 1)? " -i ": " ") . a:pattern . ' < ' . a:cscope_files
-    return systemlist(real_cmd, "\n")
+"    let real_cmd =  'xargs grep -a -n -H -E '. ((a:ignore == 1)? " -i ": " ") . a:pattern . ' < ' . a:cscope_files
+"    return systemlist(real_cmd, "\n")
 endfunction
 
 function! LjyatSearchStr(pattern, cscope_files)
