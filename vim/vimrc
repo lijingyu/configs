@@ -1209,6 +1209,7 @@ let s:prompt_taglist = []
 let s:prompt_keyloop = 0
 let s:prompt_workbuf = ''
 let s:prompt_search_file_init = 0
+let s:prompt_wait_first_char = 1
 let s:prompt_match_len = 0
 let s:prompt_timer = 0
 let s:prompt_keywait = 500
@@ -1242,6 +1243,7 @@ function! PromptClose()
     let s:prompt_match_len = 0
     let s:prompt_register_mark = 0
     let s:prompt_search_file_init = 0
+    let s:prompt_wait_first_char = 0
     silent! call matchdelete(s:PromptGroupID)
     call LjyatGotoWin(s:PromptGetWorkBuf())
     silent! call matchdelete(s:PromptNormalGroupID)
@@ -1370,6 +1372,11 @@ function! s:Prompt_InputClear()
 endfunction
 
 function! s:Prompt_InputAppend(str)
+
+	if s:prompt_wait_first_char
+		let s:prompt_wait_first_char = 0
+        call s:Prompt_InputClear()
+	endif
     let s:str_in = s:str_in . substitute(a:str, '[^0-9A-Za-z-_.:><+= \\]\+.*','','g')
 endfunction
 
@@ -1625,6 +1632,7 @@ function! s:Prompt_Window_Init(type)
     endif
 
     call s:PromptUpdateMsg(a:type)
+    let s:prompt_wait_first_char = 1
     while s:prompt_keyloop
         let nr = getchar()
         call s:TimerStop(s:prompt_timer)
