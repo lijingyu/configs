@@ -8,10 +8,10 @@ SKIP_CREATE_CSCOPE_FILES=0
 ONLY_CREATE_CSCOPE_FILES=0
 #cscope mode or gtags mode
 GTAGS_MODE=1
-CTAGS_CMD=/usr/bin/ctags
+CTAGS_CMD=/usr/local/bin/ctags
 
 CTAGS_PARAM_H_AS_C=" --c-kinds=-m --c++-kinds=-m --python-kinds=-i --fields=+iaS --langmap=c++:+.cu.hal,c:.c.h,java:+.aidl -L cscope.files"
-CTAGS_PARAM_DEF=" --c-kinds=-m --c-kinds=+m --python-kinds=-i --fields=+iaS --langmap=c++:+.cu.hal,java:+.aidl --extra=+q -L cscope.files"
+CTAGS_PARAM_DEF=" --c-kinds=-m --c-kinds=+m --python-kinds=-i --fields=+iaS --langmap=c++:+.cu.hal,java:+.aidl --extras=+q -L cscope.files"
 
 #export GTAGSCONF="/usr/local/share/gtags/gtags.conf"
 export GTAGSFORCECPP=1
