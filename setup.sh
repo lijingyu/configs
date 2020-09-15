@@ -8,7 +8,12 @@ SKIP_CREATE_CSCOPE_FILES=0
 ONLY_CREATE_CSCOPE_FILES=0
 #cscope mode or gtags mode
 GTAGS_MODE=1
-CTAGS_CMD=/usr/local/bin/ctags
+if [ -e "/usr/local/bin/ctags" ]; then
+    CTAGS_CMD=/usr/local/bin/ctags
+else
+    CTAGS_CMD=/usr/bin/ctags
+fi
+
 
 CTAGS_PARAM_H_AS_C=" --c-kinds=-m --c++-kinds=-m --python-kinds=-i --fields=+iaS --langmap=c++:+.cu.hal,c:.c.h,java:+.aidl -L cscope.files"
 CTAGS_PARAM_DEF=" --c-kinds=-m --c-kinds=+m --python-kinds=-i --fields=+iaS --langmap=c++:+.cu.hal,java:+.aidl --extras=+q -L cscope.files"
