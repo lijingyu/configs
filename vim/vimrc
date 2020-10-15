@@ -371,12 +371,11 @@ function! LjyatCppGetFuncDefineEntry(name, separator)
 
     let show_list = []
     for class in list_class
-        call OpenQuickFixWin(&window/2)
+        call OpenQuickFixWin(10)
         let search_item = class . a:separator . func
         let tag_list = taglist(search_item . '$')
         for tag in tag_list
             call add(show_list, tag['filename']. ':' .tag['cmd'][2:])
-            echo tag
         endfor
     endfor
     let ef = &errorformat
