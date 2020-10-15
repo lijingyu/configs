@@ -297,6 +297,94 @@ function! ShowMsgLater(timer)
     call s:EchoWarningMsg(s:later_msg)
 endfunction
 
+function! LjyatCppGetClass(class_function, separator)
+    let list = split(a:class_function, escape(a:separator, '.'))
+    let len = len(list)
+    if len < 2
+        return ''
+    endif
+    return join(list[0:len-2], a:separator)
+endf
+
+function! LjyatCppGetClassFunc(class_function, separator)
+    let list = split(a:class_function, escape(a:separator, '.'))
+    let len = len(list)
+    if len < 2
+        return []
+    endif
+    return list[len-1]
+endf
+
+function! LjyatCppParseParentClassName(ClassName, separator)
+    " abc<aaa,bbb> this case
+    let name = a:ClassName
+    if name =~ '<'
+        let name = split(name, '<')[0]
+    endif
+    " ::abc::def this case
+    if name =~ '^'.escape(a:separator, '.')
+        let name = name[2:]
+    endif
+    return name
+endf
+
+function! LjyatCppGetClassParent(CurClass, separator)
+    let ParentListStr = ''
+    let taginfo = taglist("^". a:CurClass . "$")
+    for tag in taginfo
+        if has_key(tag, 'inherits')
+            "android::abc get android
+            let ParentListStr = ParentListStr . tag['name']
+            let pre_base = LjyatCppGetClass(tag['name'], a:separator)
+            if pre_base != ''
+                let pre_base = pre_base. a:separator
+            endif
+            let parentlist = split(tag['inherits'], ',\s*')
+            for base in parentlist
+                let base = LjyatCppParseParentClassName(base, a:separator)
+                let ParentListStr = ParentListStr . ' '. LjyatCppGetClassParent(pre_base . base, a:separator)
+            endfo
+        endif
+    endfor
+    return ParentListStr
+endf
+
+function! LjyatSearchDefine()
+    let separator = '::'
+    if &ft == 'c' || &ft== 'cpp'
+        let separator = '::'
+    endif
+    if &ft == 'java'
+        let separator = '.'
+    endif
+    let pattern = input("  Search tag: ")
+    call LjyatCppGetFuncDefineEntry(pattern, separator)
+endf
+
+function! LjyatCppGetFuncDefineEntry(name, separator)
+    let func = LjyatCppGetClassFunc(a:name, a:separator)
+    let classname = LjyatCppGetClass(a:name, a:separator)
+    let parent_class = classname . ' '. LjyatCppGetClassParent(classname, a:separator)
+    let list_class = split(parent_class, '\s\+')
+    let list_class = sort(list_class)
+    let list_class = uniq(list_class)
+
+    let show_list = []
+    for class in list_class
+        call OpenQuickFixWin(&window/2)
+        let search_item = class . a:separator . func
+        let tag_list = taglist(search_item . '$')
+        for tag in tag_list
+            call add(show_list, tag['filename']. ':' .tag['cmd'][2:])
+            echo tag
+        endfor
+    endfor
+    let ef = &errorformat
+    set efm=%f:%s
+    execute "silent! cexpr show_list"
+    let &errorformat=ef
+endf
+
 function! LjyatSwitchKernelCodeMode()
     let winview = winsaveview()
     let buf_num = bufnr('%')
@@ -1686,6 +1774,7 @@ command! LjyatAddBookMark call LjyatAddBookMark()
 command! LjyatAddBookMark call LjyatAddBookMark()
 command! LjyatShowBookMarks call LjyatShowBookMarks()
 command! LjyatBookMarkClear call LjyatBookMarkClear()
+command! LjyatSearchDefine call LjyatSearchDefine()
 command! -nargs=+ CreateTable call CreateTable(<f-args>)
 
 " => Set OminComplete
