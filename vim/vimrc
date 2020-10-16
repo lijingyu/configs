@@ -334,7 +334,9 @@ function! LjyatCppGetClassParent(CurClass, separator)
     for tag in taginfo
         if has_key(tag, 'inherits')
             "android::abc get android
-            "let ParentListStr = ParentListStr . tag['name']
+            if has_key(tag, 'namespace')
+                let ParentListStr = ParentListStr . ' ' . tag['namespace'] . '::' . a:CurClass
+            endif
             let pre_base = LjyatCppGetClass(tag['name'], a:separator)
             if pre_base != ''
                 let pre_base = pre_base. a:separator
@@ -349,6 +351,9 @@ function! LjyatCppGetClassParent(CurClass, separator)
             endfo
         endif
     endfor
+    let list_class = split(ParentListStr, '\s\+')
+    let list_class = uniq(list_class)
+    let ParentListStr = join(list_class, " ")
     return ParentListStr
 endf
 
@@ -372,6 +377,8 @@ function! LjyatCppGetFuncDefineEntry(name, separator)
     let list_class = sort(list_class)
     let list_class = uniq(list_class)
 
+    
+    echo list_class
     let show_list = []
     for class in list_class
         call OpenQuickFixWin(10)
