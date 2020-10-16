@@ -207,7 +207,7 @@ nmap <M-LeftMouse> <LeftMouse><leader>m
 nnoremap <silent> <RightMouse> <C-o>
 nmap <S-LeftMouse> <LeftMouse>:MarkClear<CR><leader>m
 nmap <M-RightMouse> :call g:DoMarkClear()<CR>
-nnoremap <silent> <M-l> :LjyatShowBookMarks<CR>
+nnoremap <silent> <M-l> :call LjyatSearchClassParent()<CR>
 nnoremap <silent> C :LjyatBookMarkClear<CR>
 nnoremap <silent> B :LjyatAddBookMark<CR>
 
@@ -240,7 +240,7 @@ nnoremap <silent> <Space>] :call LjyatShowTags(LjyatGetJumpTag(), 0)<CR>
 nnoremap <silent> <Space>. :call LjyatShowTags(LjyatGetJumpTag(), 1)<CR>
 nmap <Space><RightMouse> :call g:DoMarkClear()<CR>
 nmap <Space><LeftMouse> <LeftMouse><leader>m
-nnoremap <silent> <Space>l :LjyatShowBookMarks<CR>
+nnoremap <silent> <Space>l :call LjyatSearchClassParent()<CR>
 
 vnoremap <Space>R <ESC>:call LjyatVSearchStrCurBuf()<CR>
 vnoremap <Space>r <ESC>:call LjyatVSearchStrInFiles()<CR>
@@ -333,7 +333,6 @@ function! LjyatCppGetClassParent(CurClass, separator)
     let taginfo = taglist("^". a:CurClass . "$")
     for tag in taginfo
         if has_key(tag, 'inherits')
-            "android::abc get android
             if has_key(tag, 'namespace')
                 let ParentListStr = ParentListStr . ' ' . tag['namespace'] . '::' . a:CurClass
             endif
@@ -344,6 +343,12 @@ function! LjyatCppGetClassParent(CurClass, separator)
             let parentlist = split(tag['inherits'], ',\s*')
             for base in parentlist
                 let base = LjyatCppParseParentClassName(base, a:separator)
+
+                " Base : public Base,   //skip this condition
+                if base == a:CurClass
+                    continue
+                endif
+
                 let ParentListStr = ParentListStr . ' '. LjyatCppGetClassParent(pre_base . base, a:separator)
                 if has_key(tag, 'namespace')
                     let ParentListStr = ParentListStr . ' '. LjyatCppGetClassParent(tag['namespace']. '::' . base, a:separator)
@@ -369,6 +374,27 @@ function! LjyatSearchDefine()
     call LjyatCppGetFuncDefineEntry(pattern, separator)
 endf
 
+function! LjyatSearchClassParent()
+    let separator = '::'
+    if &ft == 'c' || &ft== 'cpp'
+        let separator = '::'
+    endif
+    if &ft == 'java'
+        let separator = '.'
+    endif
+    let list = []
+    let parent = LjyatCppGetClassParent(expand("<cword>"), separator)
+    let list_class = split(parent, '\s\+')
+    let list_class = sort(list_class)
+    let list_class = uniq(list_class)
+    for class in list_class
+        let tag_list = taglist('^' . class . '$')
+        if !empty(tag_list)
+            call add(list, class)
+        endif
+    endfor
+    echo list
+endf
 function! LjyatCppGetFuncDefineEntry(name, separator)
     let func = LjyatCppGetClassFunc(a:name, a:separator)
     let classname = LjyatCppGetClass(a:name, a:separator)
