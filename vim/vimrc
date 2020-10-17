@@ -336,6 +336,9 @@ function! LjyatCppGetClassParent(CurClass, separator)
             if has_key(tag, 'namespace')
                 let ParentListStr = ParentListStr . ' ' . tag['namespace'] . '::' . a:CurClass
             endif
+            if has_key(tag, 'class')
+                let ParentListStr = ParentListStr . ' ' . tag['class']
+            endif
             let pre_base = LjyatCppGetClass(tag['name'], a:separator)
             if pre_base != ''
                 let pre_base = pre_base. a:separator
