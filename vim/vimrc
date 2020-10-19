@@ -385,7 +385,8 @@ function! LjyatSearchClassParent()
     if &ft == 'java'
         let separator = '.'
     endif
-    let list = []
+    let find_define_list = []
+    let no_define_list = []
     let parent = LjyatCppGetClassParent(expand("<cword>"), separator)
     let list_class = split(parent, '\s\+')
     let list_class = sort(list_class)
@@ -393,10 +394,15 @@ function! LjyatSearchClassParent()
     for class in list_class
         let tag_list = taglist('^' . class . '$')
         if !empty(tag_list)
-            call add(list, class)
+            call add(find_define_list, class)
+        else
+            call add(no_define_list, class)
         endif
     endfor
-    echo list
+    echohl Statement
+    echo find_define_list
+    echohl None
+    echo no_define_list
 endf
 function! LjyatCppGetFuncDefineEntry(name, separator)
     let func = LjyatCppGetClassFunc(a:name, a:separator)
