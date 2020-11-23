@@ -1730,7 +1730,7 @@ function! s:Tlist_Window_Init()
     augroup TagListAutoCmds
         autocmd!
         " Display the tag prototype for the tag under the cursor.
-        autocmd CursorHold __Tag_List__ call s:Tlist_Window_Show_Info()
+       " autocmd CursorHold __Tag_List__ call s:Tlist_Window_Show_Info()
         " Highlight the current tag periodically
         autocmd CursorHold * silent call s:Tlist_Window_Highlight_Tag(
                             \ fnamemodify(bufname('%'), ':p'), line('.'), 1, 0)
