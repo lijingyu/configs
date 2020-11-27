@@ -94,6 +94,7 @@ set complete=.,k
 set laststatus=2
 set statusline=%!StatusLine()
 
+let g:search_ignore_comment=0
 let c_syntax_for_h = 1
 let Tlist_WinWidth = 40
 let Tlist_Auto_Open = 0
@@ -943,20 +944,24 @@ function! LjyatSearchStr(pattern, cscope_files)
         return
     endif
 
-    let filterlist = []
-    for item in matchlist
-        if matchstr(split(item, ':')[2], '^\s*//') == ""
-            call add(filterlist, item)
-        endif
-    endfor
+    "ignore comment code
+    if g:search_ignore_comment
+        let filterlist = matchlist
+        let matchlist = []
+        for item in filterlist
+            if matchstr(split(item, ':')[2], '^\s*//') == ""
+                call add(matchlist, item)
+            endif
+        endfor
+    endif
 
-    let matchlen = len(filterlist)
+    let matchlen = len(matchlist)
     if matchlen > g:SearchLimit
         call s:EchoMoreMsg("match " . matchlen . " > " . g:SearchLimit . " items, change pattern please ")
         return
     endif
 
-    let match_string = join(filterlist, "\n")
+    let match_string = join(matchlist, "\n")
     let ef = &errorformat
     set efm=%f:%l:%m
 
