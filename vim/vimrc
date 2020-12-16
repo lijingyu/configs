@@ -85,6 +85,7 @@ set number
 set nobackup
 set backspace=indent,eol,start
 set nowrapscan
+set nowrap
 set winaltkeys=no
 set diffopt=filler,vertical
 set foldmethod=manual
@@ -1845,6 +1846,7 @@ augroup LjyatAutoCmds
     autocmd VimLeave * call CleanTmpListFile(s:tmpcscope_files)
     autocmd BufWritePost * call LjyatUpdateGTAGS(bufname("%"))
     autocmd BufNewFile,BufRead *.aidl setf java
+    autocmd BufNewFile,BufRead *.kt setf java
     autocmd BufNewFile,BufRead *.hal setf c
     autocmd BufEnter *.cu set ft=cpp
 augroup end
