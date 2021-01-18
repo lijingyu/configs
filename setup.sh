@@ -107,7 +107,7 @@ function echo_msg()
 function parse_param()
 {
     INCLUD_DIRS=
-    EXINCLUDE_DIRS='xxxxxx'
+    EXINCLUDE_DIRS='xxxxxx\|test\|Test'
     EX_START=0
     KERNEL_TAGS=0
     CTAGS_PARAM=$CTAGS_PARAM_DEF
