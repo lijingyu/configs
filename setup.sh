@@ -6,6 +6,7 @@ EX_START=0
 KERNEL_TAGS=0
 SKIP_CREATE_CSCOPE_FILES=0
 ONLY_CREATE_CSCOPE_FILES=0
+IGNORE_FILE='igr'
 #cscope mode or gtags mode
 GTAGS_MODE=1
 if [ -e "/usr/local/bin/ctags" ]; then
@@ -55,7 +56,9 @@ function create_cscopefiles()
         fi
     fi
 
+    set_ignore "$IGNORE_FILE"
     echo_msg "create cscope.files in $@"
+    echo "ignore: $EXINCLUDE_DIRS"
     for arg in $@
     do
         case "$(uname -s)" in
@@ -102,6 +105,16 @@ function create_dict()
 function echo_msg()
 {
     echo "$@"
+}
+
+function set_ignore()
+{
+    if [ -s "$1" ]; then
+        for line in `cat $1`
+        do
+            EXINCLUDE_DIRS="$EXINCLUDE_DIRS\|$line"
+        done
+    fi
 }
 
 function parse_param()
