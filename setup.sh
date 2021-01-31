@@ -56,6 +56,7 @@ function create_cscopefiles()
         fi
     fi
 
+    EXINCLUDE_DIRS='xxxxxx\|test\|Test'
     set_ignore "$IGNORE_FILE"
     echo_msg "create cscope.files in $@"
     echo "ignore: $EXINCLUDE_DIRS"
@@ -120,7 +121,6 @@ function set_ignore()
 function parse_param()
 {
     INCLUD_DIRS=
-    EXINCLUDE_DIRS='xxxxxx\|test\|Test'
     EX_START=0
     KERNEL_TAGS=0
     CTAGS_PARAM=$CTAGS_PARAM_DEF
