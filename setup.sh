@@ -1,7 +1,7 @@
 #!/bin/bash
 
 INCLUD_DIRS=
-EXINCLUDE_DIRS='xxxxxx'
+EXINCLUDE_DIRS='test\|Test'
 EX_START=0
 KERNEL_TAGS=0
 SKIP_CREATE_CSCOPE_FILES=0
@@ -56,7 +56,7 @@ function create_cscopefiles()
         fi
     fi
 
-    EXINCLUDE_DIRS='xxxxxx\|test\|Test'
+    EXINCLUDE_DIRS='test\|Test'
     set_ignore "$IGNORE_FILE"
     echo_msg "create cscope.files in $@"
     echo "ignore: $EXINCLUDE_DIRS"
