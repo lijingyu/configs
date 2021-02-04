@@ -1549,14 +1549,14 @@ endfunction
 function! s:Prompt_SearchTag(tag)
     if !filereadable(s:tmpcscope_files)
         call s:EchoWarningMsg("cscope.files not exist")
-        return
+        return 1
     endif
 
     sil! exe '%d _'
 
     let s:prompt_match_len = s:PatternNumInDictDirs(a:tag, s:cscope_tag_dir_list)
     if s:prompt_match_len > g:SearchLimit
-        return
+        return 1
     endif
 
     let pattern = "'" . a:tag . "'"
@@ -1564,19 +1564,19 @@ function! s:Prompt_SearchTag(tag)
     let real_cmd = 'grep -a -h -E ' . ((&ignorecase == 1)? " -i ": " ") . pattern . ' ' . substitute(&dict, ',', ' ', 'g')
     let match_files = system(real_cmd)
     if match_files == ""
-        call s:EchoWarningMsg("No match tag: " . pattern)
-        return
+        "call s:EchoWarningMsg("No match tag: " . pattern)
+        return 0
     endif
 
     let s:prompt_taglist = split(match_files, '\n')
     let matchlen = len(s:prompt_taglist)
     if matchlen > g:SearchLimit
         call s:EchoMoreMsg("match " . matchlen . " > " . g:SearchLimit . " items, change pattern please ")
-        return
+        return 1
     endif
 
     normal! gg
-    let s:prompt_match_len = 0
+    let s:prompt_match_len = matchlen
     let idx = 0
     for tagitem in s:prompt_taglist
         if idx == 0
@@ -1585,17 +1585,13 @@ function! s:Prompt_SearchTag(tag)
         else
             put =tagitem
         endif
-        let s:prompt_match_len = s:prompt_match_len + 1
-        if s:prompt_match_len > g:SearchLimit
-            sil! exe '%d _'
-            return
-        endif
         let idx += 1
     endfor
     normal! gg
 
     silent! call matchdelete(s:PromptGroupID)
     let s:PromptGroupID = matchadd('PromptGroup', a:tag. '\c')
+    return 1
 endfunction
 
 function! s:Prompt_SearchFile(pattern, cscope_files)
@@ -1652,7 +1648,14 @@ function! s:PromptTimerHandler(timer)
     if s:type == "file"
         call s:Prompt_SearchFile(s:Prompt_getInput(), s:tmpcscope_files)
     elseif s:type == "tag"
-        call s:Prompt_SearchTag(s:Prompt_getInput())
+        if s:Prompt_SearchTag(s:Prompt_getInput()) == 0
+            if s:PromptGetBackupTag() != ''
+                call s:Prompt_InputInit(s:PromptGetBackupTag())
+                call s:Prompt_SearchTag(s:Prompt_getInput())
+            else
+                call s:EchoWarningMsg("No match tag")
+            endif
+        endif
     elseif s:type == "cur-str"
         call s:Prompt_SearchCurStr(s:Prompt_getInput())
     else
@@ -1690,7 +1693,21 @@ function! s:PromptGetCurrentFileName(nameonly)
     return filename
 endfunction
 
-function! s:PromptGetCurrentTagWord()
+let s:backuptag = ''
+func! s:PromptClearBackupTag()
+    let s:backuptag = ''
+endf
+
+func! s:PromptSaveBackupTag(word)
+    let s:backuptag = '\<' . a:word . '\>'
+endf
+
+func! s:PromptGetBackupTag()
+    return s:backuptag
+endf
+
+func! s:PromptGetCurrentTagWord()
+    call s:PromptClearBackupTag()
     let word = ''
     if LjyatGotoWin(s:PromptGetWorkBuf()) == -1
         call LjyatGotoWin(g:Prompt_Title)
@@ -1698,6 +1715,7 @@ function! s:PromptGetCurrentTagWord()
     endif
 
     if &ft == 'cpp'
+        call s:PromptSaveBackupTag(expand("<cword>"))
         setlocal iskeyword+=:
         let word = expand("<cword>")
         setlocal iskeyword-=:
@@ -1753,12 +1771,10 @@ function! s:Prompt_Window_Init(type)
             call s:Prompt_InputAppend(s:PromptGetCurrentFileName(1))
         endif
     elseif a:type == "tag"
-        call LjyatGotoWin(s:PromptGetWorkBuf())
-        let curword = expand("<cword>")
+        let curword = s:PromptGetCurrentTagWord()
         if curword != ''
             call s:Prompt_InputAppend('\<' . curword . '\>')
         endif
-        call LjyatGotoWin(g:Prompt_Title)
     endif
 
     if len(s:Prompt_getInput()) >= s:prompt_prefix_min
