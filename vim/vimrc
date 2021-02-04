@@ -1788,6 +1788,7 @@ function! s:Prompt_Window_Init(type)
     let s:prompt_wait_first_char = 1
     while s:prompt_keyloop
         let nr = getchar()
+        call s:PromptClearBackupTag()
         call s:TimerStop(s:prompt_timer)
         if (nr >= 0x20) &&  nr <= 0x7f "normal char
             call s:PromptClearSearchFileInit()
