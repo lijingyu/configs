@@ -24,7 +24,7 @@ function! s:CheckAddSetDefaultVal(var_name, val)
     endif
 endfunction
 
-let g:FontName = 'Inconsolata'
+let g:FontName = 'Inconsolata Medium'
 
 "custume font size for you computer screen size
 "right font size will make eyes comfortable. no too big or too small
