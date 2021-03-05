@@ -65,14 +65,14 @@ function create_cscopefiles()
         case "$(uname -s)" in
             "Linux")
                 find  ${arg}  -type f -regextype posix-egrep \
-                    -iregex '.*\/(makefile|Kconfig)' -prune -o \
-                    -type f -regex '.*\.(c|h|m|s|S|java|sh|cpp|vim|hp|aidl|rc|py|cc|def|xml|mk|el|lisp|dtsi|dts|ss|y|lex|gperf|inf|dec|hal|hpp|cxx|hh|hxx|h++|cu|qml|kt)'\
+                    -iregex '.*\/(makefile|Kconfig|CMakeLists.txt)' -prune -o \
+                    -type f -regex '.*\.(c|h|m|s|S|java|sh|cpp|vim|hp|aidl|rc|py|cc|def|xml|mk|el|lisp|dtsi|dts|ss|y|lex|gperf|inf|dec|hal|hpp|cxx|hh|hxx|h++|cu|qml|kt|cmake)'\
                     |sed  -e "/[ '()]/d" -e '/\/\./d' -e 's:^\./::' |grep -v "$EXINCLUDE_DIRS" >> cscope.files;;
 
             "Darwin")
                 find -E ${arg}  -type f \
-                    -iregex '.*\/(makefile|Kconfig)' -prune -o \
-                    -type f -regex '.*\.(c|h|m|s|S|java|sh|cpp|vim|hp|aidl|rc|py|cc|def|xml|mk|el|lisp|dtsi|dts|ss|y|lex|gperf|inf|dec|hal|hpp|cxx|hh|hxx|h++|cu|qml|kt)'\
+                    -iregex '.*\/(makefile|Kconfig|CMakeLists.txt)' -prune -o \
+                    -type f -regex '.*\.(c|h|m|s|S|java|sh|cpp|vim|hp|aidl|rc|py|cc|def|xml|mk|el|lisp|dtsi|dts|ss|y|lex|gperf|inf|dec|hal|hpp|cxx|hh|hxx|h++|cu|qml|kt|cmake)'\
                     |sed  -e "/[ '()]/d" -e '/\/\./d' -e 's:^\./::' |grep -v "$EXINCLUDE_DIRS" >> cscope.files;;
         esac
     done
