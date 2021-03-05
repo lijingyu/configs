@@ -486,9 +486,13 @@ endfunction
 
 function! LjyatShowCscopeTags(tag)
     try
+        call setqflist([])
         exe "cs f g " . a:tag
         if len(getqflist()) > 1
             call OpenQuickFixWin(&window/2)
+        else
+            call s:EchoWarningMsg("No find tag")
+            return
         endif
     catch /^Vim\%((\a\+)\)\=:E/
         if v:exception =~ "E259"
