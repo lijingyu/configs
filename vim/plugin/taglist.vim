@@ -199,7 +199,7 @@ if !exists('loaded_taglist')
     " Automatically close the folds for the non-active files in the taglist
     " window
     if !exists('Tlist_File_Fold_Auto_Close')
-        let Tlist_File_Fold_Auto_Close = 1
+        let Tlist_File_Fold_Auto_Close = 0
     endif
 
     " Close the taglist window when a tag is selected
