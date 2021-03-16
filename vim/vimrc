@@ -1870,6 +1870,8 @@ augroup LjyatAutoCmds
     autocmd BufNewFile,BufRead *.kt setf java
     autocmd BufNewFile,BufRead *.hal setf c
     autocmd BufEnter *.cu set ft=cpp
+    autocmd BufEnter *.s set ft=fasm
+    autocmd BufEnter *.S set ft=fasm
 augroup end
 " => Set OminComplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
