@@ -1874,14 +1874,23 @@ setfullscreen(Client *c, Bool fullscreen) {
 	}
 }
 
-void
+static Layout *last_layout = NULL;
 setlayout(const Arg *arg) {
-	if(!arg || !arg->v || arg->v != selmon->lt[selmon->sellt]) {
+    Layout *playout = arg->v;
+    if (playout == &layouts[2]) {
+        if (last_layout == &layouts[2])
+            playout = &layouts[3];
+        else if (last_layout == &layouts[3])
+            playout = &layouts[2];
+    }
+
+    last_layout = playout;
+	if(!arg || !playout || playout != selmon->lt[selmon->sellt]) {
 		selmon->pertag->sellts[selmon->pertag->curtag] ^= 1;
 		selmon->sellt = selmon->pertag->sellts[selmon->pertag->curtag];
 	}
 	if(arg && arg->v)
-		selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt] = (Layout *)arg->v;
+		selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt] = playout;
 	selmon->lt[selmon->sellt] = selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt];
 	strncpy(selmon->ltsymbol, selmon->lt[selmon->sellt]->symbol, sizeof selmon->ltsymbol);
 	if(selmon->sel)
