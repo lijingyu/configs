@@ -6,7 +6,7 @@ EX_START=0
 KERNEL_TAGS=0
 SKIP_CREATE_CSCOPE_FILES=0
 ONLY_CREATE_CSCOPE_FILES=0
-IGNORE_FILE='igr'
+IGNORE_FILE='.igr'
 #cscope mode or gtags mode
 GTAGS_MODE=1
 if [ -e "/usr/local/bin/ctags" ]; then
