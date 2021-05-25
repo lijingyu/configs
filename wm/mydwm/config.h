@@ -2,7 +2,7 @@
 
 /* appearance */
 //static const char font[]            = "-*-terminus-medium-r-*-*-16-*-*-*-*-*-*-*";
-static const char font[]            = "WenQuanYi Micro Hei:size=11";
+static const char font[]            = "Microsoft Yahei:size=11";
 static const char normbordercolor[] = "#444444";
 static const char normbgcolor[]     = "#bbbbbb";
 static const char normfgcolor[]     = "#222222";
