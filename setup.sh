@@ -56,7 +56,6 @@ function create_cscopefiles()
         fi
     fi
 
-    EXINCLUDE_DIRS='test\|Test'
     set_ignore "$IGNORE_FILE"
     echo_msg "create cscope.files in $@"
     echo "ignore: $EXINCLUDE_DIRS"
