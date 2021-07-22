@@ -1,7 +1,7 @@
 #!/bin/bash
 
 INCLUD_DIRS=
-EXINCLUDE_DIRS='test\|Test\|xxxxxx'
+DEF_EXINCLUDE_DIRS='test\|Test\|xxxxxx'
 EX_START=0
 KERNEL_TAGS=0
 SKIP_CREATE_CSCOPE_FILES=0
@@ -127,6 +127,8 @@ function parse_param()
     APPEND_CREATE_CSCOPE_FILES=0
     ONLY_CREATE_CSCOPE_FILES=0
     GTAGS_MODE=1
+
+    EXINCLUDE_DIRS=$DEF_EXINCLUDE_DIRS
 
     for arg in $@
     do
