@@ -1,7 +1,7 @@
 #!/bin/bash
 
 INCLUD_DIRS=
-EXINCLUDE_DIRS='test\|Test'
+EXINCLUDE_DIRS='test\|Test\|xxxxxx'
 EX_START=0
 KERNEL_TAGS=0
 SKIP_CREATE_CSCOPE_FILES=0
