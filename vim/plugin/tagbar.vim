@@ -54,6 +54,9 @@ function! s:setup_options() abort
     else
         let previewwin_pos = 'rightbelow vertical'
     endif
+
+
+
     let options = [
         \ ['autoclose', 0],
         \ ['autofocus', 0],
@@ -73,7 +76,7 @@ function! s:setup_options() abort
         \ ['sort', 1],
         \ ['systemenc', &encoding],
         \ ['vertical', 0],
-        \ ['width', 40],
+        \ ['width', 33],
         \ ['zoomwidth', 1],
         \ ['silent', 0],
     \ ]

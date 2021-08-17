@@ -97,7 +97,7 @@ set statusline=%!StatusLine()
 
 let g:search_ignore_comment=0
 let c_syntax_for_h = 1
-let Tlist_WinWidth = 40
+let Tlist_WinWidth = 33
 let Tlist_Auto_Open = 0
 "global_mode is 0:cscope 1:global
 let g:global_mode = 0
