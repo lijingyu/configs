@@ -26,7 +26,8 @@ hi Type            guifg=#95e454 gui=NONE
 hi VertSplit       guifg=#808080 guibg=#080808 gui=bold
 hi VisualNOS                     guibg=#403D3D
 hi Visual          guifg=black   guibg=white
-hi Normal          guifg=#9c9c9c guibg=#002b36
+"hi Normal          guifg=#9c9c9c guibg=#002b36
+hi Normal          guifg=#9c9c9c guibg=#1b1b1b
 hi CursorColumn                  guibg=#293739
 hi Cursor          guifg=white guibg=red
 hi CursorLine           guibg=#003355
