@@ -18,11 +18,11 @@ hi Comment    	   term=bold ctermfg=5 gui=italic guifg=DeepSkyBlue3
 hi Number          guifg=#F94C87
 hi Folded          guifg=white guibg=#403D3D 
 hi FoldColumn      guifg=white guibg=#403D3D 
-hi Statement       term=bold ctermfg=14  guifg=#86C711
+hi Statement       term=bold ctermfg=14  guifg=#758900
 hi clear Function
-hi Title           guifg=#00dd00 gui=bold
+hi Title           guifg=#00a000 gui=bold
 hi Keyword         guifg=#E6C84F   gui=NONE
-hi Type            guifg=#95e454 gui=NONE
+hi Type            guifg=#2E8B57  gui=NONE
 hi VertSplit       guifg=#808080 guibg=#080808 gui=bold
 hi VisualNOS                     guibg=#403D3D
 hi Visual          guifg=black   guibg=white
