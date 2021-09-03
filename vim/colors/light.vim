@@ -27,4 +27,11 @@ hi MoreMsg guifg=blue
 hi Comment gui=italic
 hi Type guifg=darkgreen
 
+hi MarkWord1  ctermbg=Cyan     ctermfg=Black  guibg=lightred    guifg=Black
+hi MarkWord2  ctermbg=Green    ctermfg=Black  guibg=lightyellow guifg=Black
+hi MarkWord3  ctermbg=Yellow   ctermfg=Black  guibg=#FFDB72    guifg=Black
+hi MarkWord4  ctermbg=Red      ctermfg=Black  guibg=lightgreen guifg=Black
+hi MarkWord5  ctermbg=Magenta  ctermfg=Black  guibg=orange    guifg=Black
+hi MarkWord6  ctermbg=Blue     ctermfg=Black  guibg=#9999FF    guifg=Black
+
 " vim: sw=2
