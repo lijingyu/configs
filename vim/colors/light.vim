@@ -28,7 +28,7 @@ hi Comment gui=italic
 hi Type guifg=darkgreen
 
 hi MarkWord1  ctermbg=Cyan     ctermfg=Black  guibg=lightred    guifg=Black
-hi MarkWord2  ctermbg=Green    ctermfg=Black  guibg=lightyellow guifg=Black
+hi MarkWord2  ctermbg=Green    ctermfg=Black  guibg=#2E8B57 guifg=Black
 hi MarkWord3  ctermbg=Yellow   ctermfg=Black  guibg=#FFDB72    guifg=Black
 hi MarkWord4  ctermbg=Red      ctermfg=Black  guibg=lightgreen guifg=Black
 hi MarkWord5  ctermbg=Magenta  ctermfg=Black  guibg=orange    guifg=Black
