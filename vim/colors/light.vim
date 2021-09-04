@@ -20,7 +20,7 @@ endif
 
 let colors_name = "light"
 
-hi Normal guibg=#cae8cf
+hi Normal guibg=#aac8af
 hi String guifg=#b00000
 hi! def link Constant String
 hi MoreMsg guifg=blue
@@ -28,6 +28,7 @@ hi Comment gui=italic
 hi Type guifg=darkgreen
 hi Identifier guifg=darkgreen
 hi Title guifg=#cb4b16
+hi CursorLine guibg=orange
 
 hi MarkWord1  ctermbg=Cyan     ctermfg=Black  guibg=lightred    guifg=Black
 hi MarkWord2  ctermbg=Green    ctermfg=Black  guibg=#2E8B57 guifg=Black
