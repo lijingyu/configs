@@ -24,7 +24,7 @@ function! s:CheckAddSetDefaultVal(var_name, val)
     endif
 endfunction
 
-let g:FontName = 'Inconsolata Medium'
+let g:FontName = 'SF Mono Medium'
 
 "custume font size for you computer screen size
 "right font size will make eyes comfortable. no too big or too small
@@ -51,7 +51,7 @@ if has("gui_running")
         let &guifont=g:FontName . ' ' . g:default_linux_font_size
         set linespace=0
     endif
-    colorscheme ljyat
+    colorscheme light
 endif
 
 """"""""Special in Gvim"""""""""""""""""""""""
