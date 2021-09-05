@@ -29,6 +29,7 @@ hi Type guifg=darkgreen
 hi Identifier guifg=darkgreen
 hi Title guifg=#cb4b16
 hi CursorLine guibg=orange
+hi WarningMsg guibg=darkred
 
 hi MarkWord1  ctermbg=Green    ctermfg=Black  guibg=#2E8B57 guifg=Black
 hi MarkWord2  ctermbg=Cyan     ctermfg=Black  guibg=lightred    guifg=Black
