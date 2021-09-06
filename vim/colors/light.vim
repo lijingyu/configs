@@ -20,7 +20,7 @@ endif
 
 let colors_name = "light"
 
-hi Normal guibg=#9ab8af
+hi Normal guibg=#9abfaf
 hi String guifg=#b00000
 hi! def link Constant String
 hi MoreMsg guifg=blue
