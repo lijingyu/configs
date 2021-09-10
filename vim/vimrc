@@ -723,8 +723,9 @@ function! AddTagDirs(predirs)
         return
     endif
 
+
     let arglist = []
-    for dir in split(a:predirs, ",")
+    for dir in split(a:predirs, '\s')
         call add(arglist, substitute(expand(split(dir, "\"")[0]),'/$', '',''))
     endfor
     call uniq(sort(arglist))
