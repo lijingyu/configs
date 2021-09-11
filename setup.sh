@@ -8,7 +8,7 @@ SKIP_CREATE_CSCOPE_FILES=0
 ONLY_CREATE_CSCOPE_FILES=0
 IGNORE_FILE='.igr'
 #cscope mode or gtags mode
-GTAGS_MODE=1
+GTAGS_MODE=0
 if [ -e "/usr/local/bin/ctags" ]; then
     CTAGS_CMD=/usr/local/bin/ctags
 else
@@ -29,7 +29,7 @@ function csset_usage()
                   -o only create cscope.files\n
                      -a append create cscope.files\n
                   -s skip create cscope.files\n
-                  -ng use cscope mode (default use gtags)\n
+                  -g use gtags mode (default use ctags)\n
                   -  exinclude dir \n
                   -k kernel mode, for create tags\n
                   -c  .h file as c files, used when all souce is c(default c++ mode)\n
@@ -38,12 +38,13 @@ function csset_usage()
 
 function create_cscope()
 {
-    echo_msg "create cscope"
     if [ $GTAGS_MODE -eq 1 ];then
         export GTAGSFORCECPP=1
         gtags -f cscope.files
+        echo_msg "create global tags"
     else
         unset GTAGSFORCECPP
+        echo_msg "create cscope"
         cscope -bki cscope.files
     fi
 }
@@ -126,7 +127,7 @@ function parse_param()
     SKIP_CREATE_CSCOPE_FILES=0
     APPEND_CREATE_CSCOPE_FILES=0
     ONLY_CREATE_CSCOPE_FILES=0
-    GTAGS_MODE=1
+    GTAGS_MODE=0
 
     EXINCLUDE_DIRS=$DEF_EXINCLUDE_DIRS
 
@@ -141,8 +142,8 @@ function parse_param()
             SKIP_CREATE_CSCOPE_FILES=1
             continue
         fi
-        if [ $arg == "-ng" ]; then
-            GTAGS_MODE=0
+        if [ $arg == "-g" ]; then
+            GTAGS_MODE=1
             continue
         fi
         if [ $arg == "-o" ]; then
