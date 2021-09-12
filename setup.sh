@@ -40,8 +40,8 @@ function create_cscope()
 {
     if [ $GTAGS_MODE -eq 1 ];then
         export GTAGSFORCECPP=1
+        echo_msg "create global gtags"
         gtags -f cscope.files
-        echo_msg "create global tags"
     else
         unset GTAGSFORCECPP
         echo_msg "create cscope"
