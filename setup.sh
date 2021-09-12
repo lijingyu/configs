@@ -77,7 +77,7 @@ function create_cscopefiles()
         esac
     done
     local filenum=`wc -l cscope.files`
-    echo_msg "added ${filenum} to in $@"
+    echo_msg "added ${filenum} in $@"
 }
 
 function create_tags()
