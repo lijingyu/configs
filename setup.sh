@@ -76,6 +76,8 @@ function create_cscopefiles()
                     |sed  -e "/[ '()]/d" -e '/\/\./d' -e 's:^\./::' |grep -v "$EXINCLUDE_DIRS" >> cscope.files;;
         esac
     done
+    local filenum=`wc -l cscope.files`
+    echo_msg "added ${filenum} to in $@"
 }
 
 function create_tags()
