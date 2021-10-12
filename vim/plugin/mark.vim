@@ -515,7 +515,7 @@ function! s:SearchAnyMark(...) " SearchAnyMark(flags)
             let show_marks = show_marks[0:(&columns - 6)] . " ..."
         endif
 
-        echohl Question
+        echohl MarkWord1
         echo show_marks
         echohl None
         let s:state.end = 0
