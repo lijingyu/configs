@@ -24,7 +24,7 @@ function! s:CheckAddSetDefaultVal(var_name, val)
     endif
 endfunction
 
-let g:FontName = 'Inconsolata Medium'
+let g:FontName = 'Inconsolata'
 
 "custume font size for you computer screen size
 "right font size will make eyes comfortable. no too big or too small
@@ -97,13 +97,14 @@ set statusline=%!StatusLine()
 
 let g:search_ignore_comment=0
 let c_syntax_for_h = 1
-let Tlist_WinWidth = 33
+let Tlist_WinWidth = 40
 let Tlist_Auto_Open = 0
 "global_mode is 0:cscope 1:global
 let g:global_mode = 0
 let g:tagbar_left = 1
 let g:tagbar_sort = 0
 let g:tagbar_indent = 4
+let g:tagbar_width = Tlist_WinWidth
 let html_wrong_comments = 1
 "config for taglist
 let Tlist_Inc_Winwidth = 0
