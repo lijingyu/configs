@@ -190,7 +190,7 @@ function! s:MarkRegex(...) " MarkRegex(regexp)
         let regexp = a:1
     endif
     call inputsave()
-    echohl Question
+    echohl SpecialKey
     let r = input(" Input pattern to mark: ", regexp)
     echohl None
     call inputrestore()

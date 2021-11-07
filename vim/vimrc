@@ -168,7 +168,7 @@ nnoremap <silent> <F4> :LjyatSearchStrCurBuf<CR>
 nmap / <leader>r
 nmap n <leader>/
 nmap N <leader>?
-nmap M :MarkClear<CR><leader>m
+nmap <silent>  M :MarkClear<CR><leader>m
 nmap S :LjyatSearchStrInFileListCmd<CR>
 nmap F :call LjyatQFListFilterFile(getqflist(), input("qflist filter: "))<CR>
 nmap <leader>] :call LjyatShowTagInPreview(LjyatGetJumpTag())<CR>
@@ -833,7 +833,6 @@ endfunction
 
 function! g:DoMarkClear()
     MarkClear
-    call s:EchoWarningMsg("Mark Clear")
 endfunction
 
 function! Arggrep(pattern_arg)
