@@ -24,9 +24,10 @@ hi String guifg=#b00000
 hi! def link Constant String
 hi MoreMsg guifg=blue
 hi Comment gui=italic
-hi Type guifg=darkgreen
+hi Type guifg=#a10303
 hi Identifier guifg=darkgreen
 hi Title guifg=#cb4b16
+hi PreProc guifg=#a10303
 hi CursorLine guibg=orange
 hi WarningMsg guifg=darkred guibg=NONE
 
