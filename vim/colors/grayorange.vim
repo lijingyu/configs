@@ -11,16 +11,16 @@ endif
 set t_Co=256
 let g:colors_name = "grayorange"
 
-hi Normal guifg=#cfcfa2 guibg=#204040 guisp=#204040 gui=NONE ctermfg=230 ctermbg=238 cterm=NONE
+hi Normal guifg=#c8c8c8 guibg=#204040 guisp=#204040 gui=NONE ctermfg=230 ctermbg=238 cterm=NONE
 hi SpecialComment guifg=#ffdead guibg=NONE guisp=NONE gui=underline ctermfg=223 ctermbg=NONE cterm=underline
 hi Title guifg=#ffffff guibg=NONE guisp=NONE gui=NONE ctermfg=15 ctermbg=NONE cterm=NONE
 hi Ignore guifg=#000000 guibg=NONE guisp=NONE gui=NONE ctermfg=NONE ctermbg=NONE cterm=NONE
 hi Debug guifg=#ffdead guibg=NONE guisp=NONE gui=underline ctermfg=223 ctermbg=NONE cterm=underline
 hi PMenuSbar guifg=NONE guibg=#7f7f7f guisp=#7f7f7f gui=NONE ctermfg=NONE ctermbg=8 cterm=NONE
 hi Identifier guifg=#e6e6fa guibg=NONE guisp=NONE gui=NONE ctermfg=189 ctermbg=NONE cterm=NONE
-hi SpecialChar guifg=#ffdead guibg=NONE guisp=NONE gui=underline ctermfg=223 ctermbg=NONE cterm=underline
+hi SpecialChar guifg=#ffdead guibg=NONE guisp=NONE gui=NONE ctermfg=223 ctermbg=NONE cterm=underline
 hi Todo guifg=#000000 guibg=#ffd700 guisp=#ffd700 gui=NONE ctermfg=NONE ctermbg=220 cterm=NONE
-hi Special guifg=#ffdead guibg=NONE guisp=NONE gui=underline ctermfg=223 ctermbg=NONE cterm=underline
+hi Special guifg=#ffdead guibg=NONE guisp=NONE gui=NONE ctermfg=223 ctermbg=NONE cterm=underline
 hi LineNr guifg=#888888 guibg=#103030 guisp=#7f7f7f gui=NONE ctermfg=252 ctermbg=8 cterm=NONE
 hi PMenuSel guifg=#88dd88 guibg=#949698 guisp=#949698 gui=NONE ctermfg=114 ctermbg=246 cterm=NONE
 hi Delimiter guifg=#ffdead guibg=NONE guisp=NONE gui=underline ctermfg=223 ctermbg=NONE cterm=underline
