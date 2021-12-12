@@ -40,11 +40,11 @@ hi scrollbar guifg=NONE guibg=#233b5a guisp=#233b5a gui=NONE ctermfg=NONE ctermb
 hi user2 guifg=#87cefa guibg=#021a39 guisp=#021a39 gui=bold ctermfg=117 ctermbg=17 cterm=bold
 hi vimerror guifg=#ffa500 guibg=NONE guisp=NONE gui=bold ctermfg=214 ctermbg=NONE cterm=bold
 
-"hi PreProc guifg=#fcf003 guibg=NONE guisp=NONE gui=NONE ctermfg=108 ctermbg=NONE cterm=bold
-hi Statement guifg=#35c4cc guibg=NONE guisp=NONE gui=bold ctermfg=108 ctermbg=NONE cterm=bold
-hi Statement guifg=#44cfa1 guibg=NONE guisp=NONE gui=bold ctermfg=108 ctermbg=NONE cterm=bold
+hi Statement guifg=#00cc00 guibg=NONE guisp=NONE gui=bold ctermfg=108 ctermbg=NONE cterm=bold
 hi Comment guifg=#23c7c6 gui=italic guisp=#4d4d4d  ctermfg=143 ctermbg=239 cterm=underline
 hi Constant guifg=indianred1 guibg=NONE guisp=NONE gui=NONE ctermfg=223 ctermbg=NONE cterm=NONE
+
+hi clear MoreMsg
 
 hi MarkWord1  ctermbg=Green    ctermfg=Black  guibg=#2E8B57 guifg=Black
 hi MarkWord2  ctermbg=Cyan     ctermfg=Black  guibg=lightred    guifg=Black
