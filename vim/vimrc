@@ -51,7 +51,7 @@ if has("gui_running")
         let &guifont=g:FontName . ' ' . g:default_linux_font_size
         set linespace=0
     endif
-    colorscheme light
+    colorscheme grayorange
 endif
 
 """"""""Special in Gvim"""""""""""""""""""""""
