@@ -11,7 +11,7 @@ endif
 set t_Co=256
 let g:colors_name = "grayorange"
 
-hi Normal guifg=#c8c8c8 guibg=#204040 guisp=#204040 gui=NONE ctermfg=230 ctermbg=238 cterm=NONE
+hi Normal guifg=#c8c8c8 guibg=#002020 guisp=#204040 gui=NONE ctermfg=230 ctermbg=238 cterm=NONE
 hi SpecialComment guifg=#ffdead guibg=NONE guisp=NONE gui=underline ctermfg=223 ctermbg=NONE cterm=underline
 hi Title guifg=#ffffff guibg=NONE guisp=NONE gui=NONE ctermfg=15 ctermbg=NONE cterm=NONE
 hi Ignore guifg=#000000 guibg=NONE guisp=NONE gui=NONE ctermfg=NONE ctermbg=NONE cterm=NONE
