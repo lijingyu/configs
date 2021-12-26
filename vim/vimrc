@@ -1835,6 +1835,14 @@ function! Prompt_Window_Create(type)
     call s:Prompt_Window_Init(a:type)
 endfunction
 
+function! LjyatWinEnter()
+    if &previewwindow
+        if &cursorline == 0
+            setl cursorline
+        endif
+    endif
+endfunction
+
 command! -nargs=1 Argfind call Argfind(<f-args>)
 command! -nargs=+ -complete=dir A call AddTagDirs('<f-args>')
 command! -nargs=* -complete=dir R call RemoveTagDirs('<f-args>')
@@ -1877,6 +1885,7 @@ augroup LjyatAutoCmds
     autocmd BufEnter *.cu set ft=cpp
     autocmd BufEnter *.s set ft=fasm
     autocmd BufEnter *.S set ft=fasm
+    autocmd WinEnter * call LjyatWinEnter()
 augroup end
 " => Set OminComplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

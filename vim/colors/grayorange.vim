@@ -40,6 +40,7 @@ hi scrollbar guifg=NONE guibg=#233b5a guisp=#233b5a gui=NONE ctermfg=NONE ctermb
 hi user2 guifg=#87cefa guibg=#021a39 guisp=#021a39 gui=bold ctermfg=117 ctermbg=17 cterm=bold
 hi vimerror guifg=#ffa500 guibg=NONE guisp=NONE gui=bold ctermfg=214 ctermbg=NONE cterm=bold
 
+hi CursorLine guibg=black
 hi Visual guifg=black guibg=DarkGrey
 hi Statement guifg=#00cc00 guibg=NONE guisp=NONE gui=bold ctermfg=108 ctermbg=NONE cterm=bold
 hi Comment guifg=#23c7c6 gui=italic guisp=#4d4d4d  ctermfg=143 ctermbg=239 cterm=underline
