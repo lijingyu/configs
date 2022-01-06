@@ -728,9 +728,8 @@ function! AddTagDirs(predirs)
         return
     endif
 
-
     let arglist = []
-    for dir in split(a:predirs, '\s')
+    for dir in split(a:predirs, '\s\|,')
         call add(arglist, substitute(expand(split(dir, "\"")[0]),'/$', '',''))
     endfor
     call uniq(sort(arglist))
@@ -745,12 +744,14 @@ function! AddTagDirs(predirs)
     if s:tmpcscope_files == ''
         let s:tmpcscope_files = "/tmp/cscope.files." . getpid()
     endif
+
     for dir in addedlist
         let dir = substitute(expand(split(dir, "\"")[0]),'/$', '','')
         if dir == '.'
             let new_tag_path     = "tags"
             let new_cscope_path  = "cscope.out"
             let new_global_path  = "GTAGS"
+
             let new_dict_path    = "dict"
             let new_cscope_files = "cscope.files"
         else
