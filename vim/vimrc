@@ -729,10 +729,18 @@ function! AddTagDirs(predirs)
     endif
 
     let arglist = []
-    for dir in split(a:predirs, '\s\|,')
-        call add(arglist, substitute(expand(split(dir, "\"")[0]),'/$', '',''))
+    for rawdir in split(a:predirs, '\s\|,')
+            let dir = substitute(expand(split(rawdir, "\"")[0]),'/$', '','')
+            if isdirectory(dir)
+                call add(arglist, dir)
+            endif
     endfor
     call uniq(sort(arglist))
+
+    if len(arglist) == 0
+        call s:EchoWarningMsg("need new dir added")
+        return
+    endif
 
     if AnyOneInTagDirList(arglist)
         let addedlist = uniq(sort(arglist + s:cscope_tag_dir_list))
