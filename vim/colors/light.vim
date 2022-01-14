@@ -23,7 +23,7 @@ hi Normal guibg=#83af9b
 hi String guifg=#b00000
 hi! def link Constant String
 hi MoreMsg guifg=blue
-hi Comment gui=italic
+hi Comment gui=italic guifg=#0000aa
 hi Type guifg=darkgreen
 hi Identifier guifg=darkgreen
 hi Title guifg=#cb4b16
