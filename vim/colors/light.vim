@@ -30,6 +30,7 @@ hi Title guifg=#cb4b16
 hi PreProc guifg=#8b008b gui=bold
 hi CursorLine guibg=orange
 hi WarningMsg guifg=darkred guibg=NONE
+hi Directory guifg=#0000d0 gui=bold
 
 hi MarkWord1  ctermbg=Green    ctermfg=Black  guibg=#2E8B57 guifg=Black
 hi MarkWord2  ctermbg=Cyan     ctermfg=Black  guibg=lightred    guifg=Black
