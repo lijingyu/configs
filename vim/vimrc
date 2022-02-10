@@ -20,17 +20,18 @@ endfunction
 
 function! s:CheckAddSetDefaultVal(var_name, val)
     if !exists(a:var_name)
-        exec 'let ' . a:var_name . ' = ' . a:val
+        let cmd = 'let ' . a:var_name . ' = ' . '"'. a:val . '"'
+        exec cmd
     endif
 endfunction
 
-let g:FontName = 'Inconsolata weight=430'
 
 "custume font size for you computer screen size
 "right font size will make eyes comfortable. no too big or too small
 let g:normal_guibg = ["#272822", "#2b3032", "#1b1b1b", "#002b36"]
 call s:CheckAddSetDefaultVal("g:default_linux_font_size", 15)
 call s:CheckAddSetDefaultVal("g:normal_guibg_idx", 2)
+call s:CheckAddSetDefaultVal("g:fontname", 'Inconsolata weight=430')
 
 if filereadable(expand("~/.local.vim"))
     source ~/.local.vim
@@ -48,10 +49,10 @@ if has("gui_running")
     elseif has("mac")
         set guifont=Monaco:h13
     else
-        let &guifont=g:FontName . ' ' . g:default_linux_font_size
+        let &guifont=g:fontname . ' ' . g:default_linux_font_size
         set linespace=0
     endif
-    colorscheme grayorange
+    colorscheme light
 endif
 
 """"""""Special in Gvim"""""""""""""""""""""""
