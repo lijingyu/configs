@@ -11,8 +11,10 @@ IGNORE_FILE='.igr'
 GTAGS_MODE=0
 if [ -e "/usr/local/bin/ctags" ]; then
     CTAGS_CMD=/usr/local/bin/ctags
-else
+elif [ -e "/usr/local/bin/ctags" ]; then
     CTAGS_CMD=/usr/bin/ctags
+else
+    CTAGS_CMD=ctags
 fi
 
 
