@@ -72,6 +72,8 @@ configure vim
     --enable-luainterp=yes \
     --enable-gui=gtk3 \
     --enable-cscope \
+    --disable-xsmp \
+    --disable-xsmp-interact \
     --prefix=/usr/local
 
 * install system
