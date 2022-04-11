@@ -67,7 +67,6 @@ configure vim
     --enable-multibyte \
     --enable-rubyinterp=yes \
     --enable-python3interp=yes \
-    --with-python-config-dir=/usr/lib/python3.8/config-3.8m-config \
     --enable-perlinterp=yes \
     --enable-luainterp=yes \
     --enable-gui=gtk3 \
@@ -75,6 +74,9 @@ configure vim
     --disable-xsmp \
     --disable-xsmp-interact \
     --prefix=/usr/local
+
+#option config, need manually set
+    #--with-python-config-dir=/usr/lib/python3.8/config-3.8m-config \
 
 * install system
   sudo apt-get install git vim-gtk3 global cscope ibus ibus-pinyin ibus-libpinyin net-tools volumeicon-alsa feh meld dmenu openbox tint2 cmake gcc g++ make flex bison gperf genromfs \
