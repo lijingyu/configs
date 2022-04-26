@@ -18,7 +18,7 @@ border_color = #FFFFFF 48
 # ID 3
 rounded = 5
 border_width = 0
-background_color = #474747 100
+background_color = #d0f0d8 100
 border_color = #FFFFFF 68
 
 # ID 4
@@ -88,7 +88,7 @@ font_shadow = 0
 systray = 1
 systray_padding = 2 2 2
 systray_sort = right2left
-systray_background_id = 2
+systray_background_id = 3
 systray_icon_size = 0
 #systray_icon_asb = 70 0 0
 
