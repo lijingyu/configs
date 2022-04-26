@@ -81,7 +81,7 @@ configure vim
 
 * install system
   sudo apt-get install git vim-gtk3 global cscope ibus ibus-pinyin ibus-libpinyin net-tools volumeicon-alsa feh meld dmenu openbox tint2 cmake gcc g++ make flex bison gperf genromfs \
-   autoconf gdb libxext-dev codeblocks libtool pkg-config terminator
+   autoconf gdb libxext-dev codeblocks libtool pkg-config terminator pasystray
 
   feh --bg-scale /usr/share/backgrounds/warty-final-ubuntu.png
 
