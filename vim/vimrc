@@ -210,8 +210,6 @@ nnoremap <silent> <RightMouse> <C-o>
 nmap <S-LeftMouse> <LeftMouse>:MarkClear<CR><leader>m
 nmap <M-RightMouse> :call g:DoMarkClear()<CR>
 nnoremap <silent> <M-l> :call LjyatSearchClassParent()<CR>
-nnoremap <silent> C :LjyatBookMarkClear<CR>
-nnoremap <silent> B :LjyatAddBookMark<CR>
 
 "grep -E
 nnoremap <silent> <M-s> :LjyatSearchStrCmd<CR>
