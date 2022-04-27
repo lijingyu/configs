@@ -21,34 +21,10 @@
         <item label="RunCmd ...">
             <action name="Execute"><execute>dmenu_run -fn  "WenQuanYi Micro Hei:size=11"</execute></action>
         </item>
-
-        <separator />
-
-        <item label="Stardict">
-            <action name="Execute"><execute>stardict</execute></action>
-        </item>
-        <item label="Thunderbird">
-            <action name="Execute"><execute>thunderbird</execute></action>
-        </item>
-        <item label="Virtualbox">
-            <action name="Execute"><execute>virtualbox</execute></action>
-        </item>
-        <item label="Iptux">
-            <action name="Execute"><execute>iptux</execute></action>
-        </item>
-        <item label="Eclipse">
-            <action name="Execute"><execute>eclipse</execute></action>
-        </item>
-
-
-        <separator />
-        <item label="Control-Center">
-            <action name="Execute"><execute>gnome-control-center</execute></action>
-        </item>
         <!-- This requires the presence of the 'menu' package to work -->
         <menu id="/Debian" />
         <separator />
-        <menu id="client-list-menu" />
+        <menu id="applications-menu" label="Applications" execute="/usr/bin/obamenu"/>
         <separator />
         <item label="ObConf">
             <action name="Execute"><execute>obconf</execute></action>
