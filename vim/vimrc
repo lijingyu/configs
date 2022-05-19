@@ -34,7 +34,7 @@ endif
 let g:normal_guibg = ["#272822", "#2b3032", "#1b1b1b", "#002b36"]
 call s:CheckAddSetDefaultVal("g:default_linux_font_size", 15)
 call s:CheckAddSetDefaultVal("g:normal_guibg_idx", 2)
-call s:CheckAddSetDefaultVal("g:fontname", 'Inconsolata weight=430')
+call s:CheckAddSetDefaultVal("g:fontname", 'Inconsolata Medium')
 
 if has("gui_running")
     set guioptions-=m
