@@ -481,7 +481,7 @@ function! LjyatSwitchLanguageMode()
             call s:EchoWarningMsg("Englist Mode")
             return
         endif
-        let &guifont=g:FontName . ' ' . g:default_linux_font_size
+        let &guifont=g:fontname . ' ' . g:default_linux_font_size
         call s:EchoWarningMsg("Englist Mode")
     endif
 endfunction
