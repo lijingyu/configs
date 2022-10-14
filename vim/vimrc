@@ -48,7 +48,7 @@ if has("gui_running")
         set guifont=Monaco:h13
     else
         let &guifont=g:fontname . ' ' . g:default_linux_font_size
-        set linespace=0
+        set linespace=3
     endif
     colorscheme light
 endif
