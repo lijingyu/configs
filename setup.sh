@@ -114,6 +114,7 @@ function echo_msg()
 
 function set_ignore()
 {
+    EXINCLUDE_DIRS=$DEF_EXINCLUDE_DIRS
     if [ -s "$1" ]; then
         for line in `cat $1`
         do
