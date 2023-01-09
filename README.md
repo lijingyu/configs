@@ -4,7 +4,7 @@
 gvim color配置更丰富，可以使用alt键，行间距，字体自定义和其他
 
 ## 2.编程字体选哪个？
-目前自我感觉Microsoft Consolas 最好，Inconsolata 也不错。
+目前自我感觉还是Inconsolata 
 
 ## 3.cscope 和gtags？
 gtags对c++的引用的支持更好
