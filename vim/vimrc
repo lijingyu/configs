@@ -517,14 +517,12 @@ function! LjyatGetJumpTag()
 endfunction
 
 function! LjyatShowTags(word, cscope_tag)
-    call s:PromptSetWorkBuf()
     let word = a:word
     let use_cscope = a:cscope_tag
     if word == ''
         return
     endif
 
-    call PromptClose()
     if use_cscope
         if LjyatShowCscopeTags(word) == -1
             try
