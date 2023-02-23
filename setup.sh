@@ -114,7 +114,7 @@ function echo_msg()
 
 function set_ignore()
 {
-    EXINCLUDE_DIRS=$DEF_EXINCLUDE_DIRS
+    EXINCLUDE_DIRS=$CMD_EXINCLUDE_DIRS
     if [ -s "$1" ]; then
         for line in `cat $1`
         do
@@ -134,7 +134,7 @@ function parse_param()
     ONLY_CREATE_CSCOPE_FILES=0
     GTAGS_MODE=0
 
-    EXINCLUDE_DIRS=$DEF_EXINCLUDE_DIRS
+    CMD_EXINCLUDE_DIRS=$DEF_EXINCLUDE_DIRS
 
     for arg in $@
     do
@@ -172,7 +172,7 @@ function parse_param()
             continue
         fi
         if [ $EX_START -eq 1 ];then
-            EXINCLUDE_DIRS="$EXINCLUDE_DIRS\|$arg"
+            CMD_EXINCLUDE_DIRS="$CMD_EXINCLUDE_DIRS\|$arg"
         else
             INCLUD_DIRS="$INCLUD_DIRS $arg"
         fi
