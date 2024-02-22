@@ -18,8 +18,8 @@ else
 fi
 
 
-CTAGS_PARAM_H_AS_C=" --c-kinds=-m --c++-kinds=-m --python-kinds=-i --fields=+iaS --langmap=c++:+.cu.hal,c:.c.h,java:+.aidl.kt -L cscope.files"
-CTAGS_PARAM_DEF=" --c-kinds=-m --c-kinds=+m --python-kinds=-i --fields=+iaS --langmap=c++:+.cu.hal,java:+.aidl.kt --extras=+q -L cscope.files"
+CTAGS_PARAM_H_AS_C=" --c-kinds=-m --c++-kinds=-m --python-kinds=-i --fields=+iaS --langmap=c++:+.cu.hal.inl,c:.c.h,java:+.aidl.kt -L cscope.files"
+CTAGS_PARAM_DEF=" --c-kinds=-m --c-kinds=+m --python-kinds=-i --fields=+iaS --langmap=c++:+.cu.hal.inl,java:+.aidl.kt --extras=+q -L cscope.files"
 
 #export GTAGSCONF="/usr/local/share/gtags/gtags.conf"
 export GTAGSFORCECPP=1
@@ -68,13 +68,13 @@ function create_cscopefiles()
             "Linux")
                 find  ${arg}  -type f -regextype posix-egrep \
                     -iregex '.*\/(makefile|Kconfig|CMakeLists.txt)' -prune -o \
-                    -type f -regex '.*\.(c|h|m|s|S|java|sh|cpp|vim|hp|aidl|rc|py|cc|def|xml|mk|el|lisp|dtsi|dts|ss|y|lex|gperf|inf|dec|hal|hpp|cxx|hh|hxx|h++|cu|qml|kt|cmake|ld)'\
+                    -type f -regex '.*\.(c|h|m|s|S|java|sh|cpp|inl|vim|hp|aidl|rc|py|cc|def|xml|mk|el|lisp|dtsi|dts|ss|y|lex|gperf|inf|dec|hal|hpp|cxx|hh|hxx|h++|cu|qml|kt|cmake|ld)'\
                     |sed  -e "/[ '()]/d" -e '/\/\./d' -e 's:^\./::' |grep -v "$EXINCLUDE_DIRS" >> cscope.files;;
 
             "Darwin")
                 find -E ${arg}  -type f \
                     -iregex '.*\/(makefile|Kconfig|CMakeLists.txt)' -prune -o \
-                    -type f -regex '.*\.(c|h|m|s|S|java|sh|cpp|vim|hp|aidl|rc|py|cc|def|xml|mk|el|lisp|dtsi|dts|ss|y|lex|gperf|inf|dec|hal|hpp|cxx|hh|hxx|h++|cu|qml|kt|cmake|ld)'\
+                    -type f -regex '.*\.(c|h|m|s|S|java|sh|cpp|inl|vim|hp|aidl|rc|py|cc|def|xml|mk|el|lisp|dtsi|dts|ss|y|lex|gperf|inf|dec|hal|hpp|cxx|hh|hxx|h++|cu|qml|kt|cmake|ld)'\
                     |sed  -e "/[ '()]/d" -e '/\/\./d' -e 's:^\./::' |grep -v "$EXINCLUDE_DIRS" >> cscope.files;;
         esac
     done
