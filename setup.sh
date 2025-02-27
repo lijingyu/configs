@@ -68,13 +68,13 @@ function create_cscopefiles()
             "Linux")
                 find  ${arg}  -type f -regextype posix-egrep \
                     -iregex '.*\/(makefile|Kconfig|CMakeLists.txt)' -prune -o \
-                    -type f -regex '.*\.(c|h|m|s|S|java|sh|cpp|inl|vim|hp|aidl|rc|py|cc|def|xml|mk|el|lisp|dtsi|dts|ss|y|lex|gperf|inf|dec|hal|hpp|cxx|hh|hxx|h++|cu|qml|kt|cmake|ld)'\
+                    -type f -regex '.*\.(c|h|m|s|S|java|sh|cpp|inl|vim|hp|aidl|rc|py|cc|def|xml|mk|el|lisp|dtsi|dts|ss|y|lex|gperf|inf|dec|hal|hpp|cxx|hh|hxx|h++|cu|qml|kt|cmake|ld|inc)'\
                     |sed  -e "/[ '()]/d" -e '/\/\./d' -e 's:^\./::' |grep -v "$EXINCLUDE_DIRS" >> cscope.files;;
 
             "Darwin")
                 find -E ${arg}  -type f \
                     -iregex '.*\/(makefile|Kconfig|CMakeLists.txt)' -prune -o \
-                    -type f -regex '.*\.(c|h|m|s|S|java|sh|cpp|inl|vim|hp|aidl|rc|py|cc|def|xml|mk|el|lisp|dtsi|dts|ss|y|lex|gperf|inf|dec|hal|hpp|cxx|hh|hxx|h++|cu|qml|kt|cmake|ld)'\
+                    -type f -regex '.*\.(c|h|m|s|S|java|sh|cpp|inl|vim|hp|aidl|rc|py|cc|def|xml|mk|el|lisp|dtsi|dts|ss|y|lex|gperf|inf|dec|hal|hpp|cxx|hh|hxx|h++|cu|qml|kt|cmake|ld|inc)'\
                     |sed  -e "/[ '()]/d" -e '/\/\./d' -e 's:^\./::' |grep -v "$EXINCLUDE_DIRS" >> cscope.files;;
         esac
     done
