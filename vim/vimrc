@@ -60,8 +60,10 @@ let &linespace=g:linespace
 "vimrc is not usefull for gvim
 "set vb t_vb=
 """"""""""""""""""""""""""""""""""""""""""""""
-set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1,ucs-bom
+"latin1 must set last
+set fileencodings=utf-8,cp936,gb18030,big5,euc-jp,euc-kr,ucs-bom,latin1
 set encoding=utf-8
+
 set t_Co=256
 set showmatch        " Show matching brackets.
 set incsearch        " Incremental search
