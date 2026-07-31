@@ -1,5 +1,128 @@
 set nocompatible
 
+"==================== Compatibility layer (Vim 7.2+ / Vim 8) ====================
+if !exists("g:ljyat_compat_loaded")
+    let g:ljyat_compat_loaded = 1
+
+    " Temp dir: platform-aware
+    if has("win32") || has("win64")
+        let g:Ljyat_TmpDir = expand($TEMP)
+        if g:Ljyat_TmpDir == ''
+            let g:Ljyat_TmpDir = 'C:\Windows\Temp'
+        endif
+    else
+        let g:Ljyat_TmpDir = '/tmp'
+    endif
+
+    " cscope program path: platform-aware
+    if !exists("g:cscope_prg")
+        if has("win32") && executable("cscope.exe")
+            let g:cscope_prg = "cscope.exe"
+        elseif executable("/usr/bin/cscope")
+            let g:cscope_prg = "/usr/bin/cscope"
+        elseif executable("/usr/local/bin/cscope")
+            let g:cscope_prg = "/usr/local/bin/cscope"
+        else
+            let g:cscope_prg = "cscope"
+        endif
+    endif
+
+    " gtags-cscope path
+    if !exists("g:gtags_cscope_prg")
+        if executable("/usr/bin/gtags-cscope")
+            let g:gtags_cscope_prg = "/usr/bin/gtags-cscope"
+        elseif executable("/usr/local/bin/gtags-cscope")
+            let g:gtags_cscope_prg = "/usr/local/bin/gtags-cscope"
+        else
+            let g:gtags_cscope_prg = "gtags-cscope"
+        endif
+    endif
+
+    " Vim 7.4- has no uniq(), provide polyfill
+    if !exists("*uniq")
+        function! uniq(list)
+            let result = []
+            let last = ''
+            for item in sort(copy(a:list))
+                if item != last
+                    call add(result, item)
+                    let last = item
+                endif
+            endfor
+            return result
+        endfunction
+    endif
+
+    " Vim 7.4.248- has no systemlist(), fallback to system()+split
+    if !exists("*systemlist")
+        function! systemlist(cmd, ...)
+            let out = call('system', [a:cmd] + a:000)
+            if out == ''
+                return []
+            endif
+            return split(out, '\n')
+        endfunction
+    endif
+
+    let g:Ljyat_Has_Job = exists('*job_start')
+    let g:Ljyat_Has_Timer = exists('*timer_start')
+
+    " Generate temp filename (platform-independent)
+    function! LjyatTmpFile(suffix)
+        return g:Ljyat_TmpDir . '/ljyat_' . getpid() . '_' . a:suffix
+    endfunction
+
+    " Clean stale temp files left by previous crashed vim instances.
+    " Only removes files whose pid is no longer alive (safe for concurrent vim).
+    function! LjyatCleanStaleTmp()
+        if !has("unix") && !has("win32")
+            return
+        endif
+        let entries = split(glob(g:Ljyat_TmpDir . '/ljyat_*'), "\n")
+        for f in entries
+            " filename pattern: ljyat_<pid>_<suffix>
+            let m = matchlist(f, 'ljyat_\(\d\+\)_')
+            if empty(m)
+                continue
+            endif
+            let pid = m[1]
+            " skip our own pid
+            if pid ==# string(getpid())
+                continue
+            endif
+            " check if pid is alive: Unix kill -0, Windows tasklist
+            if has("unix")
+                if system('kill -0 ' . pid . ' 2>/dev/null; echo $?') =~ '^0$'
+                    continue
+                endif
+            else
+                " Windows: tasklist filters by PID; non-empty output means alive
+                if system('tasklist /FI "PID eq ' . pid . '" 2>nul | findstr ' . pid) !~ ''
+                    continue
+                endif
+            endif
+            " pid is dead, safe to remove
+            call delete(f)
+        endfor
+    endfunction
+
+    " Cleanup on VimLeave: remove only temp files owned by THIS vim instance.
+    " Isolation: filename pattern is 'ljyat_<pid>_<suffix>'. We glob with our own
+    " pid and double-check the prefix before delete, so concurrent vim instances
+    " (different pid) are never touched.
+    function! LjyatVimLeaveClean()
+        let prefix = 'ljyat_' . getpid() . '_'
+        let entries = split(glob(g:Ljyat_TmpDir . '/' . prefix . '*'), "\n")
+        for f in entries
+            " double-check: only delete files whose name starts with our pid prefix
+            if stridx(fnamemodify(f, ':t'), prefix) == 0
+                call delete(f)
+            endif
+        endfor
+    endfunction
+endif
+"==================== End of compatibility layer ====================
+
 if has("syntax")
     syntax on
 endif
@@ -7,11 +130,15 @@ endif
 filetype plugin indent on
 
 if has("unix")
-    " this is default set for terminal,
-    " change option if needed in gui
-    set shell=/bin/bash
-    colorscheme mycterm
-    set mouse=""
+    " default shell for terminal, GUI can override
+    if executable("/bin/bash")
+        set shell=/bin/bash
+    endif
+    try
+        colorscheme mycterm
+    catch
+    endtry
+    set mouse=
 endif
 
 function! OpenQuickFixWin(h)
@@ -50,7 +177,10 @@ if has("gui_running")
     else
         let &guifont=g:font . ' ' . g:font_size
     endif
-    colorscheme light
+    try
+        colorscheme light
+    catch
+    endtry
 endif
 
 let &linespace=g:linespace
@@ -76,7 +206,7 @@ set updatetime=200
 set previewheight=13
 set autoindent
 set smartindent
-set nocindent
+" cino only takes effect when cindent is on; keep for filetype auto-enable
 set cino=l1
 set expandtab tabstop=4 shiftwidth=4
 set nohlsearch
@@ -175,7 +305,7 @@ nmap F :call LjyatQFListFilterFile(getqflist(), input("qflist filter: "))<CR>
 nmap <leader>] :call LjyatShowTagInPreview(LjyatGetJumpTag())<CR>
 
 nnoremap <silent> <Space> <Nop>
-nnoremap <silent> <silent> <M-f> :LjyatSearchFileCmd<CR>
+nnoremap <silent> <M-f> :LjyatSearchFileCmd<CR>
 vnoremap <M-r> <ESC>:call LjyatVSearchStrInFiles()<CR>
 vnoremap <M-R> <ESC>:call LjyatVSearchStrCurBuf()<CR>
 
@@ -203,7 +333,7 @@ vmap m <leader>m
 nnoremap <silent> <C-v> "+p
 nnoremap <silent> <M-e> g_
 nnoremap <silent> <M-a> 0
-nnoremap <silent> <silent> <M-1> :call ClosePreAndQuickWin()<CR>
+nnoremap <silent> <M-1> :call ClosePreAndQuickWin()<CR>
 nmap <M-m> <leader>m
 nnoremap <silent> <M-]> :call LjyatShowTags(LjyatGetJumpTag(), 0)<CR>
 nnoremap <silent> <M-.> :call LjyatShowTags(LjyatGetJumpTag(), 1)<CR>
@@ -224,7 +354,7 @@ nnoremap <silent> <F10> :edit ++ff=dos<CR>
 "vim nnoremap
 nnoremap <silent> <Space>s :LjyatSearchStrCmd<CR>
 nmap <Space>m <leader>m
-nnoremap <silent> <silent> <Space>1 :call ClosePreAndQuickWin()<CR>
+nnoremap <silent> <Space>1 :call ClosePreAndQuickWin()<CR>
 nnoremap <silent> <Space>a 0
 nnoremap <silent> <Space>e g_
 nnoremap <silent> <Space>q <C-q>
@@ -335,6 +465,17 @@ function! LjyatCppParseParentClassName(ClassName, separator)
 endf
 
 function! LjyatCppGetClassParent(CurClass, separator)
+    " memoize cache: avoid repeated taglist scans, prevent diamond inheritance recursion explosion
+    if !exists('s:class_parent_cache')
+        let s:class_parent_cache = {}
+    endif
+    let cache_key = a:CurClass . '@' . a:separator
+    if has_key(s:class_parent_cache, cache_key)
+        return s:class_parent_cache[cache_key]
+    endif
+    " placeholder first, prevent recursion cycle
+    let s:class_parent_cache[cache_key] = a:CurClass
+
     let ParentListStr = a:CurClass
     let taginfo = taglist("^". a:CurClass . "$")
     for tag in taginfo
@@ -368,6 +509,7 @@ function! LjyatCppGetClassParent(CurClass, separator)
     let list_class = split(ParentListStr, '\s\+')
     let list_class = uniq(list_class)
     let ParentListStr = join(list_class, " ")
+    let s:class_parent_cache[cache_key] = ParentListStr
     return ParentListStr
 endf
 
@@ -476,15 +618,15 @@ function! LjyatSwitchLanguageMode()
         let s:language_mode = "EN"
 
         if !has("gui_running")
-            call s:EchoWarningMsg("Englist Mode")
+            call s:EchoWarningMsg("English Mode")
             return
         endif
         if has("win32")
-            call s:EchoWarningMsg("Englist Mode")
+            call s:EchoWarningMsg("English Mode")
             return
         endif
         let &guifont=g:font . ' ' . g:font_size
-        call s:EchoWarningMsg("Englist Mode")
+        call s:EchoWarningMsg("English Mode")
     endif
 endfunction
 
@@ -643,7 +785,7 @@ endfunction
 "=> cscope set
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if has("cscope")
-    set csprg=/usr/bin/cscope
+    let &csprg = g:cscope_prg
     set csto=1
     set nocst
     set cscopequickfix=c-,s-,g-
@@ -679,6 +821,17 @@ function! InitTagDirs()
     let s:tmpcscope_files = ''
     let s:tmpmatchfilelist = []
     let s:cscope_tag_dir_list = []
+    " clear GTAGS env vars to avoid subprocess pollution
+    if exists('$GTAGSROOT')
+        unlet $GTAGSROOT
+    endif
+    if exists('$GTAGSDBPATH')
+        unlet $GTAGSDBPATH
+    endif
+    " invalidate class parent cache (tags changed)
+    if exists('s:class_parent_cache')
+        let s:class_parent_cache = {}
+    endif
 endfunction
 
 function! RemoveTagDirs(rmdirs)
@@ -750,7 +903,7 @@ function! AddTagDirs(predirs)
     endif
 
     if s:tmpcscope_files == ''
-        let s:tmpcscope_files = "/tmp/cscope.files." . getpid()
+        let s:tmpcscope_files = LjyatTmpFile('cscope.files')
     endif
 
     for dir in addedlist
@@ -772,27 +925,26 @@ function! AddTagDirs(predirs)
 
         if filereadable(new_global_path)
             let new_cscope_path = new_global_path
-
-            if filereadable("/usr/bin/gtags-cscope")
-                set csprg=/usr/bin/gtags-cscope
-            elseif filereadable("/usr/local/bin/gtags-cscope")
-                set csprg=/usr/local/bin/gtags-cscope
-            endif
-
+            let &csprg = g:gtags_cscope_prg
             let g:global_mode = 1
         elseif filereadable(new_cscope_path)
             let g:global_mode = 0
-            set csprg=/usr/bin/cscope
+            let &csprg = g:cscope_prg
         else
             call s:EchoWarningMsg("No needed file in: " . dir)
             return
         endif
 
+        " use readfile/writefile instead of cat|sed, avoids :! popup and fork overhead
         if filereadable(new_cscope_files)
-            if dir == '.'
-                silent exe "!cat " . new_cscope_files . ' >> ' . s:tmpcscope_files
+            let lines = readfile(new_cscope_files)
+            if dir != '.'
+                call map(lines, 'dir . "/" . v:val')
+            endif
+            if filereadable(s:tmpcscope_files)
+                call writefile(lines, s:tmpcscope_files, 'a')
             else
-                silent exe "!cat " . new_cscope_files . "|sed 's:^:" . dir . "/:' >> " . s:tmpcscope_files
+                call writefile(lines, s:tmpcscope_files)
             endif
         endif
 
@@ -816,9 +968,13 @@ function! AddTagDirs(predirs)
         if g:global_mode == 0
             silent! exe "cscope add " . new_cscope_path . " " . dir
         else
+            " GTAGSROOT/GTAGSDBPATH only needed during cs add; unset after to avoid
+            " polluting subprocess env (e.g. global --single-update in LjyatUpdateGTAGS)
             let $GTAGSROOT = getcwd() . '/'. dir
             let $GTAGSDBPATH = getcwd() . '/'. dir
             silent! exe "cscope add " . new_cscope_path
+            unlet $GTAGSROOT
+            unlet $GTAGSDBPATH
         endif
     endfor
     redraw!
@@ -919,8 +1075,9 @@ function! LjyatBuildGrepCmd(pattern, cscope_files, ignore)
     let pos = 0
     let step = 0
     let fix_step = 100000
+    " use extend instead of + concatenation, avoids O(n^2) cost
     let result = []
-    let tmp_search_files = "/tmp/cscope.files." . getpid() . "_search"
+    let tmp_search_files = LjyatTmpFile('search')
     while left > 0
         if left > fix_step
             let step = fix_step
@@ -928,10 +1085,9 @@ function! LjyatBuildGrepCmd(pattern, cscope_files, ignore)
             let step = left
         endif
 
-        let exe_file_string = join(lines[pos:(pos+step-1)])
         call writefile(lines[pos:(pos+step-1)], tmp_search_files, "b")
         let real_cmd =  'xargs grep -a -n -H -E '. ((a:ignore == 1)? " -i ": " ") . a:pattern . ' < ' . tmp_search_files
-        let result = result + systemlist(real_cmd, "\n")
+        call extend(result, systemlist(real_cmd, "\n"))
         let left = left - step
         let pos = pos + step
     endwhile
@@ -939,9 +1095,6 @@ function! LjyatBuildGrepCmd(pattern, cscope_files, ignore)
         call delete(tmp_search_files)
     endif
     return result
-    "return 'while read filename;do grep -a -n -H -E '. ((a:ignore == 1)? " -i ": " ") . a:pattern . ' "$filename"; done < ' . a:cscope_files
-"    let real_cmd =  'xargs grep -a -n -H -E '. ((a:ignore == 1)? " -i ": " ") . a:pattern . ' < ' . a:cscope_files
-"    return systemlist(real_cmd, "\n")
 endfunction
 
 function! LjyatSearchStr(pattern, cscope_files)
@@ -1047,7 +1200,7 @@ function! LjyatSearchStrInFileList(pattern, filelist)
         return
     endif
 
-    let tmplistfile = "/tmp/cscope.matchlist." . getpid()
+    let tmplistfile = LjyatTmpFile('matchlist')
     call writefile(a:filelist, tmplistfile)
     call LjyatSearchStr(a:pattern, tmplistfile)
     call delete(tmplistfile)
@@ -1103,6 +1256,17 @@ function! LjyatSearchFile(pattern, cscope_files)
 endfunction
 
 function! LjyatGotoNormalWin()
+    " prefer getwininfo (Vim 7.4.1867+), avoid wincmd w triggering WinEnter autocmd
+    if exists('*getwininfo')
+        for w in getwininfo()
+            if getbufvar(w.bufnr, '&buftype') == ''
+                call win_gotoid(w.winid)
+                return 0
+            endif
+        endfor
+        return -1
+    endif
+    " fallback: loop wincmd w (Vim 7.2 compatible)
     let win_count = winnr('$') "loop back to this window again
     let win_pos = 0
     while &buftype != ""
@@ -1287,15 +1451,45 @@ function! LjyatUpdateGTAGS(file)
     if len(s:cscope_tag_dir_list) == 0 || g:global_mode == 0
         return
     endif
-    let curdir = getcwd()
     let dir = fnamemodify(a:file, ":p:h")
     let name = fnamemodify(a:file, ":t")
-    exe 'silent !cd ' . dir . ' && global --single-update  ' . name
+    " Vim 8: use job_start for async, non-blocking UI; older versions fallback to silent !
+    if g:Ljyat_Has_Job
+        call job_start(['sh', '-c', 'cd ' . shellescape(dir) . ' && global --single-update ' . shellescape(name)])
+    else
+        exe 'silent !cd ' . shellescape(dir) . ' && global --single-update ' . shellescape(name)
+    endif
+endfunction
+
+let s:gtag_timer = -1
+function! LjyatUpdateGTAGSDelayed(file)
+    if empty(s:cscope_tag_dir_list) || g:global_mode == 0
+        return
+    endif
+    " debounce: consecutive saves only trigger once (requires timer, Vim 8)
+    if g:Ljyat_Has_Timer
+        if s:gtag_timer != -1
+            call timer_stop(s:gtag_timer)
+        endif
+        let s:gtag_timer = timer_start(2000, function('s:DoUpdateGTAGS', [a:file]))
+    else
+        call LjyatUpdateGTAGS(a:file)
+    endif
+endfunction
+function! s:DoUpdateGTAGS(file, timer)
+    let s:gtag_timer = -1
+    call LjyatUpdateGTAGS(a:file)
 endfunction
 
 function! LjyatBookMarkClear()
-    let s:mark_index = 0
-    let s:mark_list=[]
+    " free dynamic variables, avoid memory leak on long-term use
+    while s:mark_index > 0
+        let s:mark_index -= 1
+        if exists('s:mark_tag_'.s:mark_index)
+            exe 'unlet s:mark_tag_'.s:mark_index
+        endif
+    endwhile
+    let s:mark_list = []
     execute "cclose"
 endfunction
 
@@ -1508,15 +1702,34 @@ function! s:PatternNumInFile(tag, file, ignorecase)
     if a:ignorecase
         let igcase = " -i "
     endif
-    return system('grep -a -h -E '. igcase . a:tag . ' ' . a:file . " |wc -l")
+    " grep -c outputs match count directly, saves wc -l pipe
+    let out = system('grep -a -h -c -E '. igcase . a:tag . ' ' . a:file)
+    if out =~ '^\d\+$'
+        return str2nr(out)
+    endif
+    return 0
 endfunction
 
 function! s:PatternNumInDictDirs(tag, dirs)
-    let tag_num = 0
+    " collect all readable dict files, count via a single grep
+    let files = []
     for dir in a:dirs
-        let tag_num = tag_num + s:PatternNumInFile(a:tag, dir.'/dict', &ignorecase)
+        if filereadable(dir.'/dict')
+            call add(files, dir.'/dict')
+        endif
     endfor
-    return tag_num
+    if empty(files)
+        return 0
+    endif
+    let igcase = &ignorecase ? ' -i ' : ' '
+    let out = systemlist('grep -a -h -c -E '. igcase . a:tag . ' ' . join(files, ' '))
+    let total = 0
+    for line in out
+        if line =~ '^\d\+$'
+            let total += str2nr(line)
+        endif
+    endfor
+    return total
 endfunction
 
 function! s:Prompt_InputInit(str)
@@ -1864,7 +2077,6 @@ command! LjyatSearchStrInFileListCmd call LjyatSearchStrInFileListCmd()
 command! LjyatVSearchStrCurBuf call LjyatVSearchStrCurBuf()
 command! LjyatSearchStrCurBuf call LjyatSearchStrCurBuf()
 command! LjyatAddBookMark call LjyatAddBookMark()
-command! LjyatAddBookMark call LjyatAddBookMark()
 command! LjyatShowBookMarks call LjyatShowBookMarks()
 command! LjyatBookMarkClear call LjyatBookMarkClear()
 command! LjyatSearchDefine call LjyatSearchDefine()
@@ -1884,10 +2096,12 @@ augroup LjyatAutoCmds
     autocmd FileType c,cpp,java,cs set omnifunc=ccomplete#Complete
     autocmd FileType make setlocal iskeyword+=-
     autocmd FileType qf setlocal nu
+    autocmd VimEnter * call LjyatCleanStaleTmp()
     autocmd VimEnter * call AddTagDirs('.')
 
-    autocmd VimLeave * call CleanTmpListFile(s:tmpcscope_files)
-    autocmd BufWritePost * call LjyatUpdateGTAGS(bufname("%"))
+    autocmd VimLeave * call LjyatVimLeaveClean()
+    " only trigger GTAGS update for code files, debounce avoids lag on consecutive saves
+    autocmd BufWritePost *.c,*.h,*.cpp,*.hpp,*.cc,*.cxx,*.java,*.kt call LjyatUpdateGTAGSDelayed(bufname("%"))
     autocmd BufNewFile,BufRead *.aidl setf java
     autocmd BufNewFile,BufRead *.kt setf java
     autocmd BufNewFile,BufRead *.hal setf c
