@@ -1078,22 +1078,28 @@ function! LjyatBuildGrepCmd(pattern, cscope_files, ignore)
     " use extend instead of + concatenation, avoids O(n^2) cost
     let result = []
     let tmp_search_files = LjyatTmpFile('search')
-    while left > 0
-        if left > fix_step
-            let step = fix_step
-        else
-            let step = left
-        endif
+    try
+        while left > 0
+            if left > fix_step
+                let step = fix_step
+            else
+                let step = left
+            endif
 
-        call writefile(lines[pos:(pos+step-1)], tmp_search_files, "b")
-        let real_cmd =  'xargs grep -a -n -H -E '. ((a:ignore == 1)? " -i ": " ") . a:pattern . ' < ' . tmp_search_files
-        call extend(result, systemlist(real_cmd, "\n"))
-        let left = left - step
-        let pos = pos + step
-    endwhile
-    if tmp_search_files != ''
-        call delete(tmp_search_files)
-    endif
+            call writefile(lines[pos:(pos+step-1)], tmp_search_files, "b")
+            let real_cmd =  'xargs grep -a -n -H -E '. ((a:ignore == 1)? " -i ": " ") . a:pattern . ' < ' . tmp_search_files
+            call extend(result, systemlist(real_cmd, "\n"))
+            let left = left - step
+            let pos = pos + step
+        endwhile
+    catch
+        call s:EchoWarningMsg('LjyatBuildGrepCmd failed: ' . v:exception)
+        let result = []
+    finally
+        if tmp_search_files != ''
+            call delete(tmp_search_files)
+        endif
+    endtry
     return result
 endfunction
 
@@ -1168,7 +1174,7 @@ function! Argfind(pattern)
     endif
 
     let pattern = "'" . a:pattern . "'"
-    let real_cmd = 'grep -a -i -h -E ' . ((&ignorecase == 1)? " -i ": " ") . pattern . ' ' . s:tmpcscope_files
+    let real_cmd = 'grep -a -h -E ' . ((&ignorecase == 1)? " -i ": " ") . pattern . ' ' . s:tmpcscope_files
     call s:EchoMoreMsg("Searching file " . pattern . " ...")
     let match_files = system(real_cmd, " ")
     if match_files == ""
@@ -1201,9 +1207,14 @@ function! LjyatSearchStrInFileList(pattern, filelist)
     endif
 
     let tmplistfile = LjyatTmpFile('matchlist')
-    call writefile(a:filelist, tmplistfile)
-    call LjyatSearchStr(a:pattern, tmplistfile)
-    call delete(tmplistfile)
+    try
+        call writefile(a:filelist, tmplistfile)
+        call LjyatSearchStr(a:pattern, tmplistfile)
+    catch
+        call s:EchoWarningMsg('LjyatSearchStrInFileList failed: ' . v:exception)
+    finally
+        call delete(tmplistfile)
+    endtry
 endfunction
 
 function! LjyatSearchStrInFileListCmd()
@@ -1228,7 +1239,7 @@ function! LjyatSearchFile(pattern, cscope_files)
     endif
 
     let pattern = "'" . a:pattern . "'"
-    let real_cmd = 'grep -a -i -h -E ' . ((&ignorecase == 1)? " -i ": " ")  . pattern . ' ' . a:cscope_files
+    let real_cmd = 'grep -a -h -E ' . ((&ignorecase == 1)? " -i ": " ")  . pattern . ' ' . a:cscope_files
     call s:EchoMoreMsg("Searching file " . pattern . " ...")
 
     let match_files = system(real_cmd)
