@@ -97,7 +97,7 @@ if !exists("g:ljyat_compat_loaded")
                 endif
             else
                 " Windows: tasklist filters by PID; non-empty output means alive
-                if system('tasklist /FI "PID eq ' . pid . '" 2>nul | findstr ' . pid) !~ ''
+                if system('tasklist /FI "PID eq ' . pid . '" 2>nul | findstr ' . pid) != ''
                     continue
                 endif
             endif
@@ -1455,9 +1455,13 @@ function! LjyatUpdateGTAGS(file)
     let name = fnamemodify(a:file, ":t")
     " Vim 8: use job_start for async, non-blocking UI; older versions fallback to silent !
     if g:Ljyat_Has_Job
-        call job_start(['sh', '-c', 'cd ' . shellescape(dir) . ' && global --single-update ' . shellescape(name)])
+        call job_start(['global', '--single-update', name], {'cwd': dir})
     else
-        exe 'silent !cd ' . shellescape(dir) . ' && global --single-update ' . shellescape(name)
+        " use window-local lcd instead of shell 'cd' for cross-platform consistency
+        let l:cwd = getcwd()
+        exe 'lcd ' . fnameescape(dir)
+        exe 'silent !global --single-update ' . shellescape(name)
+        exe 'lcd ' . fnameescape(l:cwd)
     endif
 endfunction
 
@@ -1890,7 +1894,7 @@ function! s:PromptTimerHandler(timer)
     elseif s:type == "cur-str"
         call s:Prompt_SearchCurStr(s:Prompt_getInput())
     else
-        call EchoWarningMsg("no support type search")
+        call s:EchoWarningMsg("no support type search")
         call PromptClose()
         return
     endif
@@ -1898,9 +1902,7 @@ function! s:PromptTimerHandler(timer)
 endfunction
 
 function! s:TimerStop(timerid)
-    if v:version >= 800
-        call timer_stopall()
-    else
+    if a:timerid != -1
         call timer_stop(a:timerid)
     endif
 endfunction
@@ -1914,10 +1916,7 @@ function! s:PromptGetCurrentFileName(nameonly)
     let filename = getreg("%")
     if filename != ''
         if a:nameonly
-            let filename = system("basename ". filename)
-            if filename != ''
-                let filename = split(filename, '\.')[0]
-            endif
+            let filename = split(fnamemodify(filename, ':t'), '\.')[0]
         endif
     endif
     call LjyatGotoWin(g:Prompt_Title)
