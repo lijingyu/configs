@@ -2,16 +2,18 @@
 
 INCLUD_DIRS=
 DEF_EXINCLUDE_DIRS='xxxxxx'
+CMD_EXINCLUDE_DIRS=$DEF_EXINCLUDE_DIRS
 EX_START=0
 KERNEL_TAGS=0
 SKIP_CREATE_CSCOPE_FILES=0
+APPEND_CREATE_CSCOPE_FILES=0
 ONLY_CREATE_CSCOPE_FILES=0
 IGNORE_FILE='.igr'
 #cscope mode or gtags mode
 GTAGS_MODE=0
 if [ -e "/usr/local/bin/ctags" ]; then
     CTAGS_CMD=/usr/local/bin/ctags
-elif [ -e "/usr/local/bin/ctags" ]; then
+elif [ -e "/usr/bin/ctags" ]; then
     CTAGS_CMD=/usr/bin/ctags
 else
     CTAGS_CMD=ctags
@@ -297,6 +299,8 @@ function csseta()
         return
     fi
 
+    parse_param $@
+
     csclean
     create_cscopefiles $@
     create_cscope
@@ -305,7 +309,7 @@ function csseta()
 
     for arg in $@
     do
-        find ${arg}  -type f | sed '/\/\.[^\.]\| \|\.o$\|tags\|cscope\|\.a$/d'  >> cscope.files
+        find ${arg}  -type f | sed -e '/\/\./d' -e '/ /d' -e '/\.o$/d' -e '/tags/d' -e '/cscope/d' -e '/\.a$/d'  >> cscope.files
     done
 
     create_tags
@@ -440,7 +444,7 @@ setup_regex()
 			else
 				# Remove ctags /kind-spec/
 				case "$r" in
-				/*/*/?/)${#regex[@]}
+				/*/*/?/)
 					r=${r%?/}
 				esac
 				# Prepend ^[^#] unless already anchored
