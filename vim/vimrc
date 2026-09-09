@@ -1,125 +1,72 @@
 set nocompatible
 
 "==================== Compatibility layer (Vim 7.2+ / Vim 8) ====================
-if !exists("g:ljyat_compat_loaded")
+if !exists('g:ljyat_compat_loaded')
     let g:ljyat_compat_loaded = 1
 
-    " Temp dir: platform-aware
-    if has("win32") || has("win64")
-        let g:Ljyat_TmpDir = expand($TEMP)
-        if g:Ljyat_TmpDir == ''
-            let g:Ljyat_TmpDir = 'C:\Windows\Temp'
-        endif
-    else
-        let g:Ljyat_TmpDir = '/tmp'
-    endif
+    let s:win = has('win32') || has('win64')
+    let g:Ljyat_TmpBase = s:win ? 
+        \ (empty($TEMP) ? 'C:\Windows\Temp' : expand($TEMP)) : '/tmp'
 
-    " cscope program path: platform-aware
-    if !exists("g:cscope_prg")
-        if has("win32") && executable("cscope.exe")
-            let g:cscope_prg = "cscope.exe"
-        elseif executable("/usr/bin/cscope")
-            let g:cscope_prg = "/usr/bin/cscope"
-        elseif executable("/usr/local/bin/cscope")
-            let g:cscope_prg = "/usr/local/bin/cscope"
-        else
-            let g:cscope_prg = "cscope"
-        endif
-    endif
+    let s:usr = s:win ? $USERNAME : $USER
+    let s:srv = empty(v:servername) ? 'default' : 
+        \ substitute(v:servername, '[^0-9A-Za-z-_]', '_', 'g')
 
-    " gtags-cscope path
-    if !exists("g:gtags_cscope_prg")
-        if executable("/usr/bin/gtags-cscope")
-            let g:gtags_cscope_prg = "/usr/bin/gtags-cscope"
-        elseif executable("/usr/local/bin/gtags-cscope")
-            let g:gtags_cscope_prg = "/usr/local/bin/gtags-cscope"
-        else
-            let g:gtags_cscope_prg = "gtags-cscope"
-        endif
-    endif
+    let g:Ljyat_InstanceDir = g:Ljyat_TmpBase . '/ljyat_' . 
+        \ s:usr . '_' . getpid() . '_' . s:srv
 
-    " Vim 7.4- has no uniq(), provide polyfill
-    if !exists("*uniq")
-        function! uniq(list)
-            let result = []
-            let last = ''
-            for item in sort(copy(a:list))
-                if item != last
-                    call add(result, item)
-                    let last = item
-                endif
-            endfor
-            return result
-        endfunction
-    endif
-
-    " Vim 7.4.248- has no systemlist(), fallback to system()+split
-    if !exists("*systemlist")
-        function! systemlist(cmd, ...)
-            let out = call('system', [a:cmd] + a:000)
-            if out == ''
-                return []
-            endif
-            return split(out, '\n')
-        endfunction
-    endif
-
-    let g:Ljyat_Has_Job = exists('*job_start')
-    let g:Ljyat_Has_Timer = exists('*timer_start')
-
-    " Generate temp filename (platform-independent)
     function! LjyatTmpFile(suffix)
-        return g:Ljyat_TmpDir . '/ljyat_' . getpid() . '_' . a:suffix
-    endfunction
-
-    " Clean stale temp files left by previous crashed vim instances.
-    " Only removes files whose pid is no longer alive (safe for concurrent vim).
-    function! LjyatCleanStaleTmp()
-        if !has("unix") && !has("win32")
-            return
+        if !isdirectory(g:Ljyat_InstanceDir)
+            call mkdir(g:Ljyat_InstanceDir, 'p')
         endif
-        let entries = split(glob(g:Ljyat_TmpDir . '/ljyat_*'), "\n")
-        for f in entries
-            " filename pattern: ljyat_<pid>_<suffix>
-            let m = matchlist(f, 'ljyat_\(\d\+\)_')
-            if empty(m)
+        return g:Ljyat_InstanceDir . '/' . a:suffix
+    endfunction
+
+    function! LjyatCleanStaleTmp()
+        let l:usr = has('win32') || has('win64') ? $USERNAME : $USER
+        let l:pat = g:Ljyat_TmpBase . '/ljyat_' . l:usr . '_*'
+        let l:cur_pid = string(getpid())
+        let l:now = localtime()
+        
+        for d in split(glob(l:pat), "\n")
+            if !isdirectory(d)
                 continue
             endif
-            let pid = m[1]
-            " skip our own pid
-            if pid ==# string(getpid())
+
+            let l:parts = split(fnamemodify(d, ':t'), '_')
+            let l:pid = get(l:parts, 2)
+            
+            if l:pid !~# '^\d\+$' || l:pid ==# l:cur_pid 
                 continue
             endif
-            " check if pid is alive: Unix kill -0, Windows tasklist
-            if has("unix")
-                if system('kill -0 ' . pid . ' 2>/dev/null; echo $?') =~ '^0$'
-                    continue
-                endif
-            else
-                " Windows: tasklist filters by PID; non-empty output means alive
-                if system('tasklist /FI "PID eq ' . pid . '" 2>nul | findstr ' . pid) != ''
-                    continue
-                endif
+
+            if (l:now - getftime(d)) < 3600
+                continue
             endif
-            " pid is dead, safe to remove
-            call delete(f)
+
+            let l:cmd = has('unix') ? 'ps -p ' . l:pid . ' -o comm=' : 
+                \ 'tasklist /FI "PID eq ' . l:pid . '" /NH 2>nul'
+
+            if system(l:cmd) !~? 'vim' 
+                call delete(d, 'rf')
+            endif
         endfor
     endfunction
 
-    " Cleanup on VimLeave: remove only temp files owned by THIS vim instance.
-    " Isolation: filename pattern is 'ljyat_<pid>_<suffix>'. We glob with our own
-    " pid and double-check the prefix before delete, so concurrent vim instances
-    " (different pid) are never touched.
     function! LjyatVimLeaveClean()
-        let prefix = 'ljyat_' . getpid() . '_'
-        let entries = split(glob(g:Ljyat_TmpDir . '/' . prefix . '*'), "\n")
-        for f in entries
-            " double-check: only delete files whose name starts with our pid prefix
-            if stridx(fnamemodify(f, ':t'), prefix) == 0
-                call delete(f)
-            endif
-        endfor
+        if isdirectory(g:Ljyat_InstanceDir) 
+            call delete(g:Ljyat_InstanceDir, 'rf')
+        endif
     endfunction
+
+    if !exists('g:cscope_prg')
+        let g:cscope_prg = executable('cscope') ? 'cscope' : 
+            \ (s:win ? 'cscope.exe' : '/usr/bin/cscope')
+    endif
+    if !exists('g:gtags_cscope_prg')
+        let g:gtags_cscope_prg = executable('gtags-cscope') ? 
+            \ 'gtags-cscope' : '/usr/bin/gtags-cscope'
+    endif
 endif
 "==================== End of compatibility layer ====================
 
