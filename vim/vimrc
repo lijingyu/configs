@@ -67,6 +67,8 @@ if !exists('g:ljyat_compat_loaded')
         let g:gtags_cscope_prg = executable('gtags-cscope') ? 
             \ 'gtags-cscope' : '/usr/bin/gtags-cscope'
     endif
+    let g:Ljyat_Has_Job = exists('*job_start')
+    let g:Ljyat_Has_Timer = exists('*timer_start')
 endif
 "==================== End of compatibility layer ====================
 
