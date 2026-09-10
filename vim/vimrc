@@ -96,8 +96,7 @@ endfunction
 
 function! s:CheckAddSetDefaultVal(var_name, val)
     if !exists(a:var_name)
-        let cmd = 'let ' . a:var_name . ' = ' . '"'. a:val . '"'
-        exec cmd
+        exec 'let ' . a:var_name . ' = ' . string(a:val)
     endif
 endfunction
 
@@ -203,10 +202,10 @@ if !exists("s:tmpcscope_files")
     let s:cscope_tag_dir_list = []
 endif
 
-call s:CheckAddSetDefaultVal("s:tmpmatchfilelist", '[]')
-call s:CheckAddSetDefaultVal("s:language_mode", "'EN'")
-call s:CheckAddSetDefaultVal("s:kernel_mode", "'FALSE'")
-call s:CheckAddSetDefaultVal("s:ignore_match_tag", "'EXPORT_SYMBOL'")
+call s:CheckAddSetDefaultVal("s:tmpmatchfilelist", [])
+call s:CheckAddSetDefaultVal("s:language_mode", 'EN')
+call s:CheckAddSetDefaultVal("s:kernel_mode", 'FALSE')
+call s:CheckAddSetDefaultVal("s:ignore_match_tag", 'EXPORT_SYMBOL')
 
 if exists("s:PromptGroupID")
     silent! call matchdelete(s:PromptGroupID)
@@ -360,10 +359,6 @@ function! StatusLine()
     endif
 
     return "%-f". m ." %w  %{&fenc!=''?&fenc:&enc}  %p%% L%l/%L  %{TagDirs()}%<"
-endfunction
-
-function! Trace(prefix)
-    put =a:prefix . \"# [\" . expand('%:t') . ': ' . (line('.') + 1) . ']\"' .\");\"
 endfunction
 
 function! s:SetMsgLater(msg)
@@ -1065,7 +1060,7 @@ function! LjyatSearchStr(pattern, cscope_files)
     let pattern = "'" . a:pattern . "'"
 
     call s:EchoMoreMsg("Searching String " . pattern . " ...")
-    let matchlist = LjyatBuildGrepCmd(escape(pattern, "()"), s:tmpcscope_files, &ignorecase)
+    let matchlist = LjyatBuildGrepCmd(escape(pattern, "()"), a:cscope_files, &ignorecase)
     if len(matchlist) == 0
         call s:EchoWarningMsg("No match string: " . pattern)
         return
@@ -2071,7 +2066,3 @@ augroup LjyatAutoCmds
 augroup end
 " => Set OminComplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-if filereadable('projs.vim')
-    source projs.vim
-endif
