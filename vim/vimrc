@@ -8,12 +8,13 @@ if !exists('g:ljyat_compat_loaded')
     let g:Ljyat_TmpBase = s:win ? 
         \ (empty($TEMP) ? 'C:\Windows\Temp' : expand($TEMP)) : '/tmp'
 
-    let s:usr = s:win ? $USERNAME : $USER
-    let s:srv = empty(v:servername) ? 'default' : 
-        \ substitute(v:servername, '[^0-9A-Za-z-_]', '_', 'g')
+    function! LjyatInitInstanceDir()
+        let l:usr = has('win32') || has('win64') ? $USERNAME : $USER
+        let g:Ljyat_InstanceDir = g:Ljyat_TmpBase . '/ljyat_' . 
+            \ l:usr . '_' . getpid()
+    endfunction
 
-    let g:Ljyat_InstanceDir = g:Ljyat_TmpBase . '/ljyat_' . 
-        \ s:usr . '_' . getpid() . '_' . s:srv
+    call LjyatInitInstanceDir()
 
     function! LjyatTmpFile(suffix)
         if !isdirectory(g:Ljyat_InstanceDir)
@@ -22,32 +23,55 @@ if !exists('g:ljyat_compat_loaded')
         return g:Ljyat_InstanceDir . '/' . a:suffix
     endfunction
 
-    function! LjyatCleanStaleTmp()
+    function! s:LjyatPidAlive(pid)
+        if has('unix') && isdirectory('/proc/' . a:pid)
+            let l:link = '/proc/' . a:pid . '/exe'
+            let l:exe = resolve(l:link)
+            if l:exe ==# l:link || l:exe ==# ''
+                return 1
+            endif
+            return l:exe =~? 'vim\|/vi$\|/view$\|/ex$'
+        endif
+        if has('unix')
+            if isdirectory('/proc/self')
+                return 0
+            endif
+            if !executable('ps')
+                return 1
+            endif
+            let l:out = system('ps -p ' . a:pid . ' -o comm= 2>/dev/null')
+            return v:shell_error == 0 && l:out !~# '^\s*$'
+        endif
+        return system('tasklist /FI "PID eq ' . a:pid . '" /NH 2>nul') =~? 'vim'
+    endfunction
+
+    function! LjyatCleanStaleTmp() abort
         let l:usr = has('win32') || has('win64') ? $USERNAME : $USER
-        let l:pat = g:Ljyat_TmpBase . '/ljyat_' . l:usr . '_*'
+        let l:prefix = 'ljyat_' . l:usr . '_'
+        let l:plen = strlen(l:prefix)
         let l:cur_pid = string(getpid())
         let l:now = localtime()
-        
-        for d in split(glob(l:pat), "\n")
+
+        for d in split(glob(g:Ljyat_TmpBase . '/' . l:prefix . '*'), "\n")
+            let l:pid = ''
             if !isdirectory(d)
                 continue
             endif
 
-            let l:parts = split(fnamemodify(d, ':t'), '_')
-            let l:pid = get(l:parts, 2)
-            
-            if l:pid !~# '^\d\+$' || l:pid ==# l:cur_pid 
+            let l:name = fnamemodify(d, ':t')
+            if strlen(l:name) > l:plen
+                let l:pid = matchstr(strpart(l:name, l:plen), '^\d\+$')
+            endif
+
+            if l:pid ==# '' || l:pid ==# l:cur_pid
                 continue
             endif
 
-            if (l:now - getftime(d)) < 3600
+            if s:win && (l:now - getftime(d)) < 3600
                 continue
             endif
 
-            let l:cmd = has('unix') ? 'ps -p ' . l:pid . ' -o comm=' : 
-                \ 'tasklist /FI "PID eq ' . l:pid . '" /NH 2>nul'
-
-            if system(l:cmd) !~? 'vim' 
+            if !s:LjyatPidAlive(l:pid)
                 call delete(d, 'rf')
             endif
         endfor
@@ -2050,6 +2074,7 @@ augroup LjyatAutoCmds
     autocmd FileType c,cpp,java,cs set omnifunc=ccomplete#Complete
     autocmd FileType make setlocal iskeyword+=-
     autocmd FileType qf setlocal nu
+    autocmd VimEnter * call LjyatInitInstanceDir()
     autocmd VimEnter * call LjyatCleanStaleTmp()
     autocmd VimEnter * call AddTagDirs('.')
 
